@@ -72,3 +72,22 @@
 - 自定义注册表（NewRegistryEvent）、数据包注册表（进阶）
 - 注册核心术语表
 - 来源：官方 Registries 文档 https://docs.neoforged.net/docs/concepts/registries
+
+
+---
+
+## 2026-04-09 知识库重构
+
+### 结构调整
+- 创建 `reference/` 目录：AI 专用参考文档（批量生成）
+- 创建 `topics/` 目录：个性化知识（交流沉淀）
+- 迁移 53 个 NeoForge 文档到 `reference/neoForge/`
+- 迁移 `NeoForge开发认知.md` 到 `topics/`
+
+### 命名规范
+- reference/ 下的文档：API 文档风格，结构固定
+- topics/ 下的文档：交流沉淀风格，结构灵活
+
+### 清理
+- 删除任务临时文件（清单、审查报告）
+- 更新 index.md 和 README.md
