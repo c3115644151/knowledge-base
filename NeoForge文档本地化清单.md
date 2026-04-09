@@ -2,6 +2,7 @@
 
 > 版本：1.21.11 / NeoForge 26.1.x
 > 创建时间：2026-04-09
+> 最后更新：2026-04-09
 > 用途：驱动全量文档本地化任务
 
 ---
@@ -33,22 +34,22 @@
 ## 4. Items（物品）
 
 - [x] Items - 物品注册与基础
-- [ ] Interactions - 物品交互（右键/左键）
-- [ ] Data Components - 数据组件系统
-- [ ] Consumables - 消耗品/食物
-- [ ] Tools - 工具制作
-- [ ] Armor - 护甲制作
-- [ ] Mob Effects & Potions - 状态效果与药水
+- [x] Interactions - 物品交互（右键/左键）
+- [x] Data Components - 数据组件系统
+- [x] Consumables - 消耗品/食物
+- [x] Tools - 工具制作
+- [x] Armor - 护甲制作
+- [x] Mob Effects & Potions - 状态效果与药水
 
 ---
 
 ## 5. Entities（实体）
 
 - [x] Entities - 实体注册与基础
-- [ ] Data and Networking - 实体数据同步
-- [ ] Living Entities, Mobs & Players - 生物/玩家逻辑
-- [ ] Attributes - 属性系统
-- [ ] Entity Renderers - 实体渲染
+- [x] Data and Networking - 实体数据同步
+- [x] Living Entities, Mobs & Players - 生物/玩家逻辑
+- [x] Attributes - 属性系统
+- [x] Entity Renderers - 实体渲染
 
 ---
 
@@ -61,21 +62,21 @@
 
 ## 7. Resources - Client（客户端资源）
 
-- [ ] I18n and L10n - 国际化与本地化
+- [x] I18n and L10n - 国际化与本地化
 - [ ] Textures - 纹理系统
 - [ ] Models - 模型定义
 - [ ] Sounds - 音效系统
-- [ ] Particles - 粒子系统
+- [x] Particles - 粒子系统
 
 ---
 
 ## 8. Resources - Server（服务端资源）
 
 - [ ] Advancements - 进度系统
-- [ ] Damage Types - 伤害类型
+- [x] Damage Types - 伤害类型
 - [ ] Data Maps - 数据映射
-- [ ] Enchantments - 附魔系统
-- [ ] Loot Tables - 战利品表
+- [x] Enchantments - 附魔系统
+- [x] Loot Tables - 战利品表
 - [ ] Recipes - 配方系统
 - [ ] Tags - 标签系统
 
@@ -84,7 +85,7 @@
 ## 9. Networking（网络）
 
 - [x] Networking - 网络通信基础
-- [ ] Registering Payloads - Payload 注册详解
+- [x] Registering Payloads - Payload 注册详解
 - [ ] StreamCodecs - 流编解码器
 
 ---
@@ -100,14 +101,14 @@
 
 - [ ] Codecs - 编解码器
 - [ ] Value I/O - 值读写
-- [ ] Attachments - 数据附件系统
+- [x] Attachments - 数据附件系统
 
 ---
 
 ## 12. Worldgen（世界生成）
 
 - [ ] Features - 地物
-- [ ] Biome Modifiers - 生物群系修改器
+- [x] Biome Modifiers - 生物群系修改器
 - [ ] Structures - 结构
 - [ ] Dimensions - 维度
 
@@ -116,7 +117,7 @@
 ## 13. Rendering（渲染）
 
 - [ ] Model Containers - 模型容器/初始化
-- [ ] Features - 渲染特性
+- [x] Features - 渲染特性
 - [ ] Shaders - 着色器
 
 ---
@@ -131,8 +132,8 @@
 
 ## 15. Miscellaneous（杂项）
 
-- [ ] Game Tests - 游戏测试
-- [ ] Update Checker - 更新检查器
+- [x] Game Tests - 游戏测试
+- [x] Update Checker - 更新检查器
 
 ---
 
@@ -143,22 +144,23 @@
 | Getting Started | 4 | 4 | 0 |
 | Concepts | 3 | 3 | 0 |
 | Blocks | 2 | 1 | 1 |
-| Items | 7 | 1 | 6 |
-| Entities | 5 | 1 | 4 |
+| Items | 7 | 7 | 0 |
+| Entities | 5 | 5 | 0 |
 | Block Entities | 2 | 1 | 1 |
-| Resources - Client | 5 | 0 | 5 |
-| Resources - Server | 7 | 0 | 7 |
-| Networking | 3 | 1 | 2 |
-| Inventories | 2 | 0 | 2 |
-| Data Storage | 3 | 0 | 3 |
-| Worldgen | 4 | 0 | 4 |
-| Rendering | 3 | 0 | 3 |
-| Advanced | 3 | 0 | 3 |
-| Miscellaneous | 2 | 0 | 2 |
-| **总计** | **55** | **12** | **43** |
+| Resources - Client | 5 | 2 | 3 |
+| Resources - Server | 7 | 2 | 5 |
+| Networking | 3 | 2 | 1 |
+| Inventories & Transfers | 2 | 0 | 2 |
+| Data Storage | 3 | 1 | 2 |
+| Worldgen | 4 | 1 | 3 |
+| Rendering | 3 | 1 | 2 |
+| Advanced Topics | 3 | 0 | 3 |
+| Miscellaneous | 2 | 2 | 0 |
+| **总计** | **55** | **32** | **23** |
 
 ---
 
 ## 执行日志
 
-- 2026-04-09 18:21 创建清单，开始全量补充任务
+- 2026-04-09: 初始化清单，完成 12 个页面
+- 2026-04-09: 补充完成 20 个页面（Items 6、Entities 4、Resources Server 2、Resources Client 2、Networking 1、Data Storage 1、Worldgen 1、Rendering 1、Miscellaneous 2）
