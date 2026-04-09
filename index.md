@@ -85,6 +85,7 @@
 ### Rendering（渲染）
 - [[NeoForge-渲染-特性]] - Rendering Features 渲染特性
 - [[NeoForge-渲染-着色器]] - Shaders 着色器
+- [[NeoForge-渲染-模型容器]] - Model Containers 模型容器
 
 ### Advanced Topics（高级主题）
 - [[NeoForge-高级]] - 高级话题总览
