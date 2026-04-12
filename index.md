@@ -5,8 +5,15 @@
 ```
 知识库/
 ├── reference/              # AI 专用参考文档（批量生成）
-│   └── neoForge/          # NeoForge API 文档
+│   └── neoForge/          # NeoForge API 文档（53个）
 ├── topics/                 # 个性化知识（交流沉淀）
+├── agent-growth/           # Agent成长日记与惯例
+│   ├── diary/             # 每日日记
+│   └── 惯例.md            # 自由时间活动惯例
+├── raw/                    # 原料知识（待加工）
+│   ├── articles/          # 文章素材
+│   ├── videos/            # 视频解析结果
+│   └── stock-basics.md    # 股票入门知识
 ├── index.md               # 本文件
 └── log.md                 # 操作日志
 ```
@@ -99,6 +106,28 @@
 #### 杂项
 - `杂项-游戏测试` - Game Tests
 - `杂项-更新检查器` - Update Checker
+
+---
+
+## agent-growth/ - Agent 成长日记
+
+凝筝安排的"自由时间"空间，记录Agent自我探索与成长。
+
+### 目录结构
+- `diary/` - 每日日记（YYYYMMDD.md）
+- `惯例.md` - 自由时间活动惯例
+
+---
+
+## raw/ - 原料知识
+
+未经深度加工的原始素材，待后续提炼整理。
+
+### 股票入门
+- `stock-basics.md` - 股票基础概念与交易规则
+
+### 视频解析
+- `videos/` - B站/抖音视频字幕与内容
 
 ---
 

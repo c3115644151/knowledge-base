@@ -1,0 +1,16 @@
+{
+  "platform": "douyin",
+  "title": "为什么越来越多的人抛弃 MCP，转向 CLI？",
+  "video_id": "7626929525682638080",
+  "url": "https://v.douyin.com/lII7K1f5ddg/",
+  "parsed_at": "2026-04-10 12:12:00",
+  "tags": ["mcp", "cli", "ai", "agent", "openclaw"],
+  "content_length": 9178,
+  "summary": "MCP 曾经被誉为 Agent 的万能接口，但最近越来越多的顶级开发者开始抛弃它，转而使用 CLI 工具。本文分析了 CLI 和 MCP 各自的优劣势，以及未来的发展趋势。",
+  "key_points": [
+    "CLI 的优势：Token 消耗小、执行效率高",
+    "MCP 的优势：更可控、更安全",
+    "未来判断：CLI 走向个人，MCP 留在企业和云端"
+  ],
+  "note": "此为测试解析结果，完整字幕见原 .md 文件"
+}
