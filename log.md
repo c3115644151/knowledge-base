@@ -102,3 +102,36 @@
 索引更新：
 - 更新 index.md 结构说明，添加新目录
 - 更新 README.md 文件计数（53个NeoForge文档）
+
+## [2026-04-13 13:00] fix | 路径统一修正
+
+修正文件路径设计：
+- 删除重复文件 `./知识库/agent-growth/惯例.md`
+- 统一路径：惯例、状态、日记、MEMORY.md 都在根目录
+- 更新 `./基础设定/MEMORY.md`、`./基础设定/TOOLS.md`、`./MEMORY.md`、`./知识库/index.md` 中的路径描述
+- 删除 `./知识库/index.md` 中对不存在的 agent-growth/ 目录的描述
+
+原因：之前的设计矛盾导致惯例.md在两个位置都有，日记路径也不一致。
+
+
+## [2026-04-14 11:30] create | Hermes Agent 文档知识化
+
+新建知识库。将 Hermes Agent 官方文档整理为 AI 可调阅的结构化知识。
+
+**来源**：https://hermes-agent.nousresearch.com/docs/
+
+**知识化过程**：
+1. 抓取官方文档 70+ 页面
+2. 去冗余、结构化整理
+3. 扁平化存储到 `reference/hermes/` 目录
+
+**文档统计**：72 个 Markdown 文件
+- 入门指南 6 个：快速开始、学习路径、安装、更新、Termux、Nix
+- 核心概念 5 个：架构、工具、技能、记忆、会话
+- 功能模块 28 个：配置、MCP、消息网关、语音、浏览器、委托等
+- 消息平台 15 个：Telegram、Discord、Slack、WhatsApp、Signal、飞书、钉钉等
+- 实践指南 6 个：MCP实践、语音实践、日报Bot等
+- 开发者指南 3 个：添加工具、创建技能、贡献
+- 参考文档 9 个：FAQ、CLI命令、工具参考、环境变量等
+
+**命名规则**：`hermes-{中文名}.md`，扁平化便于检索

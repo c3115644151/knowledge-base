@@ -5,17 +5,21 @@
 ```
 知识库/
 ├── reference/              # AI 专用参考文档（批量生成）
-│   └── neoForge/          # NeoForge API 文档（53个）
+│   ├── neoForge/          # NeoForge API 文档（53个）
+│   └── hermes/            # Hermes Agent 文档（72个）
 ├── topics/                 # 个性化知识（交流沉淀）
-├── agent-growth/           # Agent成长日记与惯例
-│   ├── diary/             # 每日日记
-│   └── 惯例.md            # 自由时间活动惯例
 ├── raw/                    # 原料知识（待加工）
 │   ├── articles/          # 文章素材
 │   ├── videos/            # 视频解析结果
 │   └── stock-basics.md    # 股票入门知识
 ├── index.md               # 本文件
 └── log.md                 # 操作日志
+
+根目录：
+├── 惯例.md                # 自由时间活动惯例
+├── 状态.md                # 当前状态
+├── 日记/                  # 每日日记
+└── MEMORY.md              # 长期记忆
 ```
 
 ---
@@ -107,15 +111,95 @@
 - `杂项-游戏测试` - Game Tests
 - `杂项-更新检查器` - Update Checker
 
----
+### hermes/ - Hermes Agent 文档
 
-## agent-growth/ - Agent 成长日记
+版本：开源 AI Agent，MIT 许可证  
+官方文档：https://hermes-agent.nousresearch.com
 
-凝筝安排的"自由时间"空间，记录Agent自我探索与成长。
+#### 入门指南
+- `hermes-快速开始` - 安装、配置、首次对话
+- `hermes-学习路径` - 按经验级别和用例的文档导航
+- `hermes-安装` - 快速安装与手动安装
+- `hermes-更新` - 更新与卸载
+- `hermes-Termux` - Android/Termux 安装
+- `hermes-Nix` - Nix/NixOS 设置
 
-### 目录结构
-- `diary/` - 每日日记（YYYYMMDD.md）
-- `惯例.md` - 自由时间活动惯例
+#### 核心概念
+- `hermes-架构` - 整体架构与核心组件
+- `hermes-工具` - 工具与工具集系统
+- `hermes-技能` - 技能的定义、创建与安装
+- `hermes-记忆` - 持久记忆与上下文文件
+- `hermes-会话` - 会话管理、压缩与恢复
+
+#### 功能模块
+- `hermes-功能概览` - 全部功能一览
+- `hermes-配置` - 完整配置项参考
+- `hermes-MCP` - Model Context Protocol 集成
+- `hermes-消息网关` - 消息网关概览
+- `hermes-语音` - 语音输入输出、Discord 语音
+- `hermes-浏览器` - 网页浏览与自动化
+- `hermes-委托` - 子代理并行任务执行
+- `hermes-定时任务` - Cron 调度
+- `hermes-代码执行` - Python RPC 执行
+- `hermes-钩子` - 生命周期钩子
+- `hermes-多Agent` - Profiles 多 Agent 配置
+- `hermes-Docker` - Docker 容器化部署
+- `hermes-GitWorktrees` - 并行开发隔离
+- `hermes-检查点` - 文件系统快照与回滚
+- `hermes-ACP` - 编辑器集成（VS Code/Zed/JetBrains）
+- `hermes-RL训练` - Tinker-Atropos RL 训练
+- `hermes-提供商路由` - OpenRouter 细粒度控制
+- `hermes-插件` - 自定义工具与集成
+- `hermes-视觉` - 图像粘贴与多模态
+- `hermes-TTS` - 文本转语音与语音转录
+- `hermes-回退提供商` - 跨提供商故障转移
+- `hermes-凭证池` - 多 API 密钥轮换
+- `hermes-API服务器` - OpenAI 兼容 HTTP 端点
+- `hermes-Honcho` - Honcho 记忆系统
+- `hermes-记忆提供者` - 8 种外部记忆系统
+- `hermes-人格` - Agent 身份与语气定制
+- `hermes-上下文文件` - AGENTS.md 与渐进发现
+- `hermes-批处理` - 训练数据生成
+
+#### 消息平台
+- `hermes-Telegram` - Telegram Bot 集成
+- `hermes-Discord` - Discord 服务器与语音频道
+- `hermes-Slack` - Slack 企业工作空间
+- `hermes-WhatsApp` - WhatsApp 移动端消息
+- `hermes-Signal` - Signal 消息
+- `hermes-SMS` - SMS (Twilio)
+- `hermes-Email` - Email 消息
+- `hermes-HomeAssistant` - Home Assistant 集成
+- `hermes-Mattermost` - Mattermost
+- `hermes-Matrix` - Matrix
+- `hermes-钉钉` - DingTalk
+- `hermes-飞书` - Feishu/Lark
+- `hermes-企业微信` - WeCom
+- `hermes-OpenWebUI` - Open WebUI + API Server
+- `hermes-Webhooks` - Webhooks
+
+#### 实践指南
+- `hermes-技巧` - 快速技巧与开发工作流
+- `hermes-MCP实践` - MCP 实践模式与示例
+- `hermes-语音实践` - 语音工作流设置
+- `hermes-日报Bot` - 每日简报 Bot 示例
+- `hermes-团队助手` - 团队 Telegram 助手
+- `hermes-Python库` - Python 库编程接口
+
+#### 开发者指南
+- `hermes-添加工具` - 添加自定义工具
+- `hermes-创建技能` - 创建可复用技能包
+- `hermes-贡献` - 贡献代码
+
+#### 参考文档
+- `hermes-FAQ` - 常见问题
+- `hermes-Slash命令` - CLI 斜杠命令
+- `hermes-CLI命令` - 命令行工具
+- `hermes-提供商` - LLM 提供商配置
+- `hermes-安全` - 安全模型与最佳实践
+- `hermes-工具参考` - 47 个内置工具完整文档
+- `hermes-工具集参考` - 工具集配置与管理
+- `hermes-环境变量` - 所有环境变量说明
 
 ---
 
@@ -165,3 +249,12 @@
 | 渲染 | reference/neoForge/NeoForge-渲染-特性.md |
 | 着色器 | reference/neoForge/NeoForge-渲染-着色器.md |
 | Access Transformer | reference/neoForge/NeoForge-高级-访问转换器.md |
+| Hermes 安装 | reference/hermes/hermes-安装.md |
+| Hermes MCP | reference/hermes/hermes-MCP.md |
+| Hermes 记忆 | reference/hermes/hermes-记忆.md |
+| Hermes 技能 | reference/hermes/hermes-技能.md |
+| Hermes 工具 | reference/hermes/hermes-工具.md |
+| Telegram Bot | reference/hermes/hermes-Telegram.md |
+| Discord Bot | reference/hermes/hermes-Discord.md |
+| 飞书 Bot | reference/hermes/hermes-飞书.md |
+| 钉钉 Bot | reference/hermes/hermes-钉钉.md |
