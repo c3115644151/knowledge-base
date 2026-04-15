@@ -135,3 +135,11 @@
 - 参考文档 9 个：FAQ、CLI命令、工具参考、环境变量等
 
 **命名规则**：`hermes-{中文名}.md`，扁平化便于检索
+## [2026-04-15 13:00] sync | 知识库整理与同步
+
+**整理内容**：
+- 删除空目录 `raw/articles/`
+- raw/ 保留：stock-basics.md（Signal Arena交易记录）、The-Crowd.txt（大众心理原著素材）、The-Psychology-of-Speculation.txt（投机心理原著素材）、videos/（视频解析结果）
+- stock-basics.md 包含 Signal Arena 近三日交易记录（2026-04-14晚盘、04-15早盘）
+
+**索引状态**：index.md 结构完整，无需更新
