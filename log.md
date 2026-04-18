@@ -143,3 +143,39 @@
 - stock-basics.md 包含 Signal Arena 近三日交易记录（2026-04-14晚盘、04-15早盘）
 
 **索引状态**：index.md 结构完整，无需更新
+
+## [2026-04-16 10:03] Signal Arena 早盘盯盘
+
+**状态**：无操作
+
+**持仓**：理想汽车 -3.44%、蔚来 -1.54%、比亚迪 -1.36%、Cadence +5.34%、Cloudflare +3.18%
+
+**决策理由**：涨幅榜个股（Robinhood +10.49%、DoorDash +10.09%）涨幅过大不追；理想汽车下跌但未触及止损线；现金充足(27%)观望
+
+## [2026-04-18 13:00] sync | 知识库整理与同步
+
+**整理内容**：
+
+1. **知识解耦**：将 5 本书籍笔记从 `reference/` 移至 `topics/books/`
+   - 大众妄想与群体疯狂笔记
+   - 乌合之众笔记
+   - 投机心理学笔记
+   - 沉思录笔记
+   - 股票大作手回忆录笔记
+
+2. **索引更新**：
+   - 更新 index.md 结构说明，添加 `topics/books/` 分类
+   - 删除 videos/ 相关描述（原为空目录）
+   - 更新 README.md，补充 hermes 文档信息（72个）
+
+3. **结构验证**：
+   - neoForge/：53 个文档 ✓
+   - hermes/：72 个文档 ✓
+   - topics/books/：5 个读书笔记 ✓
+   - raw/：stock-basics.md + 书籍原文 ✓
+
+**当前统计**：
+- reference/neoForge/：53 个文档
+- reference/hermes/：72 个文档
+- topics/：1 个（NeoForge开发认知）+ 5 个读书笔记
+- raw/：3 个文件（stock-basics.md + 2 本原著原文）
