@@ -8,8 +8,7 @@
 知识库/
 ├── reference/              # AI 专用参考文档（批量生成）
 │   ├── neoForge/          # NeoForge API 文档（53 个）
-│   ├── hermes/            # Hermes Agent 文档（72 个）
-│   └── minecraft-wiki/    # Minecraft Wiki 本地化参考（18 个）
+│   └── hermes/            # Hermes Agent 文档（72 个）
 ├── topics/                 # 个性化知识（交流沉淀）
 │   └── books/             # 读书笔记（5 本）
 ├── raw/                    # 原料知识（待加工）
@@ -30,9 +29,6 @@
 - **Hermes Agent 文档**（72 个）
   - 开源 AI Agent，MIT 许可证
   - 来源：https://hermes-agent.nousresearch.com
-- **Minecraft Wiki 本地化参考**（18 个）
-  - 面向 NeoForge 模组开发（高权重内容优先展开，低权重内容提供 Wiki 锚点索引）
-  - 来源：https://zh.minecraft.wiki/
 
 ### topics/ - 个性化知识
 

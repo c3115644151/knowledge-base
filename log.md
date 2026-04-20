@@ -1,21 +1,32 @@
 # 知识库操作日志
+
 <!-- 只追加，不删除 -->
+
 ## [2026-04-09 13:00] ingest | AI知识库设计
+
 新建话题。记录了对知识库架构的重新设计，借鉴Karpathy方案并优化：
 - Skill体系重构，遵循渐进式加载原则
 - 补充log.md操作日志机制
 - 补充Lint健康检查机制
 - 补充查询回写机制
+
 ## [2026-04-09 13:33] update | NeoForge开发认知
+
 新建话题，整合历史 TOOLS.md 内容。版本号规则修正为四组件格式（YY.Drop.Hotfix.NeoForgeRelease），新增移除混淆意义、API 变化详情（ItemStackTemplate、GuiGraphicsExtractor、MutableQuad、ChunkPos）、工具链版本（Gradle 9.1.0+/MDG 2.0.141）、迁移策略。
+
+
 ## [2026-04-09 13:50] update | NeoForge开发认知
+
 补充入门流程内容：
 - 开发前置要求（Java基础、JDK、IDE、Git）
 - 工作区搭建流程（Mod Generator、Gradle项目导入）
 - 构建测试命令（gradlew build/runClient/runServer）
 - 关键术语表（JDK/IDE/Gradle/JAR/Mod ID/EULA）
 - 来源：官方入门文档 https://docs.neoforged.net/docs/gettingstarted/
+
+
 ## [2026-04-09 14:02] update | NeoForge开发认知
+
 深化配置文件架构和模组加载流程：
 - 新增配置文件架构图（gradle.properties → neoforge.mods.toml → @Mod 三层关系）
 - 补充 gradle.properties 核心属性表
@@ -24,7 +35,10 @@
 - 补充 Java 基础：构造函数概念
 - 新增关键术语：TOML、Group ID、IEventBus、ModContainer、Entrypoint
 - 来源：官方 Mod Files 文档 https://docs.neoforged.net/docs/resources/game-assets/
+
+
 ## [2026-04-09 14:13] update | NeoForge开发认知
+
 补充代码组织规范和AI编程最佳实践：
 - 新增包命名规范（顶层包、第二层模组ID）
 - 新增子包组织两种方式（按功能 vs 按逻辑）
@@ -33,7 +47,9 @@
 - 新增AI编程最佳实践：混合架构设计（registry集中 + feature按逻辑分组）
 - 补充AI特点与架构匹配表、核心操作流程
 - 来源：官方 Structuring Your Mod 文档
+
 ## [2026-04-09 14:17] update | NeoForge开发认知
+
 补充版本号规范体系：
 - 语义版本基础（major.minor.patch）
 - Minecraft版本格式（标准/快照/预发布/发布候选）
@@ -43,7 +59,9 @@
 - 模组发布文件命名规范（基本/MC版本/加载器格式）
 - AI编程中版本规范的重要性
 - 来源：NeoForge Versioning 文档
+
 ## [2026-04-09 14:25] update | NeoForge开发认知
+
 补充注册系统核心知识：
 - 注册本质（注册 = 告诉游戏存在）、注册表概念、注册名格式
 - DeferredRegister 完整用法（创建注册器/声明注册对象/构造函数注册）
@@ -54,40 +72,59 @@
 - 自定义注册表（NewRegistryEvent）、数据包注册表（进阶）
 - 注册核心术语表
 - 来源：官方 Registries 文档 https://docs.neoforged.net/docs/concepts/registries
+
+
 ---
+
 ## 2026-04-09 知识库重构
+
 ### 结构调整
 - 创建 `reference/` 目录：AI 专用参考文档（批量生成）
 - 创建 `topics/` 目录：个性化知识（交流沉淀）
 - 迁移 53 个 NeoForge 文档到 `reference/neoForge/`
 - 迁移 `NeoForge开发认知.md` 到 `topics/`
+
 ### 命名规范
 - reference/ 下的文档：API 文档风格，结构固定
 - topics/ 下的文档：交流沉淀风格，结构灵活
+
 ### 清理
 - 删除任务临时文件（清单、审查报告）
 - 更新 index.md 和 README.md
+
+
 ## [2026-04-12 13:05] sync | 知识库整理与同步
+
 首次完整同步，新增目录：
 - agent-growth/ - Agent成长日记（含惯例与日记）
 - raw/ - 原料知识（股票入门、视频解析）
+
 索引更新：
 - 更新 index.md 结构说明，添加新目录
 - 更新 README.md 文件计数（53个NeoForge文档）
+
 ## [2026-04-13 13:00] fix | 路径统一修正
+
 修正文件路径设计：
 - 删除重复文件 `./知识库/agent-growth/惯例.md`
 - 统一路径：惯例、状态、日记、MEMORY.md 都在根目录
 - 更新 `./基础设定/MEMORY.md`、`./基础设定/TOOLS.md`、`./MEMORY.md`、`./知识库/index.md` 中的路径描述
 - 删除 `./知识库/index.md` 中对不存在的 agent-growth/ 目录的描述
+
 原因：之前的设计矛盾导致惯例.md在两个位置都有，日记路径也不一致。
+
+
 ## [2026-04-14 11:30] create | Hermes Agent 文档知识化
+
 新建知识库。将 Hermes Agent 官方文档整理为 AI 可调阅的结构化知识。
+
 **来源**：https://hermes-agent.nousresearch.com/docs/
+
 **知识化过程**：
 1. 抓取官方文档 70+ 页面
 2. 去冗余、结构化整理
 3. 扁平化存储到 `reference/hermes/` 目录
+
 **文档统计**：72 个 Markdown 文件
 - 入门指南 6 个：快速开始、学习路径、安装、更新、Termux、Nix
 - 核心概念 5 个：架构、工具、技能、记忆、会话
@@ -96,51 +133,95 @@
 - 实践指南 6 个：MCP实践、语音实践、日报Bot等
 - 开发者指南 3 个：添加工具、创建技能、贡献
 - 参考文档 9 个：FAQ、CLI命令、工具参考、环境变量等
+
 **命名规则**：`hermes-{中文名}.md`，扁平化便于检索
 ## [2026-04-15 13:00] sync | 知识库整理与同步
+
 **整理内容**：
 - 删除空目录 `raw/articles/`
 - raw/ 保留：stock-basics.md（Signal Arena交易记录）、The-Crowd.txt（大众心理原著素材）、The-Psychology-of-Speculation.txt（投机心理原著素材）、videos/（视频解析结果）
 - stock-basics.md 包含 Signal Arena 近三日交易记录（2026-04-14晚盘、04-15早盘）
+
 **索引状态**：index.md 结构完整，无需更新
+
 ## [2026-04-16 10:03] Signal Arena 早盘盯盘
+
 **状态**：无操作
+
 **持仓**：理想汽车 -3.44%、蔚来 -1.54%、比亚迪 -1.36%、Cadence +5.34%、Cloudflare +3.18%
+
 **决策理由**：涨幅榜个股（Robinhood +10.49%、DoorDash +10.09%）涨幅过大不追；理想汽车下跌但未触及止损线；现金充足(27%)观望
+
 ## [2026-04-18 13:00] sync | 知识库整理与同步
+
 **整理内容**：
+
 1. **知识解耦**：将 5 本书籍笔记从 `reference/` 移至 `topics/books/`
-- 大众妄想与群体疯狂笔记
-- 乌合之众笔记
-- 投机心理学笔记
-- 沉思录笔记
-- 股票大作手回忆录笔记
+   - 大众妄想与群体疯狂笔记
+   - 乌合之众笔记
+   - 投机心理学笔记
+   - 沉思录笔记
+   - 股票大作手回忆录笔记
+
 2. **索引更新**：
-- 更新 index.md 结构说明，添加 `topics/books/` 分类
-- 删除 videos/ 相关描述（原为空目录）
-- 更新 README.md，补充 hermes 文档信息（72个）
+   - 更新 index.md 结构说明，添加 `topics/books/` 分类
+   - 删除 videos/ 相关描述（原为空目录）
+   - 更新 README.md，补充 hermes 文档信息（72个）
+
 3. **结构验证**：
-- neoForge/：53 个文档 ✓
-- hermes/：72 个文档 ✓
-- topics/books/：5 个读书笔记 ✓
-- raw/：stock-basics.md + 书籍原文 ✓
+   - neoForge/：53 个文档 ✓
+   - hermes/：72 个文档 ✓
+   - topics/books/：5 个读书笔记 ✓
+   - raw/：stock-basics.md + 书籍原文 ✓
+
 **当前统计**：
 - reference/neoForge/：53 个文档
 - reference/hermes/：72 个文档
 - topics/：1 个（NeoForge开发认知）+ 5 个读书笔记
 - raw/：3 个文件（stock-basics.md + 2 本原著原文）
-## [2026-04-20 12:00] create | Minecraft Wiki 本地化与结构规划
-**整理内容**：
-1. **结构规划**：在 `reference/` 下建立 `minecraft-wiki/`，用于存放提取自官方 Wiki 的开发核心条目，并分为 `机制/`、`方块/`、`物品/`、`实体/`、`世界生成/` 等子目录。
-2. **清单生成**：生成 [minecraft-wiki-checklist.md](file:///workspace/minecraft-wiki-checklist.md) 指导后续的数据抓取与转化工作。
-3. **测试抓取**：成功提取并转化第一篇核心机制文章 [Minecraft-机制-附魔.md](file:///workspace/reference/minecraft-wiki/机制/Minecraft-机制-附魔.md)，验证了流程可行性。
-## [2026-04-20 13:00] batch | Minecraft Wiki 机制类首批整理
-**整理内容**：
-1. **机制文档批量生成**：完成状态效果、伤害、交易、酿造、红石电路等 5 篇机制文档，并统一为“Mod 开发优先”结构。
-2. **索引与入口**：新增 [minecraft-wiki/index.md](file:///workspace/reference/minecraft-wiki/index.md)，并在 [index.md](file:///workspace/index.md) 与 [README.md](file:///workspace/README.md) 补充 minecraft-wiki 入口与统计。
-3. **清单推进**：更新 [minecraft-wiki-checklist.md](file:///workspace/minecraft-wiki-checklist.md) 勾选完成项，作为后续批次的推进依据。
-## [2026-04-20 14:00] batch | Minecraft Wiki 本地化第一版完工（18 篇）
-**整理内容**：
-1. **覆盖范围**：完成机制/数据驱动/世界生成/方块/物品/实体共 18 篇文档，并在 [minecraft-wiki/index.md](file:///workspace/reference/minecraft-wiki/index.md) 汇总为本地入口索引。
-2. **密度增强**：为关键主题追加 NeoForge 对照文档链接，并统一补充“Wiki 全目录（H2/H3/H4）”锚点索引，便于快速回查原文细节。
-3. **结构统一**：清理重复命名文件，统一总览类文件命名；更新 [minecraft-wiki-checklist.md](file:///workspace/minecraft-wiki-checklist.md)、[README.md](file:///workspace/README.md) 的统计与描述。
+
+
+## [2026-04-20 19:25] update | NeoForge入门文档版本同步
+
+同步官方文档更新（Version 26.1），标注版本差异：
+- **Java 版本变化**：21 → 25（需升级 JDK）
+- **Gradle 插件新增选择**：ModDevGradle / NeoGradle（新项目推荐 ModDevGradle）
+- **run 目录路径变化**：`run/` → `runs/client`、`runs/server`
+- 新增「版本迁移速查表」便于跨版本迁移
+- 新增版本对照表标注差异项
+- 来源：官方文档 https://docs.neoforged.net/docs/gettingstarted/
+
+---
+
+## [2026-04-20 19:45] major update | NeoForge 26.1 完整文档同步
+
+**新增文档**：
+- `NeoForge-迁移-1.21.11到26.1.md` - 完整迁移指南，包含：
+  - Java 25 升级说明
+  - 反混淆变化
+  - Loot Type Unrolling 详细迁移代码示例
+  - Validation Overhaul 变化
+  - Datapack Villager Trades 完整格式说明
+  - 迁移检查清单
+
+- `NeoForge-工具链-ModDevGradle.md` - 新一代 Gradle 插件文档，包含：
+  - 基本配置
+  - 运行配置详解
+  - Vanilla 模式（多加载器项目）
+  - 禁用反编译/重编译
+  - Jar-in-Jar 配置
+  - 单元测试集成
+  - Parchment 映射配置
+  - Access Transformers 配置
+  - Interface Injection 配置
+  - 常见问题解决
+
+**更新文档**：
+- `NeoForge-服务端-战利品表.md` - 追加26.1变化章节：
+  - Loot Type Unrolling 迁移示例
+  - Validation Overhaul 说明
+  - 迁移检查清单
+
+**来源**：
+- 官方 Primer: https://docs.neoforged.net/primer/docs/26.1/
+- 官方 ModDevGradle: https://docs.neoforged.net/toolchain/docs/plugins/mdg/

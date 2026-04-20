@@ -37,7 +37,7 @@
 - `概念` - 注册表、事件系统、物理端/逻辑端
 
 #### 方块
-- `方块` - 方块注册、自定义方块
+- `方块` - 方块注册、自定义方块、**BrushableBlock 考古方块**
 - `方块-状态` - Blockstates 方块状态系统
 
 #### 物品
@@ -94,8 +94,11 @@
 #### 世界生成
 - `世界生成-地物` - Features 地物
 - `世界生成-生物群系修改器` - Biome Modifiers
-- `世界生成-结构` - Structures
+- `世界生成-结构` - Structures（含 StructureProcessor）
 - `世界生成-维度` - Dimensions
+
+#### 实战经验
+- `开发实践勘误` - ⚠️ **必读**：26.1 版本实际卡点与 API 修正（2026-04-20）
 
 #### 渲染
 - `渲染-特性` - Rendering Features
@@ -200,12 +203,6 @@
 - `hermes-工具参考` - 47 个内置工具完整文档
 - `hermes-工具集参考` - 工具集配置与管理
 - `hermes-环境变量` - 所有环境变量说明
-
-### minecraft-wiki/ - Minecraft Wiki 本地化参考
-
-面向 NeoForge 模组开发的 Minecraft 原版机制/索引本地化文档：高权重开发内容优先展开，低权重内容提供精确到章节锚点的 Wiki 索引入口。
-
-入口索引：`reference/minecraft-wiki/index.md`
 
 ---
 

@@ -169,6 +169,190 @@ context.register(
 /locate examplemod:my_structure
 ```
 
+## 结构处理器（StructureProcessor）
+
+> ⚠️ **1.21 版本 API 规范**（以下均为官方 Mojang 映射名称）
+
+### 适用场景
+
+`StructureProcessor` 用于在结构生成时动态替换方块。只有 **Jigsaw 结构**（村庄、废弃矿井、要塞等）才能通过 `processor_list` JSON 覆盖注入自定义方块。
+
+**不能使用 StructureProcessor 的 legacy 结构**（见下节）。
+
+### 完整实现流程
+
+#### 1. 创建 Processor 类
+
+```java
+package com.examplemod.content.structure;
+
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.examplemod.init.ModBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.Nullable;
+
+public class JungleTempleProcessor extends StructureProcessor {
+
+    public static final MapCodec<JungleTempleProcessor> CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.point(new JungleTempleProcessor())
+    );
+
+    private static final float REPLACEMENT_CHANCE = 0.20f;
+
+    @Override
+    @Nullable
+    public StructureTemplate.StructureBlockInfo processBlock(
+            LevelReader level,                      // ✅ 不是 ServerLevelAccessor
+            BlockPos offset,
+            BlockPos pos,
+            StructureTemplate.StructureBlockInfo originalBlockInfo,  // 原始方块（NBT 模板中定义）
+            StructureTemplate.StructureBlockInfo currentBlockInfo,  // 当前方块（经前面处理器处理后）
+            StructurePlaceSettings settings
+    ) {
+        if (currentBlockInfo.state().is(Blocks.MOSSY_STONE_BRICKS)) {
+            RandomSource random = level.getRandom();
+            if (random.nextFloat() < REPLACEMENT_CHANCE) {
+                return new StructureTemplate.StructureBlockInfo(
+                        currentBlockInfo.pos(),
+                        ModBlocks.SUSPICIOUS_MOSSY_STONE_BRICKS.get().defaultBlockState(),
+                        currentBlockInfo.nbt()
+                );
+            }
+        }
+        return currentBlockInfo;
+    }
+
+    @Override
+    protected StructureProcessorType<?> getType() {
+        return ModStructureProcessors.JUNGLE_TEMPLE_PROCESSOR.get();
+    }
+}
+```
+
+#### 2. 注册 StructureProcessorType
+
+⚠️ **常见错误**：
+- ❌ `Registries.STRUCTURE_PROCESSOR_SERIALIZER`（不存在）
+- ✅ `Registries.STRUCTURE_PROCESSOR`
+
+```java
+package com.examplemod.init;
+
+import com.mojang.serialization.MapCodec;
+import com.examplemod.RelicTales;
+import com.examplemod.content.structure.JungleTempleProcessor;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+public class ModStructureProcessors {
+    // ✅ 注册到 STRUCTURE_PROCESSOR（不是 SERIALIZER）
+    public static final DeferredRegister<StructureProcessorType<?>> PROCESSORS =
+            DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, RelicTales.MOD_ID);
+
+    // ✅ DeferredHolder 泛型：DeferredHolder<类型自身, 包装类型>
+    public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<JungleTempleProcessor>> JUNGLE_TEMPLE_PROCESSOR =
+            PROCESSORS.register("jungle_temple_processor", () -> () -> JungleTempleProcessor.CODEC);
+
+    public static void init() {}
+}
+```
+
+在 `RelicRegisters.init(bus)` 中注册：
+```java
+ModStructureProcessors.PROCESSORS.register(bus);
+```
+
+#### 3. 创建 processor_list JSON（仅适用于 Jigsaw 结构）
+
+路径：`src/main/resources/data/minecraft/worldgen/processor_list/<structure_name>.json`
+
+**覆盖丛林神殿示例**（见下节：⚠️ 不适用）：
+```json
+{
+  "processors": [
+    {
+      "processor_type": "examplemod:jungle_temple_processor"
+    }
+  ]
+}
+```
+
+---
+
+## Legacy 结构与注入方案
+
+### 哪些是 Legacy 结构
+
+以下结构使用硬编码 Java 逻辑生成（无 NBT 模板池），**无法通过 `processor_list` JSON 覆盖注入方块**：
+
+| 结构 | 类型 | 能否使用 processor_list |
+|------|------|----------------------|
+| 丛林神殿 `jungle_temple` | Legacy Feature | ❌ 不能 |
+| 沙漠神殿 `desert_pyramid` | Legacy Feature | ❌ 不能 |
+| 要塞 `stronghold` | Jigsaw ✅ | ✅ 可以 |
+| 下界堡垒 `nether_fortress` | Jigsaw ✅ | ✅ 可以 |
+| 末地城 `end_city` | Jigsaw ✅ | ✅ 可以 |
+| 村庄（所有变种） | Jigsaw ✅ | ✅ 可以 |
+| 废弃矿井 `mineshaft` | Jigsaw ✅ | ✅ 可以 |
+
+> **验证方法**：查看 `data/minecraft/worldgen/` 目录是否有对应的 `.nbt` 模板文件。
+> 有 `.nbt` 模板 = Jigsaw 结构，可注入；无 = Legacy 结构，不可注入。
+
+### 注入 Legacy 结构（丛林/沙漠神殿）的两种方案
+
+#### 方案 A：BiomeModifier 完全替换（推荐）
+
+1. 通过 BiomeModifier JSON 移除原版结构：
+```json
+// data/<modid>/neoforge/biome_modifier/remove_jungle_temple.json
+{
+  "type": "neoforge:remove_features",
+  "biomes": "#minecraft:has_structure/jungle_temple",
+  "features": "minecraft:jungle_temple"
+}
+```
+
+2. 自定义 Jigsaw 格式的"复制版"丛林神殿结构，并附加自定义 processor_list。
+
+#### 方案 B：Mixin 拦截生成逻辑
+
+在 26.1 反混淆环境下，直接 Mixin `JungleTemplePiece` 类，在 `placeBlock` 调用处注入替换逻辑：
+
+```java
+@Mixin(JungleTemplePiece.class)
+public abstract class MixinJungleTemplePiece {
+    @Inject(method = "placeBlock", at = @At("HEAD"), cancellable = true)
+    private void onPlaceBlock(WorldGenLevel level, BlockState state, int x, int y, int z,
+                               BoundingBox box, CallbackInfoReturnable<Boolean> ci) {
+        if (state.is(Blocks.MOSSY_STONE_BRICKS) && level.getRandom().nextFloat() < 0.2f) {
+            // 替换逻辑
+            level.setBlock(new BlockPos(x, y, z),
+                ModBlocks.SUSPICIOUS_MOSSY_STONE_BRICKS.get().defaultBlockState(), 3);
+            ci.setReturnValue(true);
+        }
+    }
+}
+```
+
+---
+
+## 验证结构生成
+
+使用 `/locate` 命令测试结构是否正确生成：
+```
+/locate examplemod:my_structure
+```
+
 ## 关联引用
 
 - [地物](./NeoForge-世界生成-地物.md)

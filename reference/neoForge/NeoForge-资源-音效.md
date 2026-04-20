@@ -15,7 +15,25 @@
 
 > ⚠️ **注意**：由于 OpenAL 实现，音效文件必须为单声道（单通道）才能有衰减效果。立体声文件不会根据距离衰减。
 
-## 创建 SoundEvent
+## 考古音效（原版 SoundEvents）
+
+> ⚠️ **1.21 版本命名规范**：Moja ng 官方映射在 1.21 中移除了冗余前缀，
+> `ITEM_BRUSH_BRUSHING_GENERIC` → `BRUSH_GENERIC`，不得使用旧版名称。
+
+### 刷取音效（SoundEvents）
+
+| 描述 | 1.21 官方字段名 | 旧版名称（已废弃） |
+|------|----------------|------------------|
+| 刷取通用方块 | `SoundEvents.BRUSH_GENERIC` | `ITEM_BRUSH_BRUSHING_GENERIC` |
+| 刷取可疑砂砾 | `SoundEvents.BRUSH_GRAVEL` | `ITEM_BRUSH_BRUSHING_GRAVEL` |
+| 刷取可疑沙子 | `SoundEvents.BRUSH_SAND` | `ITEM_BRUSH_BRUSHING_SAND` |
+| 刷取完成（砂砾） | `SoundEvents.BRUSH_GRAVEL_COMPLETED` | - |
+| 刷取完成（沙子） | `SoundEvents.BRUSH_SAND_COMPLETED` | - |
+
+**注意**：不存在 `BRUSH_GENERIC_COMPLETED` 或 `BRUSH_COMPLETED` 等字段。
+`BrushableBlock` 构造函数第二个参数为刷取中音效，第三个参数为完成音效。
+
+### 注册自定义 SoundEvent
 
 `SoundEvent` 是注册对象，必须通过 `DeferredRegister` 注册：
 

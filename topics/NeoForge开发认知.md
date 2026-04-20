@@ -146,6 +146,29 @@ neoforge.mods.toml   →  运行时配置（依赖、显示名）
 
 ---
 
+## 实战经验（2026-04-20 更新）
+
+### 丛林神殿是 Legacy 结构
+
+> **踩坑经验**：丛林神殿（`jungle_temple`）和沙漠神殿（`desert_pyramid`）是硬编码 Java 逻辑，**不是 Jigsaw 结构**。
+> 无法通过 `data/minecraft/worldgen/processor_list/` JSON 覆盖注入方块。
+
+**Legacy 结构** → 必须使用 **Mixin** 拦截生成逻辑
+**Jigsaw 结构**（要塞、末地城、下界堡垒）→ 可使用 **StructureProcessor + processor_list**
+
+### StructureProcessor 正确注册（26.1）
+
+| 错误 | 正确 |
+|---|---|
+| `Registries.STRUCTURE_PROCESSOR_SERIALIZER` | `Registries.STRUCTURE_PROCESSOR` |
+| `processBlock(ServerLevelAccessor level, ...)` | `processBlock(LevelReader level, ...)` |
+| `SoundEvents.BRUSH_GENERIC_COMPLETED` | `SoundEvents.BRUSH_GRAVEL_COMPLETED` |
+| `registerBlock(name, fn, props)` 三参数 | `register(name, props -> new Block(...))` 双参数 |
+
+完整勘误见：`reference/neoForge/NeoForge-开发实践勘误.md`
+
+---
+
 ## 演进历史
 
 | 时间 | 变化 |
