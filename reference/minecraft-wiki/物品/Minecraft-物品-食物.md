@@ -48,6 +48,36 @@
 - **蛋糕 (Cake) 不是食物物品**：在代码层面，蛋糕是一个方块 (Block)，通过 `BlockBehaviour#useItemOn` 触发玩家右键食用逻辑，它**不具备**上述的 `FOOD` 或 `CONSUMABLE` 组件。开发类似机制时需注意区分“物品型食物”与“方块型食物”。
 - **狐狸的进食AI**：狐狸会自动拾取并食用带有 `FOOD` 组件的物品。如果你设计的食物具有负面或破坏性效果，请确保处理好非玩家实体（如狐狸）食用的边界情况。
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 注册食物物品 (Java)
+```java
+public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("modid");
+
+public static final DeferredItem<Item> CUSTOM_FOOD = ITEMS.register("custom_food",
+    () -> new Item(new Item.Properties()
+        .component(DataComponents.FOOD, new FoodProperties.Builder()
+            .nutrition(6) // 恢复 3 格饥饿值
+            .saturationModifier(0.8F) // 饱和度修饰符
+            .alwaysEdible() // 满饥饿值也可食用
+            .build()
+        )
+        .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_FOOD) // 1.21.2+ 必须添加以支持食用行为
+    )
+);
+```
+
+### 物品模型 (JSON)
+路径：`assets/modid/models/item/custom_food.json`
+```json
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "modid:item/custom_food"
+  }
+}
+```
+
 ---
 
 ## 原版 Wiki 快速索引 (Quick Reference)

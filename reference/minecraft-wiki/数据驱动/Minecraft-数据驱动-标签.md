@@ -67,6 +67,49 @@ NeoForge 提供了全面的 Datagen 支持生成标签：
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 1. 标签 Datagen (Java)
+```java
+public class MyBlockTagsProvider extends BlockTagsProvider {
+    public MyBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, MyMod.MODID, existingFileHelper);
+    }
+
+    @Override
+    protected void addTags(HolderLookup.Provider provider) {
+        // 创建自定义标签并添加元素
+        TagKey<Block> MY_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(MyMod.MODID, "my_blocks"));
+        
+        this.tag(MY_BLOCKS)
+            .add(MyBlocks.CUSTOM_BLOCK.get())
+            .addOptional(ResourceLocation.parse("othermod:other_block"));
+
+        // 将自定义标签加入原版标签（例如挖掘等级）
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+            .addTag(MY_BLOCKS);
+    }
+}
+```
+
+### 2. 标签定义 (JSON)
+`data/mymod/tags/block/my_blocks.json`
+```json
+{
+  "replace": false,
+  "values": [
+    "mymod:custom_block",
+    {
+      "id": "othermod:other_block",
+      "required": false
+    },
+    "#minecraft:stone_ore_replaceables"
+  ]
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 对于原版标签的目录结构、加载机制和详尽列表，请直接通过以下锚点跳转至 Wiki 原文查阅。

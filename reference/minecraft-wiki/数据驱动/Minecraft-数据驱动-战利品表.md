@@ -72,6 +72,58 @@ NeoForge 提供了强大的 Datagen API 用于生成战利品表 JSON：
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 1. 方块战利品表 Datagen (Java)
+```java
+public class MyBlockLoot extends BlockLootSubProvider {
+    public MyBlockLoot(HolderLookup.Provider provider) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+    }
+
+    @Override
+    protected void generate() {
+        // 普通掉落自身
+        this.dropSelf(MyBlocks.CUSTOM_BLOCK.get());
+        
+        // 矿石掉落（受时运影响）
+        this.add(MyBlocks.CUSTOM_ORE.get(), block -> 
+            this.createOreDrop(block, MyItems.RAW_CUSTOM.get()));
+    }
+
+    @Override
+    protected Iterable<Block> getKnownBlocks() {
+        return MyBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get)::iterator;
+    }
+}
+```
+
+### 2. 战利品表定义 (JSON)
+`data/mymod/loot_table/block/custom_block.json`
+```json
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mymod:custom_block"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 对于原版基础概念、具体条件和函数的详细列表，请直接通过以下锚点跳转至 Wiki 原文查阅。

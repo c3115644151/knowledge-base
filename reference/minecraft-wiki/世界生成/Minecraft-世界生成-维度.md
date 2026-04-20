@@ -49,6 +49,58 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+**数据包：自定义维度类型 (Dimension Type)**  
+路径：`data/mymod/dimension_type/my_dim_type.json`
+```json
+{
+  "ultrawarm": false,
+  "natural": true,
+  "coordinate_scale": 1.0,
+  "has_skylight": true,
+  "has_ceiling": false,
+  "ambient_light": 0.0,
+  "fixed_time": 6000,
+  "monster_spawn_light_level": 0,
+  "monster_spawn_block_light_limit": 0,
+  "piglin_safe": false,
+  "bed_works": true,
+  "respawn_anchor_works": false,
+  "has_raids": false,
+  "logical_height": 256,
+  "min_y": -64,
+  "height": 384,
+  "infiniburn": "#minecraft:infiniburn_overworld",
+  "effects": "minecraft:overworld"
+}
+```
+
+**代码：实体传送逻辑 (Entity Teleportation)**  
+```java
+// 在方块碰撞或交互事件中触发 (NeoForge 1.21+)
+if (level instanceof ServerLevel serverLevel) {
+    MinecraftServer server = serverLevel.getServer();
+    ResourceKey<Level> destKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath("mymod", "my_dim"));
+    ServerLevel destLevel = server.getLevel(destKey);
+    
+    if (destLevel != null && !entity.level().dimension().equals(destKey)) {
+        // 使用 1.21+ 引入的 DimensionTransition 配合 NeoForge ITeleporter
+        DimensionTransition transition = new DimensionTransition(
+            destLevel,
+            entity.position(),
+            entity.getDeltaMovement(),
+            entity.getYRot(),
+            entity.getXRot(),
+            DimensionTransition.DO_NOTHING
+        );
+        entity.changeDimension(transition);
+    }
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 ### 1. 原版维度列表

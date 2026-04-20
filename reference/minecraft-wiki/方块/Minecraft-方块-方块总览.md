@@ -45,6 +45,56 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 1. Java 注册 (NeoForge 1.21+)
+
+使用 `DeferredRegister.Blocks` 注册一个基础方块：
+
+```java
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+public class ModBlocks {
+    // 1. 创建方块的 DeferredRegister
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks("mymod");
+
+    // 2. 注册方块
+    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", 
+        () -> new Block(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.STONE)
+            .strength(3.0f, 3.0f)
+            .requiresCorrectToolForDrops())
+    );
+}
+```
+
+### 2. JSON 数据驱动 (Data-Driven)
+
+**方块状态 (`assets/mymod/blockstates/example_block.json`)**:
+```json
+{
+  "variants": {
+    "": { "model": "mymod:block/example_block" }
+  }
+}
+```
+
+**方块模型 (`assets/mymod/models/block/example_block.json`)**:
+```json
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "mymod:block/example_block"
+  }
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 对于原版基础概念、具体数值或冗长表格，请直接通过以下锚点跳转至 Wiki 原文查阅。

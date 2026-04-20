@@ -51,6 +51,31 @@
 - **ItemStack 可变性**：`ItemStack` 对象本身是可变的，但其内部的某些组件数据结构可能是不可变的（Immutable），修改时通常需要创建新的组件实例并覆盖。
 - **不要将状态存在 Item 类中**：`Item` 类是单例的，所有玩家共用一个实例。特定于某个物品栈的状态**必须**存储在 `ItemStack` 的数据组件中。
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 注册基础物品 (Java)
+```java
+public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("modid");
+
+public static final DeferredItem<Item> CUSTOM_ITEM = ITEMS.register("custom_item",
+    () -> new Item(new Item.Properties()
+        .stacksTo(16) // 最大堆叠数量
+        .component(DataComponents.MAX_DAMAGE, 100) // 直接添加数据组件
+    )
+);
+```
+
+### 物品模型 (JSON)
+路径：`assets/modid/models/item/custom_item.json`
+```json
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "modid:item/custom_item"
+  }
+}
+```
+
 ---
 
 ## 原版 Wiki 快速索引 (Quick Reference)

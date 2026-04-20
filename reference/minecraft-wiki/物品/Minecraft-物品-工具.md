@@ -46,6 +46,32 @@
 - **正确处理耐久消耗**：调用 `ItemStack#hurtAndBreak(int amount, ServerLevel level, ServerPlayer player, Consumer<Item> onBreak)`，它会自动处理耐久附魔（如耐久 III）并触发物品损坏动画。
 - **旧版 Tier 逻辑迁移**：在处理是否能挖掘某方块时，应使用 `ItemStack#isCorrectToolForDrops(BlockState)`，避免手动比较硬编码的 Tier 级别。
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 注册自定义工具 (Java)
+```java
+public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("modid");
+
+public static final DeferredItem<PickaxeItem> CUSTOM_PICKAXE = ITEMS.register("custom_pickaxe",
+    () -> new PickaxeItem(
+        Tiers.DIAMOND,
+        new Item.Properties()
+            .attributes(PickaxeItem.createAttributes(Tiers.DIAMOND, 1.0F, -2.8F))
+    )
+);
+```
+
+### 物品模型 (JSON)
+路径：`assets/modid/models/item/custom_pickaxe.json`
+```json
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "modid:item/custom_pickaxe"
+  }
+}
+```
+
 ---
 
 ## 原版 Wiki 快速索引 (Quick Reference)

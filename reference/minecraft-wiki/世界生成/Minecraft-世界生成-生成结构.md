@@ -46,6 +46,47 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+**数据包：自定义结构集 (Structure Set)**  
+路径：`data/mymod/worldgen/structure_set/my_structures.json`
+```json
+{
+  "structures": [
+    {
+      "structure": "mymod:my_house",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 8,
+    "salt": 12345678
+  }
+}
+```
+
+**数据包：结构定义 (Structure)**  
+路径：`data/mymod/worldgen/structure/my_house.json`
+```json
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#minecraft:has_structure/village_plains",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "start_pool": "mymod:my_house/start",
+  "size": 1,
+  "start_height": {
+    "absolute": 0
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "use_expansion_hack": false
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 ### 1. 主世界结构

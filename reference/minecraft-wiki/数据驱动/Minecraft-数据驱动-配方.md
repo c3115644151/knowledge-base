@@ -62,6 +62,60 @@ JSON 中的主要字段（以常见的 `minecraft:crafting_shaped` 为例）：
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+### 1. 配方 Datagen (Java)
+```java
+public class MyRecipeProvider extends RecipeProvider {
+    public MyRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider);
+    }
+
+    @Override
+    protected void buildRecipes(RecipeOutput output) {
+        // 有序合成 (Shaped)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MyItems.CUSTOM_ITEM.get())
+            .pattern("###")
+            .pattern(" # ")
+            .pattern(" # ")
+            .define('#', ItemTags.PLANKS)
+            .unlockedBy("has_planks", has(ItemTags.PLANKS))
+            .save(output);
+
+        // 无序合成 (Shapeless)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MyItems.CUSTOM_DUST.get(), 9)
+            .requires(MyBlocks.CUSTOM_BLOCK.get())
+            .unlockedBy("has_custom_block", has(MyBlocks.CUSTOM_BLOCK.get()))
+            .save(output);
+    }
+}
+```
+
+### 2. 配方定义 (JSON)
+`data/mymod/recipe/custom_item.json`
+```json
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "###",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "id": "mymod:custom_item"
+  }
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 对于原版支持的各种配方类型的具体 JSON 字段、合成结构和示例，请直接通过以下锚点跳转至 Wiki 原文查阅。

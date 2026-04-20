@@ -55,6 +55,34 @@
 - **掉落物数据化**：实体的掉落物完全由战利品表控制。路径位于 `data/<namespace>/loot_table/entity/<entity_name>.json`。
 - **实体碰撞箱问题**：改变实体的碰撞箱大小必须通过 `EntityType.Builder.sized`，并在必要时调用 `refreshDimensions()`，不要直接修改边界框变量。
 
+## 极简代码示例 (Minimal Code Examples)
+
+```java
+// 1. 注册生物属性 (NeoForge 1.21+ 必须在事件中注册)
+@SubscribeEvent
+public static void onAttributeCreate(EntityAttributeCreationEvent event) {
+    event.put(ModEntities.CUSTOM_MOB.get(), Mob.createMobAttributes()
+        .add(Attributes.MAX_HEALTH, 20.0D)
+        .add(Attributes.MOVEMENT_SPEED, 0.25D)
+        .add(Attributes.ATTACK_DAMAGE, 3.0D)
+        .build());
+}
+```
+
+```json
+// 2. 数据驱动的自然生成 (data/your_mod_id/neoforge/biome_modifier/spawn_custom_mob.json)
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#minecraft:is_forest",
+  "spawners": {
+    "type": "your_mod_id:custom_mob",
+    "weight": 50,
+    "minCount": 2,
+    "maxCount": 5
+  }
+}
+```
+
 ---
 
 ## 原版 Wiki 快速索引 (Quick Reference)

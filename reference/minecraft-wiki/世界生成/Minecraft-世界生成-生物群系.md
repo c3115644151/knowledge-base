@@ -49,6 +49,36 @@ NeoForge 提供了 `BiomeModifier` 系统，通过数据包非破坏性地向现
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+**数据包：NeoForge 生物群系修饰器 (添加矿石)**  
+路径：`data/mymod/neoforge/biome_modifier/add_my_ore.json`
+```json
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "mymod:my_ore_placed",
+  "step": "underground_ores"
+}
+```
+
+**数据包：NeoForge 生物群系修饰器 (添加生物生成)**  
+路径：`data/mymod/neoforge/biome_modifier/add_my_mob.json`
+```json
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "minecraft:plains",
+  "spawners": {
+    "type": "mymod:my_custom_entity",
+    "weight": 50,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}
+```
+
+---
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 ### 1. 生物群系种类与特征

@@ -46,6 +46,20 @@
 - **数据同步 (EntityDataAccessor)**：如果需要客户端知道实体的某些状态（用于渲染动画等），必须使用 `SynchedEntityData`。在 `defineSynchedData()` 中注册 `EntityDataAccessor`，并在状态改变时 `entityData.set(...)`。
 - **NBT 保存与读取**：重写 `addAdditionalSaveData(CompoundTag)` 和 `readAdditionalSaveData(CompoundTag)`，确保重启游戏后实体的状态（如变种颜色、冷却时间）不会丢失。
 
+## 极简代码示例 (Minimal Code Examples)
+
+```java
+// 1. 注册实体类型 (NeoForge 1.21+)
+public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, "your_mod_id");
+
+public static final DeferredHolder<EntityType<?>, EntityType<CustomEntity>> CUSTOM_ENTITY = ENTITIES.register("custom_entity",
+    () -> EntityType.Builder.<CustomEntity>of(CustomEntity::new, MobCategory.MISC)
+        .sized(0.5F, 0.5F) // 设置碰撞箱宽高
+        .clientTrackingRange(10) // 客户端追踪距离 (区块)
+        .updateInterval(20) // 追踪更新间隔 (Tick)
+        .build("custom_entity"));
+```
+
 ---
 
 ## 原版 Wiki 快速索引 (Quick Reference)
