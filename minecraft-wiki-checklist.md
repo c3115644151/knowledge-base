@@ -80,3 +80,56 @@
 - [x] [配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9) (Recipes)
   - **优先级**：高
   - **开发重点**：各类工作台配方JSON、自定义配方类型(`RecipeType`)。
+
+### 6. 客户端与资源 (Client & Resources)
+- [x] [粒子](https://zh.minecraft.wiki/w/%E7%B2%92%E5%AD%90) (Particles)
+  - **优先级**：高
+  - **开发重点**：粒子类型注册、客户端粒子渲染工厂(ParticleProvider)、自定义纹理。
+- [x] [声音](https://zh.minecraft.wiki/w/%E5%A3%B0%E9%9F%B3) (Sounds)
+  - **优先级**：中
+  - **开发重点**：SoundEvent注册、sounds.json配置、客户端播放逻辑。
+- [x] [模型](https://zh.minecraft.wiki/w/%E6%A8%A1%E5%9E%8B) (Models)
+  - **优先级**：极高
+  - **开发重点**：方块/物品模型JSON、自定义渲染(BlockEntityRenderer / EntityRenderer)、GeckoLib/NeoForge动态模型。
+
+### 7. 高级机制与数据 (Advanced Mechanics & Data)
+- [x] [进度](https://zh.minecraft.wiki/w/%E8%BF%9B%E5%BA%A6) (Advancements)
+  - **优先级**：高
+  - **开发重点**：数据驱动JSON配置、自定义触发器(CriterionTrigger)、Datagen生成。
+- [x] [属性](https://zh.minecraft.wiki/w/%E5%B1%9E%E6%80%A7) (Attributes)
+  - **优先级**：极高
+  - **开发重点**：实体属性注册、1.21数据组件(`DataComponents.ATTRIBUTE_MODIFIERS`)修饰。
+- [x] [命令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4) (Commands)
+  - **优先级**：中
+  - **开发重点**：Brigadier命令树、`RegisterCommandsEvent`、自定义参数类型。
+
+### 8. 方块实体与流体 (Block Entities & Fluids)
+- [x] [方块实体](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97%E5%AE%9E%E4%BD%93) (Block Entities)
+  - **优先级**：极高
+  - **开发重点**：注册、NBT数据保存/加载、服务端与客户端同步(`getUpdatePacket`)、Tick更新逻辑。
+- [x] [流体](https://zh.minecraft.wiki/w/%E6%B5%81%E4%BD%93) (Fluids)
+  - **优先级**：中
+  - **开发重点**：流体类型(`FluidType`)、流体方块、桶物品注册、流体渲染。
+
+### 9. 额外核心组件 (Additional Core Components)
+- [x] [盔甲](https://zh.minecraft.wiki/w/%E7%9B%94%E7%94%B2) (Armor)
+  - **优先级**：极高
+  - **开发重点**：盔甲材质层(`ArmorMaterial`)、`DataComponents.ARMOR`、韧性与击退抗性。
+- [x] [弹射物](https://zh.minecraft.wiki/w/%E5%BC%B9%E5%B0%84%E7%89%A9) (Projectiles)
+  - **优先级**：高
+  - **开发重点**：`Projectile`实体注册、`onHit`碰撞逻辑、投掷物渲染器。
+- [x] [矿车](https://zh.minecraft.wiki/w/%E7%9F%BF%E8%BD%A6) (Minecarts)
+  - **优先级**：中
+  - **开发重点**：`AbstractMinecart`继承、轨道移动拦截、实体乘坐机制。
+- [x] [船](https://zh.minecraft.wiki/w/%E8%88%B9) (Boats)
+  - **优先级**：中
+  - **开发重点**：水上移动逻辑、船只类型(`Boat.Type`)注册。
+- [x] [创造模式物品栏](https://zh.minecraft.wiki/w/%E5%88%9B%E9%80%A0%E6%A8%A1%E5%BC%8F%E7%89%A9%E5%93%81%E6%A0%8F) (Creative Inventory)
+  - **优先级**：极高
+  - **开发重点**：`CreativeModeTabRegister`注册、通过`BuildCreativeModeTabContentsEvent`注入物品、排序与图标。
+- [x] [统计信息](https://zh.minecraft.wiki/w/%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF) (Statistics)
+  - **优先级**：中
+  - **开发重点**：自定义统计注册(`StatType`)、进度与成就关联。
+- [x] [记分板](https://zh.minecraft.wiki/w/%E8%AE%B0%E5%88%86%E6%9D%BF) (Scoreboard)
+  - **优先级**：高
+  - **开发重点**：目标注册、记分板事件拦截、HUD渲染对接。

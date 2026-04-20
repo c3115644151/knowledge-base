@@ -1,86 +1,63 @@
-# Minecraft Wiki 本地化知识库
+# Minecraft Wiki 本地化知识库总目录
 
-> 基于中文 Minecraft Wiki (https://zh.minecraft.wiki/) 的本地化参考文档，面向 NeoForge 模组开发：高权重内容优先展开，低权重内容提供精确到章节锚点的索引入口。
+> **构建日期**：2026-04-20
+> **适用环境**：Java 版 1.21+ / NeoForge 26.1+
+> **核心用途**：专为 AI 驱动的 Minecraft 模组开发设计的本地化知识索引。包含高度压缩的原版机制解析、NeoForge 1.21+ 极简代码模板，以及原版 Wiki 的 H2/H3/H4 详尽锚点。
 
-## 文档统计
+## 目录结构
 
-| 分类 | 数量 |
-|------|------|
-| 机制 | 6 |
-| 数据驱动 | 3 |
-| 世界生成 | 3 |
-| 方块 | 1 |
-| 物品 | 3 |
-| 实体 | 2 |
-| **总计** | **18** |
+### 1. 基础机制 (Mechanics)
+- [附魔 (Enchanting)](机制/Minecraft-机制-附魔.md)
+- [状态效果 (Status Effects)](机制/Minecraft-机制-状态效果.md)
+- [交易 (Trading)](机制/Minecraft-机制-交易.md)
+- [酿造 (Brewing)](机制/Minecraft-机制-酿造.md)
+- [伤害 (Damage)](机制/Minecraft-机制-伤害.md)
+- [红石电路 (Redstone)](机制/Minecraft-机制-红石电路.md)
 
-## 机制
+### 2. 世界生成 (World Generation)
+- [生物群系 (Biomes)](世界生成/Minecraft-世界生成-生物群系.md)
+- [生成结构 (Structures)](世界生成/Minecraft-世界生成-生成结构.md)
+- [维度 (Dimensions)](世界生成/Minecraft-世界生成-维度.md)
 
-| 文档 | 说明 |
-|------|------|
-| [Minecraft-机制-附魔.md](机制/Minecraft-机制-附魔.md) | 附魔与魔咒：数据驱动、数据组件迁移、事件干预入口 |
-| [Minecraft-机制-状态效果.md](机制/Minecraft-机制-状态效果.md) | 状态效果：注册、实例、叠加规则、tick 与事件入口 |
-| [Minecraft-机制-伤害.md](机制/Minecraft-机制-伤害.md) | 伤害：damage_type 数据驱动、标签、伤害来源与拦截点 |
-| [Minecraft-机制-交易.md](机制/Minecraft-机制-交易.md) | 交易：村民/流浪商人交易池、声望/需求、注入与平衡 |
-| [Minecraft-机制-酿造.md](机制/Minecraft-机制-酿造.md) | 酿造：药水链路、配方注入、与状态效果联动 |
-| [Minecraft-机制-红石电路.md](机制/Minecraft-机制-红石电路.md) | 红石电路：信号接口、更新传播、比较器/脉冲相关 |
+### 3. 方块与物品 (Blocks & Items)
+- [方块总览 (Blocks)](方块/Minecraft-方块-方块总览.md)
+- [物品总览 (Items)](物品/Minecraft-物品-物品总览.md)
+- [工具 (Tools)](物品/Minecraft-物品-工具.md)
+- [食物 (Food)](物品/Minecraft-物品-食物.md)
 
-## 数据驱动
+### 4. 实体与生物 (Entities & Mobs)
+- [实体总览 (Entities)](实体/Minecraft-实体-实体总览.md)
+- [生物总览 (Mobs)](实体/Minecraft-实体-生物总览.md)
 
-| 文档 | 说明 |
-|------|------|
-| [Minecraft-数据驱动-战利品表.md](数据驱动/Minecraft-数据驱动-战利品表.md) | Loot Tables：JSON 结构、DataGen、全局战利品修改器 |
-| [Minecraft-数据驱动-标签.md](数据驱动/Minecraft-数据驱动-标签.md) | Tags：TagKey、JSON 合并/替换、DataGen、跨模组兼容 |
-| [Minecraft-数据驱动-配方.md](数据驱动/Minecraft-数据驱动-配方.md) | Recipes：配方类型/序列化器、Builder、组件化输出 |
+### 5. 数据驱动机制 (Data-Driven)
+- [战利品表 (Loot Tables)](数据驱动/Minecraft-数据驱动-战利品表.md)
+- [标签 (Tags)](数据驱动/Minecraft-数据驱动-标签.md)
+- [配方 (Recipes)](数据驱动/Minecraft-数据驱动-配方.md)
 
-## 世界生成
+### 6. 客户端与资源 (Client & Resources)
+- [粒子 (Particles)](客户端与资源/Minecraft-客户端-粒子.md)
+- [声音 (Sounds)](客户端与资源/Minecraft-客户端-声音.md)
+- [模型 (Models)](客户端与资源/Minecraft-客户端-模型.md)
 
-| 文档 | 说明 |
-|------|------|
-| [Minecraft-世界生成-生物群系.md](世界生成/Minecraft-世界生成-生物群系.md) | Biomes：worldgen/biome、BiomeModifier、气候与着色 |
-| [Minecraft-世界生成-生成结构.md](世界生成/Minecraft-世界生成-生成结构.md) | Structures：structure_set/structure/template_pool、拼图系统、StructureModifier |
-| [Minecraft-世界生成-维度.md](世界生成/Minecraft-世界生成-维度.md) | Dimensions：dimension_type + dimension、噪声生成、传送入口 |
+### 7. 高级机制与数据 (Advanced Mechanics & Data)
+- [进度 (Advancements)](高级机制与数据/Minecraft-数据-进度.md)
+- [属性 (Attributes)](高级机制与数据/Minecraft-数据-属性.md)
+- [命令 (Commands)](高级机制与数据/Minecraft-机制-命令.md)
 
-## 方块
+### 8. 方块实体与流体 (Block Entities & Fluids)
+- [方块实体 (Block Entities)](方块实体与流体/Minecraft-方块-方块实体.md)
+- [流体 (Fluids)](方块实体与流体/Minecraft-方块-流体.md)
 
-| 文档 | 说明 |
-|------|------|
-| [Minecraft-方块-方块总览.md](方块/Minecraft-方块-方块总览.md) | Blocks：注册、BlockState、模型/掉落/标签数据驱动 |
+### 9. 额外核心组件 (Additional Core Components)
+- [盔甲 (Armor)](额外核心组件/Minecraft-额外-盔甲.md)
+- [弹射物 (Projectiles)](额外核心组件/Minecraft-额外-弹射物.md)
+- [矿车 (Minecarts)](额外核心组件/Minecraft-额外-矿车.md)
+- [船 (Boats)](额外核心组件/Minecraft-额外-船.md)
+- [创造模式物品栏 (Creative Inventory)](额外核心组件/Minecraft-额外-创造模式物品栏.md)
+- [统计信息 (Statistics)](额外核心组件/Minecraft-额外-统计信息.md)
+- [记分板 (Scoreboard)](额外核心组件/Minecraft-额外-记分板.md)
 
-## 物品
+---
 
-| 文档 | 说明 |
-|------|------|
-| [Minecraft-物品-物品总览.md](物品/Minecraft-物品-物品总览.md) | Items：1.21 数据组件体系、交互入口、创造标签页 |
-| [Minecraft-物品-工具.md](物品/Minecraft-物品-工具.md) | Tools：Tool 组件、挖掘标签、Tier 与工具行为 |
-| [Minecraft-物品-食物.md](物品/Minecraft-物品-食物.md) | Food：Food/Consumable 组件、食用行为与事件入口 |
-
-## 实体
-
-| 文档 | 说明 |
-|------|------|
-| [Minecraft-实体-实体总览.md](实体/Minecraft-实体-实体总览.md) | Entities：注册、同步数据、属性与渲染绑定 |
-| [Minecraft-实体-生物总览.md](实体/Minecraft-实体-生物总览.md) | Mobs：AI Goals、生成、属性初始化与 BiomeModifier |
-
-## 关键词映射
-
-| 关键词 | 文档路径 |
-|--------|---------|
-| enchantment / 附魔 | 机制/Minecraft-机制-附魔.md |
-| mob effect / 状态效果 | 机制/Minecraft-机制-状态效果.md |
-| damage_type / 伤害类型 | 机制/Minecraft-机制-伤害.md |
-| trading / 交易 | 机制/Minecraft-机制-交易.md |
-| brewing / 酿造 | 机制/Minecraft-机制-酿造.md |
-| redstone / 红石 | 机制/Minecraft-机制-红石电路.md |
-| loot table / 战利品表 | 数据驱动/Minecraft-数据驱动-战利品表.md |
-| tags / 标签 | 数据驱动/Minecraft-数据驱动-标签.md |
-| recipes / 配方 | 数据驱动/Minecraft-数据驱动-配方.md |
-| biome / 生物群系 | 世界生成/Minecraft-世界生成-生物群系.md |
-| structures / 生成结构 | 世界生成/Minecraft-世界生成-生成结构.md |
-| dimension / 维度 | 世界生成/Minecraft-世界生成-维度.md |
-| block / 方块 | 方块/Minecraft-方块-方块总览.md |
-| item / 物品 | 物品/Minecraft-物品-物品总览.md |
-| tool / 工具 | 物品/Minecraft-物品-工具.md |
-| food / 食物 | 物品/Minecraft-物品-食物.md |
-| entity / 实体 | 实体/Minecraft-实体-实体总览.md |
-| mob / 生物 | 实体/Minecraft-实体-生物总览.md |
+**使用指南 (For AI Agents)**: 
+当用户需要查询特定机制的开发逻辑时，请首先进入对应的分类文件读取 `## 模组开发核心要点 (Modding Priorities)` 和 `## 极简代码示例 (Minimal Code Examples)`。如需查阅原版详细设定（如交易概率、战利品权重等），请使用文件底部的锚点直接访问在线 Wiki。
