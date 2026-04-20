@@ -55,6 +55,42 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+1.21+ 中，魔咒已完全数据驱动化，通过 JSON 在数据包中定义。
+
+**文件路径**: `data/<modid>/enchantment/custom_smite.json`
+```json
+{
+  "description": {
+    "translate": "enchantment.yourmodid.custom_smite"
+  },
+  "supported_items": "#minecraft:enchantable/weapon",
+  "primary_items": "#minecraft:enchantable/weapon",
+  "weight": 5,
+  "max_level": 5,
+  "min_cost": { "base": 5, "per_level_above_first": 8 },
+  "max_cost": { "base": 25, "per_level_above_first": 8 },
+  "anvil_cost": 4,
+  "slots": [ "mainhand" ],
+  "effects": {
+    "minecraft:damage": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": { "type": "minecraft:linear", "base": 2.5, "per_level_above_first": 2.5 }
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": { "type": "#minecraft:undead" }
+        }
+      }
+    ]
+  }
+}
+```
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 对于原版基础概念、具体数值或冗长表格，请直接通过以下锚点跳转至 Wiki 原文查阅。

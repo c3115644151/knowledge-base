@@ -50,6 +50,34 @@ Wiki 中红石的大量内容属于“电路学”。模组实现层面更重要
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+```java
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class CustomRedstoneBlock extends Block {
+    public CustomRedstoneBlock(Properties properties) {
+        super(properties);
+    }
+
+    // 1. 声明该方块可作为红石信号源
+    @Override
+    public boolean isSignalSource(BlockState state) {
+        return true;
+    }
+
+    // 2. 提供弱红石信号强度 (0-15)
+    @Override
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 15; // 持续输出满级红石信号
+    }
+}
+```
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 红石条目极长，本地不复述，保留精确锚点入口。

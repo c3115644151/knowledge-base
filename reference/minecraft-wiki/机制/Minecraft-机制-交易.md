@@ -42,6 +42,32 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+```java
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.BasicItemListing;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent;
+
+// 监听 NeoForge 总线事件
+@SubscribeEvent
+public static void onVillagerTrades(VillagerTradesEvent event) {
+    if (event.getType() == VillagerProfession.CLERIC) {
+        // 在牧师等级 1 时添加交易：1 个绿宝石换 2 个红石
+        event.getTrades().get(1).add(new BasicItemListing(
+            new ItemStack(Items.EMERALD, 1), // 输入
+            new ItemStack(Items.REDSTONE, 2), // 输出
+            16, // 最大交易次数
+            2,  // 给予村民的经验值
+            0.05f // 价格乘数
+        ));
+    }
+}
+```
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 ### 机制与规则

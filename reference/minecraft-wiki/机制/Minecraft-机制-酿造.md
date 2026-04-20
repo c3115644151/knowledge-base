@@ -47,6 +47,30 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+```java
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+
+// 监听 Mod 总线事件
+@SubscribeEvent
+public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+    PotionBrewing.Builder builder = event.getBuilder();
+    
+    // 粗制药水 + 绿宝石 = 幸运药水
+    // 参数：输入药水，催化剂物品，输出药水
+    builder.addMix(
+        Potions.AWKWARD, 
+        Items.EMERALD, 
+        Potions.LUCK
+    );
+}
+```
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 ### 酿造流程与设备

@@ -50,6 +50,36 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+```java
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+public class ModEffects {
+    public static final DeferredRegister<MobEffect> EFFECTS = 
+        DeferredRegister.create(Registries.MOB_EFFECT, "yourmodid");
+
+    // 注册一个简单的治疗增益效果
+    public static final java.util.function.Supplier<MobEffect> CUSTOM_HEAL = EFFECTS.register("custom_heal", 
+        () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0xFFD700) { // 类别与粒子颜色
+            @Override
+            public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+                entity.heal(1.0F); // 触发时恢复 1 点生命
+                return true;
+            }
+
+            @Override
+            public boolean shouldApplyEffectTick(int duration, int amplifier) {
+                return duration % 20 == 0; // 每秒 (20 tick) 触发一次
+            }
+        });
+}
+```
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 低优先级内容不在本地展开，直接给出可精确跳转的 Wiki 章节锚点。

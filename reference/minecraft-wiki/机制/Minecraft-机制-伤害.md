@@ -63,6 +63,43 @@
 
 ---
 
+## 极简代码示例 (Minimal Code Examples)
+
+**1. 注册伤害类型 (JSON: `data/<modid>/damage_type/custom_damage.json`)**
+```json
+{
+  "message_id": "yourmodid.custom_damage",
+  "exhaustion": 0.1,
+  "scaling": "always"
+}
+```
+
+**2. 触发与拦截伤害 (Java)**
+```java
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+
+// 造成自定义伤害
+public static void dealCustomDamage(Entity target) {
+    var registry = target.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
+    var key = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath("yourmodid", "custom_damage"));
+    target.hurt(new DamageSource(registry.getHolderOrThrow(key)), 5.0f);
+}
+
+// 拦截并修改伤害 (NeoForge 总线)
+@SubscribeEvent
+public static void onLivingDamage(LivingDamageEvent.Pre event) {
+    if (event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FIRE)) {
+        event.setNewDamage(event.getNewDamage() * 0.5f); // 火焰伤害减半
+    }
+}
+```
+
 ## 原版 Wiki 快速索引 (Quick Reference)
 
 ### 机制与总体规则
