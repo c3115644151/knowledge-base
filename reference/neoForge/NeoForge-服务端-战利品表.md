@@ -353,3 +353,141 @@ for (ItemStack drop : drops) {
 - 方块：[NeoForge-方块](./NeoForge-方块.md)
 - 实体：[NeoForge-实体](./NeoForge-实体.md)
 - 数据生成：[NeoForge-服务端-数据生成](./NeoForge-服务端-数据生成.md)
+
+
+---
+
+## 🔄 26.1 版本重大变化
+
+> **重要**：26.1 对战利品系统进行了重大重构，详见 [NeoForge-迁移-1.21.11到26.1.md](./NeoForge-迁移-1.21.11到26.1.md)
+
+### Loot Type Unrolling
+
+**核心变化**：战利品相关类型不再使用包装对象，注册表直接持有 `MapCodec`。
+
+#### 注册表变化
+
+| 注册表键 | 1.21.11 | 26.1 |
+|----------|---------|------|
+| `LOOT_POOL_ENTRY_TYPE` | `LootPoolEntryType` | `MapCodec<LootPoolEntryContainer>` |
+| `LOOT_FUNCTION_TYPE` | `LootItemFunctionType` | `MapCodec<LootItemFunction>` |
+| `LOOT_CONDITION_TYPE` | `LootItemConditionType` | `MapCodec<LootItemCondition>` |
+| `LOOT_NUMBER_PROVIDER_TYPE` | `LootNumberProviderType` | `MapCodec<NumberProvider>` |
+| `LOOT_NBT_PROVIDER_TYPE` | `LootNbtProviderType` | `MapCodec<NbtProvider>` |
+| `LOOT_SCORE_PROVIDER_TYPE` | `LootScoreProviderType` | `MapCodec<ScoreboardNameProvider>` |
+
+#### 自定义 LootItemFunction 迁移
+
+**1.21.11 写法**：
+```java
+public class CustomFunction implements LootItemFunction {
+    public static final LootItemFunctionType TYPE = 
+        new LootItemFunctionType(CustomFunction.CODEC);
+    
+    @Override
+    public LootItemFunctionType getType() {
+        return TYPE;
+    }
+}
+
+// 注册
+Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, 
+    ResourceLocation.parse("examplemod:custom"), CustomFunction.TYPE);
+```
+
+**26.1 写法**：
+```java
+public record CustomFunction(/* 参数 */) implements LootItemFunction {
+    public static final MapCodec<CustomFunction> MAP_CODEC = 
+        RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                // 参数 codec
+            ).apply(instance, CustomFunction::new)
+        );
+    
+    @Override
+    public MapCodec<CustomFunction> codec() {
+        return MAP_CODEC;
+    }
+}
+
+// 注册
+Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE,
+    Identifier.fromNamespaceAndPath("examplemod", "custom"), 
+    CustomFunction.MAP_CODEC);
+```
+
+#### 自定义 LootItemCondition 迁移
+
+**1.21.11 写法**：
+```java
+public class CustomCondition implements LootItemCondition {
+    public static final LootItemConditionType TYPE = 
+        new LootItemConditionType(CustomCondition.CODEC);
+    
+    @Override
+    public LootItemConditionType getType() {
+        return TYPE;
+    }
+}
+```
+
+**26.1 写法**：
+```java
+public record CustomCondition(/* 参数 */) implements LootItemCondition {
+    public static final MapCodec<CustomCondition> MAP_CODEC = 
+        RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                // 参数 codec
+            ).apply(instance, CustomCondition::new)
+        );
+    
+    @Override
+    public MapCodec<CustomCondition> codec() {
+        return MAP_CODEC;
+    }
+}
+```
+
+#### 字段重命名
+
+- `CODEC` → `MAP_CODEC`
+- `getType()` → `codec()`
+
+### Validation Overhaul
+
+战利品对象现在需要实现 `Validatable` 接口：
+
+```java
+public class CustomLootObject implements Validatable {
+    @Override
+    public void validate(ValidationContext ctx) {
+        // 验证逻辑
+        if (someCondition) {
+            ctx.reportProblem(() -> "问题描述");
+        }
+    }
+}
+```
+
+### 受影响的类
+
+| 类 | 变化 |
+|----|------|
+| `LootTable` | 实现 `Validatable` |
+| `LootPool` | 实现 `Validatable` |
+| `LootPoolEntryContainer` | 实现 `Validatable` |
+| `LootContextUser` | 实现 `Validatable` |
+| `NumberProvider` | `getType()` → `codec()` |
+| `NbtProvider` | 实现 `LootContextUser`，`getType()` → `codec()` |
+
+---
+
+## 迁移检查清单
+
+- [ ] 所有自定义 `LootItemFunction` 迁移到 MapCodec
+- [ ] 所有自定义 `LootItemCondition` 迁移到 MapCodec
+- [ ] 所有自定义 `LootPoolEntryContainer` 迁移到 MapCodec
+- [ ] 将 `getType()` 改为 `codec()`
+- [ ] 将 `CODEC` 字段改为 `MAP_CODEC`
+- [ ] 为自定义 Loot 对象实现 `Validatable`（如需要）

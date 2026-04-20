@@ -179,3 +179,49 @@
 - reference/hermes/：72 个文档
 - topics/：1 个（NeoForge开发认知）+ 5 个读书笔记
 - raw/：3 个文件（stock-basics.md + 2 本原著原文）
+
+
+## [2026-04-20 19:25] update | NeoForge入门文档版本同步
+
+同步官方文档更新（Version 26.1），标注版本差异：
+- **Java 版本变化**：21 → 25（需升级 JDK）
+- **Gradle 插件新增选择**：ModDevGradle / NeoGradle（新项目推荐 ModDevGradle）
+- **run 目录路径变化**：`run/` → `runs/client`、`runs/server`
+- 新增「版本迁移速查表」便于跨版本迁移
+- 新增版本对照表标注差异项
+- 来源：官方文档 https://docs.neoforged.net/docs/gettingstarted/
+
+---
+
+## [2026-04-20 19:45] major update | NeoForge 26.1 完整文档同步
+
+**新增文档**：
+- `NeoForge-迁移-1.21.11到26.1.md` - 完整迁移指南，包含：
+  - Java 25 升级说明
+  - 反混淆变化
+  - Loot Type Unrolling 详细迁移代码示例
+  - Validation Overhaul 变化
+  - Datapack Villager Trades 完整格式说明
+  - 迁移检查清单
+
+- `NeoForge-工具链-ModDevGradle.md` - 新一代 Gradle 插件文档，包含：
+  - 基本配置
+  - 运行配置详解
+  - Vanilla 模式（多加载器项目）
+  - 禁用反编译/重编译
+  - Jar-in-Jar 配置
+  - 单元测试集成
+  - Parchment 映射配置
+  - Access Transformers 配置
+  - Interface Injection 配置
+  - 常见问题解决
+
+**更新文档**：
+- `NeoForge-服务端-战利品表.md` - 追加26.1变化章节：
+  - Loot Type Unrolling 迁移示例
+  - Validation Overhaul 说明
+  - 迁移检查清单
+
+**来源**：
+- 官方 Primer: https://docs.neoforged.net/primer/docs/26.1/
+- 官方 ModDevGradle: https://docs.neoforged.net/toolchain/docs/plugins/mdg/
