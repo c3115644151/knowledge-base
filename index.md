@@ -201,6 +201,12 @@
 - `hermes-工具集参考` - 工具集配置与管理
 - `hermes-环境变量` - 所有环境变量说明
 
+### minecraft-wiki/ - Minecraft Wiki 本地化参考
+
+面向 NeoForge 模组开发的 Minecraft 原版机制/索引本地化文档：高权重开发内容优先展开，低权重内容提供精确到章节锚点的 Wiki 索引入口。
+
+入口索引：`reference/minecraft-wiki/index.md`
+
 ---
 
 ## raw/ - 原料知识

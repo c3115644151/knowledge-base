@@ -21,19 +21,19 @@
 - [x] [附魔](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94) (Enchanting)
   - **优先级**：高
   - **开发重点**：1.21数据驱动JSON格式、数据组件(`DataComponents.ENCHANTMENTS`)迁移、事件拦截(`LivingDamageEvent`)。
-- [ ] [状态效果](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C) (Status Effects)
+- [x] [状态效果](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C) (Status Effects)
   - **优先级**：高
   - **开发重点**：注册(`MobEffect`)、实例创建(`MobEffectInstance`)、每Tick更新逻辑(`applyEffectTick`)。
-- [ ] [交易](https://zh.minecraft.wiki/w/%E4%BA%A4%E6%98%93) (Trading)
+- [x] [交易](https://zh.minecraft.wiki/w/%E4%BA%A4%E6%98%93) (Trading)
   - **优先级**：中
   - **开发重点**：村民职业注册、自定义交易项注入(`VillagerTradesEvent`)、经验与等级关系。
-- [ ] [酿造](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0) (Brewing)
+- [x] [酿造](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0) (Brewing)
   - **优先级**：中
   - **开发重点**：药水注册(`Potion`)、酿造配方添加(`BrewingRecipeRegistry`)。
-- [ ] [伤害类型](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3) (Damage)
+- [x] [伤害类型](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3) (Damage)
   - **优先级**：极高
   - **开发重点**：数据驱动伤害类型JSON配置、伤害源(`DamageSource`)获取与判定、伤害标签(`damage_type` tags)。
-- [ ] [红石电路](https://zh.minecraft.wiki/w/%E7%BA%A2%E7%9F%B3%E7%94%B5%E8%B7%AF) (Redstone)
+- [x] [红石电路](https://zh.minecraft.wiki/w/%E7%BA%A2%E7%9F%B3%E7%94%B5%E8%B7%AF) (Redstone)
   - **优先级**：中
   - **开发重点**：方块红石充能判定(`isSignalSource`, `getSignal`)、方块更新机制。
 
