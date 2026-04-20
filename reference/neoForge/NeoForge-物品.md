@@ -21,12 +21,24 @@ public static final DeferredItem<Item> SIMPLE_ITEM =
     ITEMS.registerSimpleItem("simple_item");
 
 // 4. 注册方块物品（自动创建BlockItem）
-public static final DeferredItem<BlockItem> BLOCK_ITEM = 
+public static final DeferredItem<BlockItem> BLOCK_ITEM =
     ITEMS.registerSimpleBlockItem(
-        "example_block", 
+        "example_block",
         ModBlocks.EXAMPLE_BLOCK
     );
 ```
+
+⚠️ **Item.Properties 必须设置 ID（26.1 新增）**：
+
+```java
+// 正确：工厂函数接收 id 参数
+public static final DeferredItem<Item> MY_ITEM = ITEMS.register(
+    "my_item",
+    id -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id)))
+);
+```
+
+错误：`new Item.Properties())` 不设置 ID → 运行时报 "Item id not set" NPE。
 
 ### Item.Properties 常用方法
 

@@ -37,7 +37,7 @@
 - `概念` - 注册表、事件系统、物理端/逻辑端
 
 #### 方块
-- `方块` - 方块注册、自定义方块
+- `方块` - 方块注册、自定义方块、**BrushableBlock 考古方块**
 - `方块-状态` - Blockstates 方块状态系统
 
 #### 物品
@@ -94,8 +94,11 @@
 #### 世界生成
 - `世界生成-地物` - Features 地物
 - `世界生成-生物群系修改器` - Biome Modifiers
-- `世界生成-结构` - Structures
+- `世界生成-结构` - Structures（含 StructureProcessor）
 - `世界生成-维度` - Dimensions
+
+#### 实战经验
+- `开发实践勘误` - ⚠️ **必读**：26.1 版本实际卡点与 API 修正（2026-04-20）
 
 #### 渲染
 - `渲染-特性` - Rendering Features
