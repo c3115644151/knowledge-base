@@ -1,49 +1,91 @@
-# 魔咒 (Enchanting)
+# Minecraft 机制：附魔 (Enchantment)
 
-> **来源**：[Minecraft Wiki - 魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94)
-
-**魔咒（Enchantment）** 是适用于物品的额外效果，能够为物品提供多种功能。具有魔咒的物品被称为**附魔物品（Enchanted Item）**。
-
-## 1. 机制 (Mechanics)
-魔咒是普适于所有物品的机制，存储在物品的物品数据中。
-常见的可附魔物品包括盔甲、工具、武器；附魔书、磁石指针等其他物品也可以获得一些魔咒。
-
-### 魔咒属性
-- **适用物品**：限定了哪些物品可被添加上该魔咒。
-- **可附魔物品**：限定了在“附魔”情境下所被附加到的载体。
-- **不共存魔咒**：某些魔咒不能与特定的其他魔咒同时存在于同一物品上（例如“精准采集”与“时运”）。
-- **最大等级**：魔咒的等级上限（如锋利最大为V级）。
-- **出现条件**：
-  - **宝藏魔咒**：无法通过附魔台获得（如经验修补、冰霜行者）。只能通过战利品、交易或钓鱼获取。
-  - **诅咒**：带有负面效果，通常无法通过常规手段移除（如绑定诅咒、消失诅咒）。
-
-### 附魔书
-专门用于存储魔咒的物品。所有魔咒都可以被添加到附魔书上。
-主要用途是在**铁砧**上作为牺牲物品来为目标物品添加魔咒。
-
-## 2. 获取附魔物品
-
-### 自然生成
-- **战利品箱**：如废弃矿井、末地城、远古城市等结构中的箱子。
-- **村民交易**：图书管理员售卖附魔书，盔甲匠/武器匠等售卖附魔装备。
-- **生物掉落**：带有天然附魔装备的僵尸、骷髅等被击杀后概率掉落。
-- **钓鱼**：概率获得附魔书或附魔钓鱼竿、弓。
-
-### 附魔台 (Enchanting Table)
-通过消耗**青金石**和**经验等级**，为没有魔咒的物品添加魔咒。
-- 附魔台周围的书架可以提高提供的魔咒等级和质量。
-- 无法获得宝藏型魔咒。
-
-### 铁砧 (Anvil)
-消耗经验等级，将牺牲物品（相同物品或附魔书）的魔咒合并到目标物品上。
-- 受到累积惩罚限制（生存模式下经验花费上限为40级）。
-
-## 3. 移除物品魔咒
-- **砂轮 (Grindstone)**：可移除物品上的所有非诅咒魔咒，并返还一定经验值。
-- **工作台合成**：合并两个受损物品会清除其非诅咒魔咒。
-
-## 4. 数据驱动 (Data-Driven)
-*(注：对于 NeoForge 模组开发，可以通过数据包/代码注册自定义魔咒，定义其适用物品、最大等级、是否为宝藏/诅咒魔咒等属性。)*
+> **Wiki 源地址**：[https://zh.minecraft.wiki/w/附魔](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94)  
+> **适用版本**：Java 版 1.21+ / NeoForge 26.1+  
+> **本地更新时间**：2026-04-20  
 
 ---
-*注：由于官方Wiki魔咒列表过长，具体所有魔咒的ID和效果建议直接参考对应的数据字典或游戏内注册表。*
+
+## 🛠️ 模组开发核心要点 (Modding Priorities)
+
+在 NeoForge 开发中，附魔（魔咒）已高度**数据驱动化 (Data-Driven)**。魔咒不再是硬编码的类，而是由数据包 (Datapack) 中的 JSON 文件定义，并由注册表管理。
+
+### 1. 注册表与标识符
+- **注册表名称**：`minecraft:enchantment` (在 NeoForge 中通常通过 `Registries.ENCHANTMENT` 访问)
+- **命名空间**：原版魔咒的 ResourceLocation 均为 `minecraft:<enchantment_name>`（例如 `minecraft:sharpness`）。
+- **组件存储 (1.21+)**：物品上的魔咒现在存储在**数据组件 (Data Components)** 中，而不是传统的 NBT `Enchantments` 标签。
+  - 关键组件类型：`DataComponents.ENCHANTMENTS` 和 `DataComponents.STORED_ENCHANTMENTS`（仅附魔书）。
+
+### 2. 数据驱动的魔咒定义 (JSON 结构)
+魔咒的属性完全由 JSON 文件定义，存放在数据包的 `data/<namespace>/enchantment/` 目录下。一个典型的魔咒 JSON 包含以下关键字段：
+- `description`: 魔咒名称的翻译键（如 `enchantment.minecraft.sharpness`）。
+- `supported_items`: 一个**物品标签 (Item Tag)**（如 `#minecraft:enchantable/weapon`），定义哪些物品可以接受此魔咒。
+- `primary_items`: 一个物品标签，定义附魔台主要为哪些物品提供此魔咒。
+- `weight`: 附魔台选中该魔咒的权重（整数）。
+- `max_level`: 最大等级。
+- `min_cost` & `max_cost`: 基于附魔等级的最小/最大消耗计算公式。
+- `anvil_cost`: 铁砧合并成本乘数。
+- `slots`: 装备槽位（如 `mainhand`, `head`, `chest` 等），定义魔咒在哪些槽位生效。
+- `effects`: **核心扩展点**。通过组件系统 (Component System) 定义魔咒的实际效果（如增加伤害、属性修饰、战利品修改等）。
+
+### 3. 常见开发与交互场景
+- **为物品添加魔咒**：
+  - 代码层面：使用 `ItemStack.enchant(Enchantment, level)`（注意：在 1.21+ 中，需要获取魔咒的 `Holder<Enchantment>` 或 `ResourceKey<Enchantment>`，通常通过 `RegistryAccess` 或动态注册表获取）。
+  - 数据层面：在战利品表 (Loot Tables) 中使用 `minecraft:enchant_randomly` 或 `minecraft:enchant_with_levels` 函数。
+- **自定义魔咒效果**：
+  - 简单效果：利用原版提供的 `effects` 组件（如 `minecraft:damage` 增加伤害，`minecraft:attributes` 修改实体属性）。
+  - 复杂/自定义逻辑：NeoForge 提供了多种事件拦截。例如：
+    - `LivingDamageEvent` / `LivingHurtEvent`：拦截伤害计算。
+    - `BlockEvent.BreakEvent` / `LootTableLoadEvent`：修改挖掘掉落。
+    - 在事件处理中，通过遍历 `ItemStack` 的 `DataComponents.ENCHANTMENTS` 来检测自定义魔咒并应用逻辑。
+- **控制附魔台行为**：
+  - 修改 `supported_items` 和 `primary_items` 标签即可控制自定义物品是否能在附魔台附魔。
+  - 对于特殊逻辑，可监听 `EnchantmentLevelSetEvent`（控制附魔台等级计算）。
+
+### 4. 开发避坑指南
+- **1.21 组件系统迁移**：不要再尝试通过直接操作 NBT（如 `itemStack.getOrCreateTag().getList("Enchantments")`）来修改魔咒。必须使用新的 `DataComponent` API，否则会导致数据不同步或崩溃。
+- **宝藏魔咒 (Treasure Enchantments)**：现在通过给魔咒分配特定的标签（如 `#minecraft:treasure`）来控制，而不是代码中的布尔标志。
+- **不共存魔咒 (Exclusive Enchantments)**：也是通过标签（如 `#minecraft:exclusive_set/damage`）来管理排斥关系。
+
+---
+
+## 🔍 原版 Wiki 快速索引 (Quick Reference)
+
+对于原版基础概念、具体数值或冗长表格，请直接通过以下锚点跳转至 Wiki 原文查阅。
+
+### 1. 机制基础
+- [魔咒属性与规则](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%AD%94%E5%92%92%E5%B1%9E%E6%80%A7) *(适用性、等级限制、出现条件等)*
+- [附魔书机制](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%99%84%E9%AD%94%E4%B9%A6) *(铁砧合并、基岩版与Java版的差异)*
+
+### 2. 获取与移除方式
+- [自然生成途径清单](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E8%87%AA%E7%84%B6%E7%94%9F%E6%88%90) *(战利品箱、村民交易、生物掉落的详细概率与等级)*
+- [附魔台运作机制](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%99%84%E9%AD%94)
+- [铁砧机制与累积惩罚](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%93%81%E7%A0%A7)
+- [如何移除魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E7%A7%BB%E9%99%A4%E7%89%A9%E5%93%81%E9%AD%94%E5%92%92) *(砂轮与合成修复)*
+
+### 3. 魔咒数据字典 (超长表格)
+> 👉 **[点击查看所有原版魔咒完整列表](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E6%89%80%E6%9C%89%E9%AD%94%E5%92%92)**
+
+*速查提示：原版魔咒的命名空间 ID 形式为 `minecraft:<英文名>`。*
+*例如：*
+- *锋利 (Sharpness): `minecraft:sharpness`*
+- *时运 (Fortune): `minecraft:fortune`*
+- *精准采集 (Silk Touch): `minecraft:silk_touch`*
+- *经验修补 (Mending): `minecraft:mending`*
+
+### 4. 相关命令与数据修改
+- [作弊与命令修改魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E4%BD%9C%E5%BC%8A%E4%B8%8E%E5%91%BD%E4%BB%A4) *(`/enchant`, `/give`, `/item` 等命令的用法)*
+
+---
+
+## 🖼️ 相关资源与材质 (Assets)
+
+如果需要为自定义魔咒或相关 UI 提供材质参考，以下是原版相关资产的定位信息：
+
+- **附魔书材质**：`assets/minecraft/textures/item/enchanted_book.png`
+- **附魔台材质**：
+  - 顶部：`assets/minecraft/textures/block/enchanting_table_top.png`
+  - 侧面：`assets/minecraft/textures/block/enchanting_table_side.png`
+  - 底部：`assets/minecraft/textures/block/enchanting_table_bottom.png`
+- **附魔闪烁光效 (Glint)**：`assets/minecraft/textures/misc/enchanted_glint_entity.png` / `enchanted_glint_item.png`
+- *(本地资产占位路径：`/workspace/reference/minecraft-wiki/assets/enchanting/`)*
