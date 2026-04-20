@@ -10,6 +10,11 @@
 
 在 NeoForge 1.21+ 中，战利品表（Loot Tables）完全由 JSON 驱动，用于控制方块掉落、实体死亡掉落、容器战利品、钓鱼、考古等所有随机物品生成。
 
+### NeoForge 对照文档
+
+- [NeoForge 战利品表](../../neoForge/NeoForge-服务端-战利品表.md)
+- [NeoForge 物品数据组件](../../neoForge/NeoForge-物品-数据组件.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：无直接代码注册表，战利品表由 ResourceLocation 标识（如 `minecraft:blocks/dirt`）。但在 1.21 中可通过 `ReloadableServerResources` 获取，或者作为数据包直接加载。
 - **文件路径**：`data/<namespace>/loot_table/<type>/<name>.json`
@@ -86,3 +91,30 @@ NeoForge 提供了强大的 Datagen API 用于生成战利品表 JSON：
 
 ### 4. 进阶机制
 - [战利品上下文 (Loot Context)](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E6%88%98%E5%88%A9%E5%93%81%E4%B8%8A%E4%B8%8B%E6%96%87) *(执行时传递的实体、位置、工具等参数)*
+
+### Wiki 全目录（H2/H3/H4）
+
+- [用途](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E7%94%A8%E9%80%94)
+  - [原版调用](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%8E%9F%E7%89%88%E8%B0%83%E7%94%A8)
+  - [自定义调用](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B0%83%E7%94%A8)
+- [定义格式](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%AE%9A%E4%B9%89%E6%A0%BC%E5%BC%8F)
+  - [随机池](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E9%9A%8F%E6%9C%BA%E6%B1%A0)
+  - [抽取项](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E6%8A%BD%E5%8F%96%E9%A1%B9)
+    - [单一抽取项](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%8D%95%E4%B8%80%E6%8A%BD%E5%8F%96%E9%A1%B9)
+    - [复合抽取项](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%A4%8D%E5%90%88%E6%8A%BD%E5%8F%96%E9%A1%B9)
+    - [特殊抽取项](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E7%89%B9%E6%AE%8A%E6%8A%BD%E5%8F%96%E9%A1%B9)
+  - [物品修饰器](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E7%89%A9%E5%93%81%E4%BF%AE%E9%A5%B0%E5%99%A8)
+  - [战利品表谓词](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8%E8%B0%93%E8%AF%8D)
+- [战利品上下文](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E6%88%98%E5%88%A9%E5%93%81%E4%B8%8A%E4%B8%8B%E6%96%87)
+- [历史](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%8E%86%E5%8F%B2)
+- [参考](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%8F%82%E8%80%83)
+- [外部链接](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%A4%96%E9%83%A8%E9%93%BE%E6%8E%A5)
+- [导航](https://zh.minecraft.wiki/w/%E6%88%98%E5%88%A9%E5%93%81%E8%A1%A8#%E5%AF%BC%E8%88%AA)
+
+---
+
+## 相关资源与材质 (Assets)
+
+战利品表本身不对应固定贴图资源，但它经常与以下内容一起使用：
+- **数据文件路径**：`data/<namespace>/loot_table/...`（建议同时维护对应的战利品条件、函数与物品组件设置）
+- **与组件系统联动**：1.21+ 中大量“写 NBT”的战利品函数会迁移到“写 Data Components”的函数/修饰器（详见 [NeoForge-物品-数据组件.md](../../neoForge/NeoForge-物品-数据组件.md)）

@@ -139,3 +139,8 @@
 1. **机制文档批量生成**：完成状态效果、伤害、交易、酿造、红石电路等 5 篇机制文档，并统一为“Mod 开发优先”结构。
 2. **索引与入口**：新增 [minecraft-wiki/index.md](file:///workspace/reference/minecraft-wiki/index.md)，并在 [index.md](file:///workspace/index.md) 与 [README.md](file:///workspace/README.md) 补充 minecraft-wiki 入口与统计。
 3. **清单推进**：更新 [minecraft-wiki-checklist.md](file:///workspace/minecraft-wiki-checklist.md) 勾选完成项，作为后续批次的推进依据。
+## [2026-04-20 14:00] batch | Minecraft Wiki 本地化第一版完工（18 篇）
+**整理内容**：
+1. **覆盖范围**：完成机制/数据驱动/世界生成/方块/物品/实体共 18 篇文档，并在 [minecraft-wiki/index.md](file:///workspace/reference/minecraft-wiki/index.md) 汇总为本地入口索引。
+2. **密度增强**：为关键主题追加 NeoForge 对照文档链接，并统一补充“Wiki 全目录（H2/H3/H4）”锚点索引，便于快速回查原文细节。
+3. **结构统一**：清理重复命名文件，统一总览类文件命名；更新 [minecraft-wiki-checklist.md](file:///workspace/minecraft-wiki-checklist.md)、[README.md](file:///workspace/README.md) 的统计与描述。

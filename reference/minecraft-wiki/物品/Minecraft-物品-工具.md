@@ -10,6 +10,12 @@
 
 在 NeoForge 1.21+ 中，工具的属性（如挖掘速度、可破坏方块、耐久）已经完全转向**数据组件 (Data Components)** 与**标签 (Tags)** 驱动，传统的硬编码工具类属性被大幅弱化。
 
+### NeoForge 对照文档
+
+- [NeoForge 物品数据组件](../../neoForge/NeoForge-物品-数据组件.md)
+- [NeoForge-物品-工具](../../neoForge/NeoForge-物品-工具.md)
+- [NeoForge-服务端-标签](../../neoForge/NeoForge-服务端-标签.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：`minecraft:item` (在 NeoForge 中通过 `Registries.ITEM` 或 `DeferredRegister.createItems()` 管理)。
 - **工具基类**：`DiggerItem`, `PickaxeItem`, `AxeItem`, `ShovelItem`, `HoeItem`, `SwordItem`。
@@ -63,6 +69,22 @@
 - [工具历史版本更新](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E5%8E%86%E5%8F%B2)
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [物品列表](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E7%89%A9%E5%93%81%E5%88%97%E8%A1%A8)
+- [获取](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E8%8E%B7%E5%8F%96)
+  - [生物](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E7%94%9F%E7%89%A9)
+  - [合成](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E5%90%88%E6%88%90)
+  - [锻造](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E9%94%BB%E9%80%A0)
+- [用途](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E7%94%A8%E9%80%94)
+  - [最佳工具](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E6%9C%80%E4%BD%B3%E5%B7%A5%E5%85%B7)
+  - [物品耐久](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E7%89%A9%E5%93%81%E8%80%90%E4%B9%85)
+  - [烧炼材料](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E7%83%A7%E7%82%BC%E6%9D%90%E6%96%99)
+  - [燃料](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E7%87%83%E6%96%99)
+- [历史](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E5%8E%86%E5%8F%B2)
+- [参见](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E5%8F%82%E8%A7%81)
+- [导航](https://zh.minecraft.wiki/w/%E5%B7%A5%E5%85%B7#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 

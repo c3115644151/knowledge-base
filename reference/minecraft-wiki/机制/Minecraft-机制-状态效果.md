@@ -10,6 +10,11 @@
 
 状态效果是模组中最常见的“持续性机制载体”之一：既可以用来做玩家/生物的能力增益，也常用于触发粒子、属性修正、AI 行为变化与战斗系统联动。
 
+### NeoForge 对照文档
+
+- [NeoForge 状态效果与药水](../../neoForge/NeoForge-物品-状态效果.md)
+- [NeoForge LivingEntity 与生物逻辑](../../neoForge/NeoForge-实体-LivingEntity.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：`minecraft:mob_effect`（代码侧通常通过 `Registries.MOB_EFFECT` 访问）
 - **标识符形式**：`minecraft:<effect_name>`（例如 `minecraft:speed`）
@@ -67,9 +72,27 @@
 
 ---
 
+### Wiki 全目录（H2/H3/H4）
+
+- [监测](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E7%9B%91%E6%B5%8B)
+- [机制](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E6%9C%BA%E5%88%B6)
+  - [效果等级](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E6%95%88%E6%9E%9C%E7%AD%89%E7%BA%A7)
+  - [效果持续时间](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E6%95%88%E6%9E%9C%E6%8C%81%E7%BB%AD%E6%97%B6%E9%97%B4)
+  - [免疫状态效果](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E5%85%8D%E7%96%AB%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C)
+  - [即时生效效果](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E5%8D%B3%E6%97%B6%E7%94%9F%E6%95%88%E6%95%88%E6%9E%9C)
+  - [状态效果分类](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C%E5%88%86%E7%B1%BB)
+  - [解除效果](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E8%A7%A3%E9%99%A4%E6%95%88%E6%9E%9C)
+- [状态效果列表](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C%E5%88%97%E8%A1%A8)
+- [成就](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E6%88%90%E5%B0%B1)
+- [进度](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E8%BF%9B%E5%BA%A6)
+- [历史](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E5%8E%86%E5%8F%B2)
+- [画廊](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E7%94%BB%E5%BB%8A)
+- [注释](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E8%A8%BB%E9%87%8B)
+- [参考](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C#%E5%AF%BC%E8%88%AA)
+
 ## 相关资源与材质 (Assets)
 
 状态效果主要会涉及 GUI 图标与粒子表现。原版资源定位通常包含：
 - 物品栏/状态效果图标相关：`assets/minecraft/textures/mob_effect/`（不同版本/资源包可能组织略有差异）
 - 药水瓶/喷溅/滞留视觉：`assets/minecraft/textures/item/` 下的药水相关贴图
-

@@ -10,6 +10,11 @@
 
 伤害系统是战斗、环境交互、生物 AI、状态效果、战利品的“汇流点”。在 1.20+ 之后，**伤害类型 (Damage Type)** 已数据驱动化，模组开发常见需求（新增伤害类别、绕过护甲、改变死亡信息/来源判定）都应围绕 `damage_type` 注册表与标签体系展开。
 
+### NeoForge 对照文档
+
+- [NeoForge 伤害类型系统](../../neoForge/NeoForge-服务端-伤害类型.md)
+- [NeoForge LivingEntity 与生物逻辑](../../neoForge/NeoForge-实体-LivingEntity.md)
+
 ### 1. 注册表与数据文件位置
 - **注册表名称**：`minecraft:damage_type`
 - **数据文件路径**：`data/<namespace>/damage_type/<name>.json`
@@ -84,9 +89,36 @@
 
 ---
 
+### Wiki 全目录（H2/H3/H4）
+
+- [机制](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E6%9C%BA%E5%88%B6)
+  - [无懈可击](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E6%97%A0%E6%87%88%E5%8F%AF%E5%87%BB)
+  - [伤害值调整](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E4%BC%A4%E5%AE%B3%E5%80%BC%E8%B0%83%E6%95%B4)
+  - [难度影响](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E9%9A%BE%E5%BA%A6%E5%BD%B1%E5%93%8D)
+  - [非生物实体](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E9%9D%9E%E7%94%9F%E7%89%A9%E5%AE%9E%E4%BD%93)
+- [受击后伤害免疫](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%8F%97%E5%87%BB%E5%90%8E%E4%BC%A4%E5%AE%B3%E5%85%8D%E7%96%AB)
+- [击退](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%87%BB%E9%80%80)
+  - [击退抗性](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%87%BB%E9%80%80%E6%8A%97%E6%80%A7)
+- [造成伤害](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E9%80%A0%E6%88%90%E4%BC%A4%E5%AE%B3)
+- [伤害来源](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E4%BC%A4%E5%AE%B3%E6%9D%A5%E6%BA%90)
+  - [造成伤害的生物](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E9%80%A0%E6%88%90%E4%BC%A4%E5%AE%B3%E7%9A%84%E7%94%9F%E7%89%A9)
+  - [造成伤害的物品](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E9%80%A0%E6%88%90%E4%BC%A4%E5%AE%B3%E7%9A%84%E7%89%A9%E5%93%81)
+- [伤害类型](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E4%BC%A4%E5%AE%B3%E7%B1%BB%E5%9E%8B)
+- [伤害分类](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E4%BC%A4%E5%AE%B3%E5%88%86%E7%B1%BB)
+  - [魔法伤害](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E9%AD%94%E6%B3%95%E4%BC%A4%E5%AE%B3)
+  - [火焰伤害](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E7%81%AB%E7%84%B0%E4%BC%A4%E5%AE%B3)
+  - [弹射物伤害](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%BC%B9%E5%B0%84%E7%89%A9%E4%BC%A4%E5%AE%B3)
+  - [爆炸伤害](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E7%88%86%E7%82%B8%E4%BC%A4%E5%AE%B3)
+  - [摔落伤害](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E6%91%94%E8%90%BD%E4%BC%A4%E5%AE%B3)
+- [成就](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E6%88%90%E5%B0%B1)
+- [进度](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E8%BF%9B%E5%BA%A6)
+- [历史](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%8E%86%E5%8F%B2)
+- [你知道吗](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%90%97)
+- [参考](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3#%E5%AF%BC%E8%88%AA)
+
 ## 相关资源与材质 (Assets)
 
 伤害系统本身没有固定“贴图”，但它经常与以下资产相关：
 - 火焰/熔岩/爆炸等粒子：`assets/minecraft/particles/` 与 `assets/minecraft/textures/particle/`
 - 受伤与状态图标（例如受伤动画、状态效果图标）：更多见于客户端渲染与 GUI 资源
-

@@ -10,6 +10,12 @@
 
 在 NeoForge 1.21+ 体系中，食物机制迎来了重大重构。食物不再仅仅依赖于 `Item` 类中硬编码的属性，而是被拆分和细化为完全由**数据组件 (Data Components)** 驱动的体系，特别是 1.21.2 引入了 `Consumable` 组件。
 
+### NeoForge 对照文档
+
+- [NeoForge 物品开发](../../neoForge/NeoForge-物品.md)
+- [NeoForge 物品数据组件](../../neoForge/NeoForge-物品-数据组件.md)
+- [NeoForge 状态效果与药水](../../neoForge/NeoForge-物品-状态效果.md)
+
 ### 1. 注册表与核心组件
 食物作为普通物品注册在 `Registries.ITEM` 中。控制食物行为的核心数据组件包括：
 - `DataComponents.FOOD`：定义食物的基础营养属性。
@@ -61,6 +67,19 @@
 - [食物历史版本更新](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E5%8E%86%E5%8F%B2)
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [机制](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E6%9C%BA%E5%88%B6)
+  - [狐狸](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E7%8B%90%E7%8B%B8)
+- [营养价值](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E8%90%A5%E5%85%BB%E4%BB%B7%E5%80%BC)
+- [食物列表](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E9%A3%9F%E7%89%A9%E5%88%97%E8%A1%A8)
+- [成就](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E6%88%90%E5%B0%B1)
+- [进度](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E8%BF%9B%E5%BA%A6)
+- [历史](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E5%8E%86%E5%8F%B2)
+- [你知道吗](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%90%97)
+- [参考](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E9%A3%9F%E7%89%A9#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 

@@ -10,6 +10,11 @@
 
 在 NeoForge 1.21+ 开发中，物品 (Item) 和物品堆叠 (ItemStack) 的底层机制发生了**革命性的重构**，从传统的 NBT 标签完全迁移到了**数据组件 (Data Components)** 系统。
 
+### NeoForge 对照文档
+
+- [NeoForge 物品开发](../../neoForge/NeoForge-物品.md)
+- [NeoForge 物品数据组件](../../neoForge/NeoForge-物品-数据组件.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：`minecraft:item` (在 NeoForge 中通过 `Registries.ITEM` 或 `DeferredRegister.createItems` 访问)。
 - **命名空间**：原版物品的 ResourceLocation 均为 `minecraft:<item_name>`（例如 `minecraft:diamond_sword`）。
@@ -72,6 +77,22 @@
 - *不死图腾 (Totem of Undying): `minecraft:totem_of_undying`*
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [行为](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E8%A1%8C%E4%B8%BA)
+- [物品列表](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E7%89%A9%E5%93%81%E5%88%97%E8%A1%A8)
+  - [产生方块、液体或实体的物品](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E4%BA%A7%E7%94%9F%E6%96%B9%E5%9D%97%E3%80%81%E6%B6%B2%E4%BD%93%E6%88%96%E5%AE%9E%E4%BD%93%E7%9A%84%E7%89%A9%E5%93%81)
+  - [在世界中可以交互的物品](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%9C%A8%E4%B8%96%E7%95%8C%E4%B8%AD%E5%8F%AF%E4%BB%A5%E4%BA%A4%E4%BA%92%E7%9A%84%E7%89%A9%E5%93%81)
+  - [在世界中间接使用的物品](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%9C%A8%E4%B8%96%E7%95%8C%E4%B8%AD%E9%97%B4%E6%8E%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E7%89%A9%E5%93%81)
+  - [刷怪蛋](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%88%B7%E6%80%AA%E8%9B%8B)
+  - [教育版独有的物品](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E6%95%99%E8%82%B2%E7%89%88%E7%8B%AC%E6%9C%89%E7%9A%84%E7%89%A9%E5%93%81)
+  - [已移除的物品](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%B7%B2%E7%A7%BB%E9%99%A4%E7%9A%84%E7%89%A9%E5%93%81)
+- [数据值](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E6%95%B0%E6%8D%AE%E5%80%BC)
+- [历史](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%8E%86%E5%8F%B2)
+- [参见](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%8F%82%E8%A7%81)
+- [注释](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E6%B3%A8%E9%87%8A)
+- [导航](https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 

@@ -10,6 +10,12 @@
 
 在 NeoForge 开发中，方块 (Block) 构成了世界的基础，且在 1.21+ 进一步规范了其数据驱动 (Data-Driven) 机制和组件系统。
 
+### NeoForge 对照文档
+
+- [NeoForge 方块开发](../../neoForge/NeoForge-方块.md)
+- [NeoForge-方块-状态](../../neoForge/NeoForge-方块-状态.md)
+- [NeoForge 方块实体](../../neoForge/NeoForge-方块实体.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：`minecraft:block` (在 NeoForge 中通过 `Registries.BLOCK` 或 `DeferredRegister.createBlocks` 进行注册和访问)。
 - **命名空间**：原版方块的 ResourceLocation 均为 `minecraft:<block_name>`（例如 `minecraft:stone`）。
@@ -62,6 +68,24 @@
 - *命令方块 (Command Block): `minecraft:command_block`*
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [行为](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E8%A1%8C%E4%B8%BA)
+- [方块物品](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E6%96%B9%E5%9D%97%E7%89%A9%E5%93%81)
+- [方块高度](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E6%96%B9%E5%9D%97%E9%AB%98%E5%BA%A6)
+- [纹理](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E7%BA%B9%E7%90%86)
+- [方块列表](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E6%96%B9%E5%9D%97%E5%88%97%E8%A1%A8)
+  - [即将到来](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E5%8D%B3%E5%B0%86%E5%88%B0%E6%9D%A5)
+  - [技术性方块](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E6%8A%80%E6%9C%AF%E6%80%A7%E6%96%B9%E5%9D%97)
+  - [教育版方块](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E6%95%99%E8%82%B2%E7%89%88%E6%96%B9%E5%9D%97)
+  - [已移除的方块](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E5%B7%B2%E7%A7%BB%E9%99%A4%E7%9A%84%E6%96%B9%E5%9D%97)
+- [历史](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E5%8E%86%E5%8F%B2)
+- [你知道吗](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%90%97)
+- [画廊](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E7%94%BB%E5%BB%8A)
+- [参见](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E5%8F%82%E8%A7%81)
+- [参考](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 

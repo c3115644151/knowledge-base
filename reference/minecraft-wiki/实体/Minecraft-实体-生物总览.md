@@ -10,6 +10,12 @@
 
 在 NeoForge 1.21+ 中，开发自定义生物需要掌握注册表、实体属性（Attributes）、实体渲染以及数据驱动的生成机制（Biome Modifiers）。
 
+### NeoForge 对照文档
+
+- [NeoForge 实体与 LivingEntity](../../neoForge/NeoForge-实体-LivingEntity.md)
+- [NeoForge 实体属性](../../neoForge/NeoForge-实体-属性.md)
+- [NeoForge 生物群系修改器](../../neoForge/NeoForge-世界生成-生物群系修改器.md)
+
 ### 1. 注册表与核心类
 - **注册表名称**：`minecraft:entity_type` (通过 `Registries.ENTITY_TYPE` 或 `DeferredRegister.createEntities()` 管理)。
 - **核心基类层级**：
@@ -76,6 +82,31 @@
 - [历史版本更新](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%8E%86%E5%8F%B2)
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [生成](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%94%9F%E6%88%90)
+- [行为](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E8%A1%8C%E4%B8%BA)
+- [生物列表](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%94%9F%E7%89%A9%E5%88%97%E8%A1%A8)
+  - [玩家](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%8E%A9%E5%AE%B6)
+  - [友好生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%8F%8B%E5%A5%BD%E7%94%9F%E7%89%A9)
+  - [敌对生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E6%95%8C%E5%AF%B9%E7%94%9F%E7%89%A9)
+  - [未使用的生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E6%9C%AA%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%9F%E7%89%A9)
+  - [已移除的生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%B7%B2%E7%A7%BB%E9%99%A4%E7%9A%84%E7%94%9F%E7%89%A9)
+- [生物族群](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%94%9F%E7%89%A9%E6%97%8F%E7%BE%A4)
+  - [亡灵生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E4%BA%A1%E7%81%B5%E7%94%9F%E7%89%A9)
+  - [节肢生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E8%8A%82%E8%82%A2%E7%94%9F%E7%89%A9)
+  - [水生生物](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E6%B0%B4%E7%94%9F%E7%94%9F%E7%89%A9)
+  - [灾厄村民](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%81%BE%E5%8E%84%E6%9D%91%E6%B0%91)
+- [生物在不同平台的可用性](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%94%9F%E7%89%A9%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E7%9A%84%E5%8F%AF%E7%94%A8%E6%80%A7)
+- [实体数据](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%AE%9E%E4%BD%93%E6%95%B0%E6%8D%AE)
+- [成就](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E6%88%90%E5%B0%B1)
+- [进度](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E8%BF%9B%E5%BA%A6)
+- [历史](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%8E%86%E5%8F%B2)
+- [你知道吗](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%90%97)
+- [画廊](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E7%94%BB%E5%BB%8A)
+- [参考](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E7%94%9F%E7%89%A9#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 

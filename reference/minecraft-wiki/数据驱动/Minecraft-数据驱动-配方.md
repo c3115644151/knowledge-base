@@ -10,6 +10,11 @@
 
 在 NeoForge 开发中，所有的原版合成、烧炼、切石、锻造等机制都基于数据驱动的**配方系统 (Recipe System)**。配方定义了输入材料（`Ingredient`）和输出结果（`ItemStack` / `DataComponent`）。
 
+### NeoForge 对照文档
+
+- [NeoForge-服务端-配方](../../neoForge/NeoForge-服务端-配方.md)
+- [NeoForge 物品数据组件](../../neoForge/NeoForge-物品-数据组件.md)
+
 ### 1. 注册表与核心类
 - **注册表名称**：
   - **配方序列化器 (RecipeSerializer)**：通过 `Registries.RECIPE_SERIALIZER` 注册。负责从 JSON 解析配方数据或写入网络缓冲包。
@@ -81,3 +86,52 @@ JSON 中的主要字段（以常见的 `minecraft:crafting_shaped` 为例）：
 - [旗帜复制与成书复制](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E6%97%97%E5%B8%9C%E5%A4%8D%E5%88%B6%E9%85%8D%E6%96%B9)
 - [烟花火箭与烟火之星](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%83%9F%E8%8A%B1%E7%81%AB%E7%AE%AD%E9%85%8D%E6%96%B9)
 - [地图缩小与物品修复](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%9C%B0%E5%9B%BE%E7%BC%A9%E5%B0%8F%E9%85%8D%E6%96%B9)
+
+### Wiki 全目录（H2/H3/H4）
+
+- [获取](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E8%8E%B7%E5%8F%96)
+- [用途](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%94%A8%E9%80%94)
+- [Java版](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#Java%E7%89%88)
+  - [合成配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%90%88%E6%88%90%E9%85%8D%E6%96%B9)
+    - [有序配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E6%9C%89%E5%BA%8F%E9%85%8D%E6%96%B9)
+    - [无序配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E6%97%A0%E5%BA%8F%E9%85%8D%E6%96%B9)
+    - [类型转化配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E5%8C%96%E9%85%8D%E6%96%B9)
+    - [染色配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E6%9F%93%E8%89%B2%E9%85%8D%E6%96%B9)
+    - [药染配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E8%8D%AF%E6%9F%93%E9%85%8D%E6%96%B9)
+  - [定制配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%AE%9A%E5%88%B6%E9%85%8D%E6%96%B9)
+    - [饰纹陶罐配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E9%A5%B0%E7%BA%B9%E9%99%B6%E7%BD%90%E9%85%8D%E6%96%B9)
+    - [旗帜复制配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E6%97%97%E5%B8%9C%E5%A4%8D%E5%88%B6%E9%85%8D%E6%96%B9)
+    - [成书复制配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E6%88%90%E4%B9%A6%E5%A4%8D%E5%88%B6%E9%85%8D%E6%96%B9)
+    - [烟花火箭配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%83%9F%E8%8A%B1%E7%81%AB%E7%AE%AD%E9%85%8D%E6%96%B9)
+    - [烟火之星合成配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%83%9F%E7%81%AB%E4%B9%8B%E6%98%9F%E5%90%88%E6%88%90%E9%85%8D%E6%96%B9)
+    - [烟火之星色彩淡化配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%83%9F%E7%81%AB%E4%B9%8B%E6%98%9F%E8%89%B2%E5%BD%A9%E6%B7%A1%E5%8C%96%E9%85%8D%E6%96%B9)
+    - [地图缩小配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%9C%B0%E5%9B%BE%E7%BC%A9%E5%B0%8F%E9%85%8D%E6%96%B9)
+    - [物品修复配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%89%A9%E5%93%81%E4%BF%AE%E5%A4%8D%E9%85%8D%E6%96%B9)
+    - [盾牌装饰配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%9B%BE%E7%89%8C%E8%A3%85%E9%A5%B0%E9%85%8D%E6%96%B9)
+  - [烧炼配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%83%A7%E7%82%BC%E9%85%8D%E6%96%B9)
+    - [高炉配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E9%AB%98%E7%82%89%E9%85%8D%E6%96%B9)
+    - [营火配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E8%90%A5%E7%81%AB%E9%85%8D%E6%96%B9)
+    - [熔炉配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%86%94%E7%82%89%E9%85%8D%E6%96%B9)
+    - [烟熏炉配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E7%83%9F%E7%86%8F%E7%82%89%E9%85%8D%E6%96%B9)
+  - [切石机配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%88%87%E7%9F%B3%E6%9C%BA%E9%85%8D%E6%96%B9)
+  - [锻造配方](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E9%94%BB%E9%80%A0%E9%85%8D%E6%96%B9)
+- [基岩版](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%9F%BA%E5%B2%A9%E7%89%88)
+  - [recipe_shaped](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_shaped)
+  - [recipe_shapeless](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_shapeless)
+  - [recipe_furnace](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_furnace)
+  - [recipe_brewing_container](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_brewing_container)
+  - [recipe_brewing_mix](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_brewing_mix)
+  - [recipe_smithing_transform](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_smithing_transform)
+  - [recipe_smithing_trim](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_smithing_trim)
+  - [recipe_material_reduction](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#recipe_material_reduction)
+- [历史](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%8E%86%E5%8F%B2)
+- [参考](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E9%85%8D%E6%96%B9#%E5%AF%BC%E8%88%AA)
+
+---
+
+## 相关资源与材质 (Assets)
+
+配方系统主要关联的是数据文件与 GUI/交互，而非固定贴图资源：
+- **数据文件路径**：`data/<namespace>/recipe/<name>.json`（实际目录以数据包结构为准，常见为 `recipes/`）
+- **与组件系统联动**：1.21+ 可通过配方输出携带 Data Components（例如自定义耐久/自定义属性的物品）

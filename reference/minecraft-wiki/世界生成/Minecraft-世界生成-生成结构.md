@@ -1,4 +1,4 @@
-# Minecraft 机制：生成结构 (Generated Structures)
+# Minecraft 世界生成：生成结构 (Generated Structures)
 
 > **Wiki 源地址**：[https://zh.minecraft.wiki/w/生成结构](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84)  
 > **适用版本**：Java 版 1.21+ / NeoForge 26.1+  
@@ -9,6 +9,11 @@
 ## 模组开发核心要点 (Modding Priorities)
 
 在 1.21+ 中，结构的生成完全由**数据包 (Datapack)** 驱动，高度依赖于 **Jigsaw (拼图) 系统** 和多种注册表的配合。
+
+### NeoForge 对照文档
+
+- [NeoForge 世界生成 - 结构（Structures）](../../neoForge/NeoForge-世界生成-结构.md)
+- [NeoForge 战利品表](../../neoForge/NeoForge-服务端-战利品表.md)
 
 ### 1. 核心注册表与概念
 结构生成分为三个主要层级（均通过数据包 JSON 定义）：
@@ -59,8 +64,23 @@
 
 ---
 
-## 相关资源与测试指令
+### Wiki 全目录（H2/H3/H4）
+
+- [主世界](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E4%B8%BB%E4%B8%96%E7%95%8C)
+  - [地下结构](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%9C%B0%E4%B8%8B%E7%BB%93%E6%9E%84)
+  - [地表结构](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%9C%B0%E8%A1%A8%E7%BB%93%E6%9E%84)
+  - [水下结构](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E6%B0%B4%E4%B8%8B%E7%BB%93%E6%9E%84)
+- [下界](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E4%B8%8B%E7%95%8C)
+- [末地](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E6%9C%AB%E5%9C%B0)
+- [可被定位的结构](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%8F%AF%E8%A2%AB%E5%AE%9A%E4%BD%8D%E7%9A%84%E7%BB%93%E6%9E%84)
+- [历史](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%8E%86%E5%8F%B2)
+- [参见](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%8F%82%E8%A7%81)
+- [注释](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E6%B3%A8%E9%87%8A)
+- [参考](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%84#%E5%AF%BC%E8%88%AA)
+
+## 相关资源与材质 (Assets)
 
 - **查找结构**：`/locate structure <structure_id>`
-- **放置结构测试**：`/place structure <structure_id> [pos]` 或使用**结构方块 (Structure Block)**。
+- **放置结构测试**：`/place structure <structure_id> [pos]` 或使用结构方块 (Structure Block)。
 - **拼图调试**：在放置拼图方块时，可以使用调试棒 (Debug Stick) 或在结构方块界面调整拼图深度。

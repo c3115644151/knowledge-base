@@ -10,6 +10,12 @@
 
 在 NeoForge 开发中，附魔（魔咒）已高度**数据驱动化 (Data-Driven)**。魔咒不再是硬编码的类，而是由数据包 (Datapack) 中的 JSON 文件定义，并由注册表管理。
 
+### NeoForge 对照文档
+
+- [NeoForge-服务端-附魔.md](../../neoForge/NeoForge-服务端-附魔.md)
+- [NeoForge-物品-数据组件.md](../../neoForge/NeoForge-物品-数据组件.md)
+- [NeoForge LivingEntity 与生物逻辑](../../neoForge/NeoForge-实体-LivingEntity.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：`minecraft:enchantment` (在 NeoForge 中通常通过 `Registries.ENCHANTMENT` 访问)
 - **命名空间**：原版魔咒的 ResourceLocation 均为 `minecraft:<enchantment_name>`（例如 `minecraft:sharpness`）。
@@ -77,6 +83,28 @@
 - [作弊与命令修改魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E4%BD%9C%E5%BC%8A%E4%B8%8E%E5%91%BD%E4%BB%A4) *(`/enchant`, `/give`, `/item` 等命令的用法)*
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [机制](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E6%9C%BA%E5%88%B6)
+  - [魔咒属性](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%AD%94%E5%92%92%E5%B1%9E%E6%80%A7)
+  - [附魔书](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%99%84%E9%AD%94%E4%B9%A6)
+- [获取附魔物品](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E8%8E%B7%E5%8F%96%E9%99%84%E9%AD%94%E7%89%A9%E5%93%81)
+  - [自然生成](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E8%87%AA%E7%84%B6%E7%94%9F%E6%88%90)
+  - [附魔](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%99%84%E9%AD%94)
+  - [铁砧](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%93%81%E7%A0%A7)
+  - [物品修复](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E7%89%A9%E5%93%81%E4%BF%AE%E5%A4%8D)
+  - [作弊与命令](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E4%BD%9C%E5%BC%8A%E4%B8%8E%E5%91%BD%E4%BB%A4)
+- [移除物品魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E7%A7%BB%E9%99%A4%E7%89%A9%E5%93%81%E9%AD%94%E5%92%92)
+- [所有魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E6%89%80%E6%9C%89%E9%AD%94%E5%92%92)
+  - [宝藏型魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E5%AE%9D%E8%97%8F%E5%9E%8B%E9%AD%94%E5%92%92)
+  - [魔咒的适用性](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E9%AD%94%E5%92%92%E7%9A%84%E9%80%82%E7%94%A8%E6%80%A7)
+    - [手持物品魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E6%89%8B%E6%8C%81%E7%89%A9%E5%93%81%E9%AD%94%E5%92%92)
+    - [盔甲位物品魔咒](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E7%9B%94%E7%94%B2%E4%BD%8D%E7%89%A9%E5%93%81%E9%AD%94%E5%92%92)
+- [数据驱动](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8)
+- [历史](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E5%8E%86%E5%8F%B2)
+- [参考](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E9%99%84%E9%AD%94#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 

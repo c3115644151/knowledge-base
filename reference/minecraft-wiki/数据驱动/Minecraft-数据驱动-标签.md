@@ -10,6 +10,10 @@
 
 在 NeoForge 1.21+ 开发中，**标签 (Tags)** 是将游戏资源（方块、物品、实体、流体、魔咒等）进行分组的唯一标准方式。强烈建议**避免在代码中硬编码 `block == Blocks.STONE`**，而是使用标签（如 `#minecraft:stone_ore_replaceables`），以确保模组间的兼容性。
 
+### NeoForge 对照文档
+
+- [NeoForge-服务端-标签](../../neoForge/NeoForge-服务端-标签.md)
+
 ### 1. 注册表与标识符
 - **标识符表示**：在 JSON 和命令中，标签以 `#` 开头（如 `#minecraft:logs`）。
 - **代码中表示**：使用 `TagKey<T>` 表示。
@@ -86,3 +90,26 @@ NeoForge 提供了全面的 Datagen 支持生成标签：
 - [伤害类型 (Damage Type)](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE/%E4%BC%A4%E5%AE%B3%E7%B1%BB%E5%9E%8B) *(1.20+，用于判定伤害抗性或触发效果)*
 - [函数标签 (Function Tags)](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE/%E5%87%BD%E6%95%B0) *(例如 `#minecraft:tick` 和 `#minecraft:load` 用于数据包)*
 - [游戏事件 (Game Event)](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE/%E6%B8%B8%E6%88%8F%E4%BA%8B%E4%BB%B6) *(用于幽匿感测体监听机制)*
+
+### Wiki 全目录（H2/H3/H4）
+
+- [定义](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%AE%9A%E4%B9%89)
+  - [目录结构](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84)
+  - [命名空间ID](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4ID)
+  - [文件格式](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F)
+  - [加载行为](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%8A%A0%E8%BD%BD%E8%A1%8C%E4%B8%BA)
+- [使用](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E4%BD%BF%E7%94%A8)
+  - [原版标签](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%8E%9F%E7%89%88%E6%A0%87%E7%AD%BE)
+  - [示例](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E7%A4%BA%E4%BE%8B)
+- [历史](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%8E%86%E5%8F%B2)
+- [你知道吗](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%90%97)
+- [参见](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%8F%82%E8%A7%81)
+- [导航](https://zh.minecraft.wiki/w/Java%E7%89%88%E6%A0%87%E7%AD%BE#%E5%AF%BC%E8%88%AA)
+
+---
+
+## 相关资源与材质 (Assets)
+
+标签本身不对应贴图资源，但它会深度影响“哪些资源被视为一类”，从而影响：
+- **方块/物品行为**：工具挖掘判定、燃料判定、可附魔判定、可作为配方材料等
+- **数据文件路径**：`data/<namespace>/tags/<registry>/<tag>.json`

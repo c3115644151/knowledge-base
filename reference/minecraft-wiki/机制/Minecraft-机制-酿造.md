@@ -10,6 +10,11 @@
 
 酿造是将“材料 → 药水/喷溅/滞留”的数据驱动链路，和状态效果、战斗、探索高度耦合。模组开发最常用的扩展方式是：新增药水效果、增加酿造配方、让自定义物品参与酿造流程。
 
+### NeoForge 对照文档
+
+- [NeoForge 状态效果与药水](../../neoForge/NeoForge-物品-状态效果.md)
+- [NeoForge 物品数据组件](../../neoForge/NeoForge-物品-数据组件.md)
+
 ### 1. 注册表与标识符（药水与效果）
 酿造链路至少涉及两类注册对象：
 - **状态效果 (Mob Effect)**：决定药水最终给实体施加什么效果（见 [Minecraft-机制-状态效果.md](Minecraft-%E6%9C%BA%E5%88%B6-%E7%8A%B6%E6%80%81%E6%95%88%E6%9E%9C.md)）
@@ -60,10 +65,34 @@
 
 ---
 
+### Wiki 全目录（H2/H3/H4）
+
+- [酿造药水](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E9%85%BF%E9%80%A0%E8%8D%AF%E6%B0%B4)
+- [酿造设备](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E9%85%BF%E9%80%A0%E8%AE%BE%E5%A4%87)
+- [材料](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E6%9D%90%E6%96%99)
+  - [基础材料与改性剂](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%9F%BA%E7%A1%80%E6%9D%90%E6%96%99%E4%B8%8E%E6%94%B9%E6%80%A7%E5%89%82)
+  - [影响材料](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%BD%B1%E5%93%8D%E6%9D%90%E6%96%99)
+  - [元素](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%85%83%E7%B4%A0)
+- [酿造配方](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E9%85%BF%E9%80%A0%E9%85%8D%E6%96%B9)
+  - [基础药水](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%9F%BA%E7%A1%80%E8%8D%AF%E6%B0%B4)
+  - [效果药水](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E6%95%88%E6%9E%9C%E8%8D%AF%E6%B0%B4)
+    - [正面效果](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E6%AD%A3%E9%9D%A2%E6%95%88%E6%9E%9C)
+    - [负面效果](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E8%B4%9F%E9%9D%A2%E6%95%88%E6%9E%9C)
+    - [混合效果](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E6%B7%B7%E5%90%88%E6%95%88%E6%9E%9C)
+  - [药物](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E8%8D%AF%E7%89%A9)
+  - [不可酿造的药水](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E4%B8%8D%E5%8F%AF%E9%85%BF%E9%80%A0%E7%9A%84%E8%8D%AF%E6%B0%B4)
+- [视频](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E8%A7%86%E9%A2%91)
+- [历史](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%8E%86%E5%8F%B2)
+- [你知道吗](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%90%97)
+- [画廊](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E7%94%BB%E5%BB%8A)
+- [参见](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%8F%82%E8%A7%81)
+- [参考](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%8F%82%E8%80%83)
+- [外部链接](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%A4%96%E9%83%A8%E9%93%BE%E6%8E%A5)
+- [导航](https://zh.minecraft.wiki/w/%E9%85%BF%E9%80%A0#%E5%AF%BC%E8%88%AA)
+
 ## 相关资源与材质 (Assets)
 
 酿造体系常用原版资源定位：
 - 酿造台贴图：`assets/minecraft/textures/block/brewing_stand.png`（及其相关分层贴图，随版本不同）
 - 药水瓶贴图：`assets/minecraft/textures/item/` 下的 potion/splash_potion/lingering_potion 相关资源
 - 区域效果云粒子：`assets/minecraft/particles/` 与 `assets/minecraft/textures/particle/`
-

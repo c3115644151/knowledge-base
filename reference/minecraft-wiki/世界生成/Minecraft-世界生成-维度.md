@@ -1,4 +1,4 @@
-# Minecraft 机制：维度 (Dimension)
+# Minecraft 世界生成：维度 (Dimension)
 
 > **Wiki 源地址**：[https://zh.minecraft.wiki/w/维度](https://zh.minecraft.wiki/w/%E7%BB%B4%E5%BA%A6)  
 > **适用版本**：Java 版 1.21+ / NeoForge 26.1+  
@@ -9,6 +9,10 @@
 ## 模组开发核心要点 (Modding Priorities)
 
 在 1.21+ 中，自定义维度及其生成方式已完全被纳入**数据包 (Datapack)** 体系。硬编码维度已成为历史，开发者应使用 JSON 配合必要时的代码事件。
+
+### NeoForge 对照文档
+
+- [NeoForge 世界生成 - 维度（Dimensions）](../../neoForge/NeoForge-世界生成-维度.md)
 
 ### 1. 维度的双层注册架构
 定义一个维度需要两个核心部分的 JSON 数据：
@@ -63,7 +67,11 @@
 
 ---
 
-## 相关代码入口参考 (NeoForge)
+### Wiki 全目录（H2/H3/H4）
+
+- [导航](https://zh.minecraft.wiki/w/%E7%BB%B4%E5%BA%A6#%E5%AF%BC%E8%88%AA)
+
+## 相关资源与材质 (Assets)
 
 - **实体传送**: `net.minecraft.world.entity.Entity#changeDimension`
 - **传送器接口**: `net.neoforged.neoforge.common.util.ITeleporter`

@@ -10,6 +10,11 @@
 
 实体 (Entity) 代表 Minecraft 世界中所有动态的、移动中的对象，从玩家、生物到掉落物和弹射物。在 NeoForge 1.21+ 中，实体系统的开发趋于规范化，特别是属性 (Attributes) 和数据同步 (Data Sync) 方面。
 
+### NeoForge 对照文档
+
+- [NeoForge 实体与 LivingEntity](../../neoForge/NeoForge-实体-LivingEntity.md)
+- [NeoForge 实体属性](../../neoForge/NeoForge-实体-属性.md)
+
 ### 1. 注册表与标识符
 - **注册表名称**：`minecraft:entity_type` (在 NeoForge 中通过 `Registries.ENTITY_TYPE` 或 `DeferredRegister.createEntityTypes` 访问)。
 - **实体类型 (EntityType)**：使用 `EntityType.Builder.of(EntityClass::new, MobCategory)` 构建。定义了实体的碰撞箱尺寸 (`sized()`)、更新频率 (`clientTrackingRange()`, `updateInterval()`) 以及分类 (`MobCategory` 如 `MONSTER`, `CREATURE`, `MISC`)。
@@ -68,6 +73,26 @@
 - *盔甲架 (Armor Stand): `minecraft:armor_stand`*
 
 ---
+
+### Wiki 全目录（H2/H3/H4）
+
+- [一般行为](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E4%B8%80%E8%88%AC%E8%A1%8C%E4%B8%BA)
+  - [详细说明](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E)
+    - [船和矿车](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E8%88%B9%E5%92%8C%E7%9F%BF%E8%BD%A6)
+    - [下落的方块](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E4%B8%8B%E8%90%BD%E7%9A%84%E6%96%B9%E5%9D%97)
+    - [交互](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E4%BA%A4%E4%BA%92)
+    - [骑行](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E9%AA%91%E8%A1%8C)
+- [所有实体](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E6%89%80%E6%9C%89%E5%AE%9E%E4%BD%93)
+- [运动](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E8%BF%90%E5%8A%A8)
+  - [公式](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E5%85%AC%E5%BC%8F)
+    - [速度](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E9%80%9F%E5%BA%A6)
+    - [位置](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E4%BD%8D%E7%BD%AE)
+- [实体类型标签](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E5%AF%A6%E9%AB%94%E9%A1%9E%E5%9E%8B%E6%A8%99%E7%B1%A4)
+- [数据值](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E6%95%B0%E6%8D%AE%E5%80%BC)
+- [历史](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E5%8E%86%E5%8F%B2)
+- [参见](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E5%8F%82%E8%A7%81)
+- [参考](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E5%8F%82%E8%80%83)
+- [导航](https://zh.minecraft.wiki/w/%E5%AE%9E%E4%BD%93#%E5%AF%BC%E8%88%AA)
 
 ## 相关资源与材质 (Assets)
 
