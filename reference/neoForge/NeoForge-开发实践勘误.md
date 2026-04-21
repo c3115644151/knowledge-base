@@ -465,17 +465,29 @@ SUSPICIOUS_MOSSY_STONE_BRICKS_ITEM = ITEMS.register(
 
 ---
 
-## Entry 10 — Item 模型引用 `minecraft:` 纹理但本地纹理存在时的紫黑贴图
+## Entry 10 — Item 模型贴图引用与 `items/` ClientItem 双层结构（高优先级）
 
-**根本原因**：item model JSON 中引用了 `minecraft:item/feather` 和 `minecraft:item/suspicious_sand`，
-但实际上 `relictales:item/` 目录已存在对应 PNG 文件（16x16 程序化生成的灰阶/绿色贴图）。
-引用 `minecraft:` 路径时，游戏找不到正确资源会降级为紫黑缺失纹理。
+**根本原因**：Minecraft 1.21.x 的物品模型系统由两层组成：
+1. **`models/item/`** — ItemModel JSON（定义几何形状 + 纹理引用）
+2. **`items/`** — ClientItem JSON（渲染配置，引用上面的 ItemModel）
 
-**症状**：物品在创意栏和世界中显示为紫黑色方块。
+仅有 `models/item/` JSON 不足以让游戏找到模型。必须同时创建 `items/` 下的 ClientItem 文件。
 
-**正确修复**：item model JSON 直接引用模组自身纹理（仅在模组已有自定义美术资源时）：
+**症状**：
+- 物品在创意栏和世界中显示为紫黑色方块
+- 日志警告：`Missing item model for location relictales:xxx`
+
+**错误认知**：
+- 认为 `models/item/<name>.json` 能被游戏自动加载
+- 以为 `BlockItem` 的物品模型由 `models/item/` 唯一决定
+
+**正确认知**：1.21.x 的 `BlockItem.getItemModel()` 使用 `ITEM_MODEL` 数据组件（默认值为物品资源 ID），由 `ClientItemInfoLoader` 从 `items/` 目录加载 ClientItem 配置。ClientItem 配置通过 `type: "minecraft:model"` 引用 `models/item/` 下的 ItemModel。
+
+**正确修复**：
+
+步骤 1 — 在 `models/item/` 创建 ItemModel JSON：
 ```json
-// ✅ 正确：引用模组内置纹理（需确认 relictales:item/ 路径存在）
+// assets/relictales/models/item/jungle_hunter_feather.json
 {
   "parent": "minecraft:item/generated",
   "textures": {
@@ -484,31 +496,25 @@ SUSPICIOUS_MOSSY_STONE_BRICKS_ITEM = ITEMS.register(
 }
 ```
 
-**临时方案（无美术资源时）**：引用原版已有纹理，暂用原版资源顶着：
+步骤 2 — 在 `items/` 创建 ClientItem JSON（引用 ItemModel）：
 ```json
-// ✅ 暂用原版羽毛纹理
+// assets/relictales/items/jungle_hunter_feather.json
 {
-  "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/feather" }
-}
-
-// ✅ 暂用原版可疑砂砾纹理
-{
-  "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/suspicious_sand" }
-}
-
-// ✅ 方块暂用原版可疑砂砾纹理
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": { "all": "minecraft:block/suspicious_gravel" }
+  "model": {
+    "type": "minecraft:model",
+    "model": "relictales:item/jungle_hunter_feather"
+  }
 }
 ```
 
-**纹理文件位置**：
-- `src/main/resources/assets/relictales/textures/item/jungle_hunter_feather.png`
-- `src/main/resources/assets/relictales/textures/block/suspicious_mossy_stone_bricks.png`
+**Vanilla 参考**：所有原版可疑方块都有 `items/` 下的 ClientItem 文件：
+- `assets/minecraft/items/suspicious_sand.json`
+- `assets/minecraft/items/suspicious_gravel.json`
+- `assets/minecraft/items/suspicious_red_sand.json`
 
+**官方文档**：
+- `models/item/` — docs.neoforged.net/docs/resources/client/models/
+- `items/` — docs.neoforged.net/docs/resources/client/models/items
 ---
 
 ## 反编译认知修正流程

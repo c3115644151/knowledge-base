@@ -170,6 +170,42 @@ public static void registerAdditional(ModelEvent.RegisterStandalone event) {
 }
 ```
 
+### 物品模型与 ClientItem（重要：1.21.x 双层结构）
+
+> **⚠️ 1.21.x 物品模型必须同时配置两层**：
+> 1. `models/item/<name>.json` — ItemModel（几何 + 纹理）
+> 2. `assets/<modid>/items/<name>.json` — ClientItem（渲染配置，引用 ItemModel）
+
+仅配置 `models/item/` 不足以让游戏找到物品模型！参考 [Client Items 官方文档](https://docs.neoforged.net/docs/resources/client/models/items)。
+
+#### models/item/（ItemModel）
+
+定义物品的几何形状和纹理：
+```json
+// assets/examplemod/models/item/example_item.json
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "examplemod:item/example_item"
+  }
+}
+```
+
+#### items/（ClientItem）
+
+渲染配置，引用上面的 ItemModel：
+```json
+// assets/examplemod/items/example_item.json
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "examplemod:item/example_item"
+  }
+}
+```
+
+Vanilla 可疑方块均有 `items/` ClientItem 文件（`suspicious_sand.json`、`suspicious_gravel.json` 等）。
+
 ## 关联引用
 
 - [纹理](./NeoForge-资源-纹理.md)
