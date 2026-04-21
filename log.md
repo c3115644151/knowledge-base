@@ -225,3 +225,19 @@
 **来源**：
 - 官方 Primer: https://docs.neoforged.net/primer/docs/26.1/
 - 官方 ModDevGradle: https://docs.neoforged.net/toolchain/docs/plugins/mdg/
+
+## [2026-04-21 12:58] sync | 知识库整理与同步
+
+### 索引更新
+- 修正 reference/neoForge/ 文档数量（52个）
+- 修正 reference/hermes/ 文档数量（47个）
+- 新增 reference/minecraft-wiki/ 索引（23个文档，分类整理）
+- 更新 README.md 和 index.md 结构描述
+
+### 清理
+- 移除过时/不存在的目录引用（根目录下的惯例.md、状态.md、日记/等）
+- 移除不存在的 raw/articles/ 引用
+
+### 同步
+- 更新 index.md 索引
+- 同步到 GitHub
