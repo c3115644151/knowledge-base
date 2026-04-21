@@ -8,13 +8,14 @@
 
 ## 📋 迁移概览
 
-| 变更类别 | 影响程度 | 说明 |
-|----------|----------|------|
-| Java 21 → 25 | 🔴 高 | 必须升级 JDK 和 IDE |
-| 反混淆 | 🟡 中 | 官方映射名称，可能影响部分代码 |
-| Loot Type Unrolling | 🔴 高 | 战利品系统 API 重大重构 |
-| Validation Overhaul | 🟡 中 | 验证系统重构 |
-| Datapack Villager Trades | 🔴 高 | 村民交易数据化 |
+| 变更类别 | 影响程度 | 说明 | 文档章节 |
+|----------|----------|------|----------|
+| Java 21 → 25 | 🔴 高 | 必须升级 JDK 和 IDE | §1 |
+| 反混淆 | 🟡 中 | 官方映射名称，`ResourceLocation` → `Identifier` | §1.3 |
+| Loot Type Unrolling | 🔴 高 | 所有 `*Type` 类型移除，直接使用 `MapCodec` | §2 |
+| Validation Overhaul | 🟡 中 | 验证系统重构，实现 `Validatable` 接口 | §3 |
+| Datapack Villager Trades | 🔴 高 | 村民交易数据化，`VillagerTrades.ItemListing` → JSON | §4 |
+| 其他 API 变化 | 🟡 中 | 类重命名、方法签名变化、移除/新增类型 | §6 |
 
 ---
 
@@ -317,16 +318,134 @@ public record ExampleObject() implements Validatable {
 }
 ```
 
-### 4.4 代码迁移
+### 4.4 Item Listing 转换示例
 
-**1.21.11**：
+#### EmeraldForItems → JSON
+
+**1.21.11 代码**：
 ```java
 VillagerTrades.ItemListing trade = new VillagerTrades.EmeraldForItems(
-    Items.WHEAT, 20, 16, 2, 1
+    Items.WHEAT,  // 想要的物品
+    20,           // 物品数量
+    16,           // 最大使用次数
+    2,            // 经验值
+    1             // 返回的绿宝石数量
 );
 ```
 
-**26.1**：使用数据包 JSON 定义交易，参见上方格式。
+**26.1 JSON**：
+```json
+{
+    "gives": {
+        "count": 1,
+        "id": "minecraft:emerald"
+    },
+    "max_uses": 16,
+    "reputation_discount": 0.05,
+    "wants": {
+        "count": 20,
+        "id": "minecraft:wheat"
+    },
+    "xp": 2
+}
+```
+
+#### ItemsForEmeralds → JSON
+
+**1.21.11 代码**：
+```java
+VillagerTrades.ItemListing trade = new VillagerTrades.ItemsForEmeralds(
+    Items.BREAD,  // 给予的物品
+    1,            // 绿宝石数量
+    6,            // 物品数量
+    16,           // 最大使用次数
+    1,            // 经验值
+    0.05f         // 价格乘数
+);
+```
+
+**26.1 JSON**：
+```json
+{
+    "gives": {
+        "count": 6,
+        "id": "minecraft:bread"
+    },
+    "max_uses": 16,
+    "reputation_discount": 0.05,
+    "wants": {
+        "count": 1,
+        "id": "minecraft:emerald"
+    },
+    "xp": 1
+}
+```
+
+#### EnchantBookForEmeralds → JSON
+
+**1.21.11 代码**：
+```java
+VillagerTrades.ItemListing trade = new VillagerTrades.EnchantBookForEmeralds(
+    30,                                    // 经验值
+    3,                                     // 最小附魔等级
+    3,                                     // 最大附魔等级
+    EnchantmentTags.TRADES_DESERT_SPECIAL  // 附魔标签
+);
+```
+
+**26.1 JSON**：
+```json
+{
+    "additional_wants": {
+        "id": "minecraft:book"
+    },
+    "double_trade_price_enchantments": "#minecraft:double_trade_price",
+    "given_item_modifiers": [
+        {
+            "function": "minecraft:enchant_with_levels",
+            "include_additional_cost_component": true,
+            "levels": {
+                "type": "minecraft:uniform",
+                "min": 3,
+                "max": 3
+            },
+            "options": ["minecraft:efficiency"]
+        }
+    ],
+    "gives": {
+        "count": 1,
+        "id": "minecraft:enchanted_book"
+    },
+    "max_uses": 12,
+    "reputation_discount": 0.2,
+    "wants": {
+        "count": {
+            "type": "minecraft:sum",
+            "summands": [11.0, {"type": "minecraft:uniform", "max": 35.0, "min": 0.0}]
+        },
+        "id": "minecraft:emerald"
+    },
+    "xp": 30
+}
+```
+
+#### Villager Variants（村民变体）
+
+某些交易根据村民类型提供不同选项，现在使用 `merchant_predicate` 检查：
+
+```json
+{
+    "merchant_predicate": {
+        "condition": "minecraft:entity_properties",
+        "entity": "this",
+        "predicate": {
+            "predicates": {
+                "minecraft:villager/variant": "minecraft:desert"
+            }
+        }
+    }
+}
+```
 
 ### 4.5 新注册表
 
@@ -390,7 +509,98 @@ public static final VillagerProfession EXAMPLE = Registry.register(
 
 ---
 
-## 6. 相关文档
+## 6. 其他重要 API 变化
+
+以下为官方文档中记录的其他重要变化摘要，完整列表请参考 [官方 Primer](https://docs.neoforged.net/primer/docs/26.1/)。
+
+### 6.1 包级别变化
+
+| 包 | 变化概述 |
+|----|----------|
+| `net.minecraft.util.valueproviders` | `CODEC` → `MAP_CODEC`，`FloatProvider`/`IntProvider` 从 class 改为 interface |
+| `net.minecraft.world.level.storage.loot.*` | 所有 `*Type` 类型移除，直接使用 `MapCodec` |
+| `net.minecraft.advancements.criterion` | `CriterionValidator` → `ValidationContextSource` + `Validatable` |
+| `net.minecraft.world.item.enchantment` | `ConditionalEffect` 实现 `Validatable`，`codec` 不再需要 `ContextKeySet` |
+| `net.minecraft.world.entity.npc.villager` | `VillagerTrades` 拆分为多个类，交易移至数据包 |
+
+### 6.2 重要类变化
+
+| 类 | 变化 |
+|----|------|
+| `Identifier` | 替代 `ResourceLocation`（官方映射）|
+| `CompilableString` | 替代 `SelectorPattern` |
+| `ResolutionContext` | 替代 `CommandSourceStack` + `Entity` 在组件解析中 |
+| `BlockState` | 构造函数签名变化，不再接受 `MapCodec` |
+| `DataGenerator` | 现为抽象类，原有实现在 `DataGenerator$Cached` |
+| `LevelAccessor` | 不再实现 `LevelReader` |
+| `SnowyDirtBlock` | → `SnowyBlock` |
+| `SpreadingSnowyDirtBlock` | → `SpreadingSnowyBlock` |
+| `IceSpikeFeature` | → `SpikeFeature`（非一一对应）|
+| `FollowBoatGoal` | → `FollowPlayerRiddenEntityGoal` |
+
+### 6.3 方法签名变化
+
+| 方法/字段 | 变化 |
+|-----------|------|
+| `LootItemFunction#getType()` | → `codec()` |
+| `LootItemCondition#getType()` | → `codec()` |
+| `FloatProvider#getMinValue()` | → `min()` |
+| `FloatProvider#getMaxValue()` | → `max()` |
+| `IntProvider#getMinValue()` | → `minInclusive()` |
+| `IntProvider#getMaxValue()` | → `maxInclusive()` |
+| `Player#currentImpulseImpactPos` | → `LivingEntity#currentImpulseImpactPos` |
+| `Brightness#pack()` | → `LightCoordsUtil#pack()` |
+| `Entity#getTags()` | → `entityTags()` |
+| `LivingEntity#canAttackType()` | → `canAttack()`，参数变化 |
+| `LivingEntity#lungeForwardMaybe()` | → `postPiercingAttack()` |
+| `LivingEntity#entityAttackRange()` | → `getAttackRangeWith()` |
+| `BlockBehaviour$BlockStateBase#hasPostProcess()` | → `getPostProcessPos()` |
+| `TreeConfiguration#dirtProvider` | → `belowTrunkProvider` |
+| `TreeConfiguration#forceDirt` | → `belowTrunkProvider`（语义变化）|
+
+### 6.4 移除的类型
+
+| 移除的类型 | 替代方案 |
+|------------|----------|
+| `LootPoolEntryType` | `MapCodec<LootPoolEntryContainer>` |
+| `LootItemFunctionType` | `MapCodec<LootItemFunction>` |
+| `LootItemConditionType` | `MapCodec<LootItemCondition>` |
+| `LootNumberProviderType` | `MapCodec<NumberProvider>` |
+| `LootNbtProviderType` | `MapCodec<NbtProvider>` |
+| `LootScoreProviderType` | `MapCodec<ScoreboardNameProvider>` |
+| `FloatProviderType` | `MapCodec<FloatProvider>` |
+| `IntProviderType` | `MapCodec<IntProvider>` |
+| `CriterionValidator` | `ValidationContextSource` + `Validatable` |
+| `SelectorPattern` | `CompilableString` |
+| `Blocks`（references）| `BlockIds` |
+| `Items`（references）| `ItemIds` |
+| `FOREST_ROCK`（Feature）| `BLOCK_BLOB` |
+| `ICE_SPIKE`（Feature）| `SPIKE` |
+
+### 6.5 新增类型
+
+| 新增类型 | 说明 |
+|----------|------|
+| `Validatable` | 验证接口 |
+| `ValidationContext` | 验证上下文 |
+| `ValidationContextSource` | 验证上下文源 |
+| `FloatProviders` | 所有 vanilla float providers 注册处 |
+| `IntProviders` | 所有 vanilla int providers 注册处 |
+| `VillagerTrade` | 单个村民交易（数据包）|
+| `TradeSet` | 交易集合（数据包）|
+| `CompilableString` | 可编译字符串，替代 `SelectorPattern` |
+| `ResolutionContext` | 组件解析上下文 |
+| `BlockBlobConfiguration` | BlockBlobFeature 配置 |
+
+---
+
+## 7. Pack Changes
+
+用户层面的变化未在本文档中详细讨论，可在 [Misode's version changelog](https://misode.github.io/versions/?id=26.1&tab=changelog) 查看完整列表。
+
+---
+
+## 8. 相关文档
 
 - [NeoForge-入门.md](./NeoForge-入门.md) - 入门配置
 - [NeoForge-服务端-战利品表.md](./NeoForge-服务端-战利品表.md) - 战利品系统（需更新）
