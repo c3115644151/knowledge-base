@@ -214,23 +214,106 @@ public abstract class MixinJungleTemplePiece {
 **症状**：
 - "Cannot register new entries to DeferredRegister after RegisterEvent has been fired"
 - "ExceptionInInitializerError" 包装 IllegalStateException
+- "Trying to access unbound value: ResourceKey[minecraft:block / ...]"（NPE 包装）
+
+**NeoForge 26.1 关键行为**： DeferredRegister 的 `register()` 调用**在类加载时就执行工厂函数**，而非延迟到 RegisterEvent。
+
+即：
+```java
+// 这行代码在类加载时（引用该类时）就执行 factory
+public static final DeferredBlock<Block> BLOCK = BLOCKS.register("x", factory);
+// 不会等到 RelicRegisters.init(bus) 中的 register(bus) 才执行
+```
 
 **常见错误写法**：
 ```java
-// ❌ 错误：static {} 块在类加载时执行，早于 RegisterEvent
-static {
-    SUSPICIOUS_ITEM = ITEMS.register("item", () -> new Item(...));
+// ❌ 错误：在 initBlockEntityType() 中调用 RelicBlocks.BLOCK.get()
+// → 触发 RelicBlocks 类加载 → 静态字段初始化 → BLOCKS.register(factory) → factory 执行
+// → props.setId(ResourceKey.create(...)) → NPE（block 尚未注册到 registry）
+public static void initBlockEntityType() {
+    Set<Block> validBlocks = Set.of(RelicBlocks.SUSPICIOUS_MOSSY_STONE_BRICKS.get()); // ← 触发类加载 + 工厂执行
+    HOLDER = new BlockEntityType<>(..., validBlocks);
+    RelicsBrushableBlock.BLOCK_ENTITY_TYPE = HOLDER;
+}
+```
+
+**正确模式：不在类加载路径上引用 DeferredBlock**
+1. **不在 init() 之前调用 .get()**：任何类加载触发 `.get()` 都会提前执行所有 BLOCKS.register() 工厂
+2. **改为延迟到运行时**：BlockEntityType 在 `newBlockEntity()` 首次调用时创建（此时所有 register(bus) 已完成）
+3. **不在静态初始化路径上引用对方类**：RelicBlockEntities 不在类加载路径上引用 RelicBlocks
+
+**推荐架构（两选一）**：
+
+方案 A：**延迟初始化 BlockEntityType**
+```java
+// RelicsBrushableBlock.java
+public static BlockEntityType<RelicBrushableBlockEntity> BLOCK_ENTITY_TYPE;
+
+@Override
+public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    if (BLOCK_ENTITY_TYPE == null) {
+        // 运行时（首次放置方块时），register(bus) 已完成，安全 .get()
+        var block = RelicBlocks.SUSPICIOUS_MOSSY_STONE_BRICKS.get();
+        BLOCK_ENTITY_TYPE = new BlockEntityType<>((p, s) -> new RelicBrushableBlockEntity(BLOCK_ENTITY_TYPE, p, s), Set.of(block));
+    }
+    return new RelicBrushableBlockEntity(BLOCK_ENTITY_TYPE, pos, state);
 }
 
-// ❌ 错误：静态字段初始化器（<> clinit）
-public static final DeferredItem<Item> ITEM = ITEMS.register("item", () -> new Item(...));
-// 当其他类引用 RelicItems 时会触发类加载，此时 ITEMS 尚未注册到 bus
-
-// ❌ 错误：RelicBlocks 引用 RelicRegisters.ITEMS
-// → RelicBlocks 加载 → RelicRegisters.ITEMS 初始化
-// → RelicItems 加载（引用 RelicRegisters.ITEMS）
-// → 循环依赖，类加载顺序不可控
+// RelicBlockEntities.java：只注册空的 DeferredHolder（lazy 引用 HOLDER）
+static BlockEntityType<RelicBrushableBlockEntity> HOLDER;
+public static final DeferredHolder<...> BET = BLOCK_ENTITY_TYPES.register("...", () -> HOLDER);
+// HOLDER 由 RelicsBrushableBlock 在运行时设置，DeferredHolder 的 lambda 只在 RegisterEvent 时调用
 ```
+
+方案 B：**两阶段初始化（先 Block，再 BET）**
+```java
+// RelicRegisters.init():
+// 1. RelicBlocks.getBlocks() 触发类加载 → BLOCKS.register(factory) 入队
+// 2. BLOCKS.register(bus) → 执行所有 factory → RelicsBrushableBlock 实例化，BLOCK_ENTITY_TYPE 仍 null
+// 3. RelicBlocks.init() → 初始化 BlockItem
+// 4. 设置 BLOCK_ENTITY_TYPE = new BlockEntityType<>(..., Set.of(SUSPICIOUS_MOSSY_STONE_BRICKS.get()))
+// 5. BET.register(bus) → 填入 HOLDER
+```
+
+方案 A 更简洁，推荐使用。
+
+**NeoForge 1.21.11 vs 26.1 对比**：两版本的 `register()` 行为完全相同（类加载时执行工厂），但旧文档中未明确说明此行为，导致错误假设。版本降级不会解决此问题，只需遵循上述正确模式即可。
+
+---
+
+## Entry 1b — BrushableBlock 自定义子类导致 Placement Crash
+
+**根本原因**：Minecraft 的 `BrushableBlock.newBlockEntity()` 方法硬编码创建 vanilla `BrushableBlockEntity`，
+其 BlockEntityType 仅关联 vanilla 可疑方块。放置自定义 BrushableBlock 子类时，
+`BrushableBlockEntity.validBlocks` 检查失败 → `IllegalStateException: Invalid block entity` crash。
+
+**症状**：放置可疑方块时游戏崩溃：
+```
+java.lang.IllegalStateException: Invalid block entity minecraft:brushable_block
+    at BrushableBlock.newBlockEntity(BrushableBlock.java:...)
+```
+
+**修复**：必须创建自定义 `RelicsBrushableBlock extends BrushableBlock` + 自定义 `RelicBrushableBlockEntity`。
+在 `newBlockEntity()` 中使用自定义 BlockEntityType（关联自定义方块本身）。
+
+---
+
+## Entry 1c — BlockEntityType 循环依赖（RelicBlockEntities ↔ RelicBlocks）
+
+**根本原因**：RelicBlockEntities 需要 Set<Block> validBlocks，引用 RelicBlocks；
+但 RelicBlocks 加载时需要执行 BLOCKS.register(factory)，factory 内创建 RelicsBrushableBlock，
+此时如果 RelicBlockEntities.initBlockEntityType() 先执行并调用 `.get()`，会触发双重问题（NPE + 未注册）。
+
+**修复**：不创建预初始化的 BlockEntityType。BlockEntityType 在 `newBlockEntity()` 首次调用时延迟构造：
+```java
+// RelicsBrushableBlock.newBlockEntity()：
+if (BLOCK_ENTITY_TYPE == null) {
+    var block = RelicBlocks.SUSPICIOUS_MOSSY_STONE_BRICKS.get(); // 运行时，安全
+    BLOCK_ENTITY_TYPE = new BlockEntityType<>(factory, Set.of(block));
+}
+```
+
+RelicBlockEntities.java 只保留空的 DeferredHolder 注册（HOLDER 后续被赋值），不调用 `.get()`。
 
 **正确模式：每个注册类持有自己的私有 DeferredRegister**
 ```java
@@ -319,5 +402,131 @@ net.minecraft.world.level.block.state.BlockBehaviour
 
 ---
 
-*沉淀时间：2026-04-20*
+## M1-M2 阶段卡点记录（2026-04-20）
+
+### Entry 8 — BlockItem 使用 `item.` 前缀的 descriptionId（高优先级）
+
+**根本原因**：`BlockItem.getName()` → `Item.descriptionId` 字段，默认值规则为 `item.<modid>.<name>`。
+即使方块的 `descriptionId` 是 `block.relictales.suspicious_mossy_stone_bricks`，
+BlockItem 的描述键仍为 `item.relictales.suspicious_mossy_stone_bricks`。
+
+**症状**：方块放置后，创意栏显示 `block.relictales.suspicious_mossy_stone_bricks`（或显示 raw key）。
+
+**错误认知**：
+- 以为在 `BlockBehaviour.Properties` 上调用 `overrideDescription()` 可以改变 BlockItem 的显示名
+- `descriptionId` 在 `BlockBehaviour` 中是 `private final`，`getDescriptionId()` 是 `final`，无法被子类覆盖
+
+**正确修复**：在语言文件（zh_cn.json / en_us.json）中同时注册 `item.` 前缀的键：
+```json
+// zh_cn.json
+{
+  "itemGroup.relictales": "考古物语",
+  "block.relictales.suspicious_mossy_stone_bricks": "可疑的苔石砖",
+  "item.relictales.suspicious_mossy_stone_bricks": "可疑的苔石砖",
+  "item.relictales.jungle_hunter_feather": "丛林猎羽符"
+}
+```
+
+**无需修改 Java 代码**。Access Transformer 也无法工作（`overrideDescription()` 底层机制不改变 Item 层级）。
+
+---
+
+## Entry 9 — BrushableBlock 自定义 loot 表注入（高优先级）
+
+**根本原因**：使用 `RelicBrushableBlockItem extends BlockItem`，重写 `place()` 放置时将 lootTableId 注入到 BlockEntity。
+plain `BlockItem` 无法携带自定义 loot 表数据。
+
+**症状**：刷取完成但不掉落任何物品（lootTable 未设置）。
+
+**关键 API**：
+- `RelicBrushableBlockItem` 持有 `private String lootTableId` + `setLootTable(String)` 方法
+- `place()` 中从 NBT 读取或使用 `this.lootTableId` 注入 `BlockEntity.setLootTable()`
+- `RelicBrushableBlockItem.setLootTable("relictales:blocks/suspicious_mossy_stone_bricks")`
+
+**正确模式**：
+```java
+// RelicBlocks.init() 中：
+SUSPICIOUS_MOSSY_STONE_BRICKS_ITEM = ITEMS.register(
+    "suspicious_mossy_stone_bricks",
+    id -> {
+        var item = new RelicBrushableBlockItem(
+            SUSPICIOUS_MOSSY_STONE_BRICKS.get(),
+            new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))
+        );
+        item.setLootTable("relictales:blocks/suspicious_mossy_stone_bricks");
+        return item;
+    }
+);
+```
+
+**相关文件**：
+- [RelicBrushableBlockItem.java](src/main/java/com/relictales/content/block/RelicBrushableBlockItem.java)
+- [RelicBrushableBlockEntity.java](src/main/java/com/relictales/content/block/RelicBrushableBlockEntity.java) — `spawnLoot()` 方法
+
+---
+
+## Entry 10 — Item 模型引用 `minecraft:` 纹理但本地纹理存在时的紫黑贴图
+
+**根本原因**：item model JSON 中引用了 `minecraft:item/feather` 和 `minecraft:item/suspicious_sand`，
+但实际上 `relictales:item/` 目录已存在对应 PNG 文件（16x16 程序化生成的灰阶/绿色贴图）。
+引用 `minecraft:` 路径时，游戏找不到正确资源会降级为紫黑缺失纹理。
+
+**症状**：物品在创意栏和世界中显示为紫黑色方块。
+
+**正确修复**：item model JSON 直接引用模组自身纹理（仅在模组已有自定义美术资源时）：
+```json
+// ✅ 正确：引用模组内置纹理（需确认 relictales:item/ 路径存在）
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "relictales:item/jungle_hunter_feather"
+  }
+}
+```
+
+**临时方案（无美术资源时）**：引用原版已有纹理，暂用原版资源顶着：
+```json
+// ✅ 暂用原版羽毛纹理
+{
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "minecraft:item/feather" }
+}
+
+// ✅ 暂用原版可疑砂砾纹理
+{
+  "parent": "minecraft:item/generated",
+  "textures": { "layer0": "minecraft:item/suspicious_sand" }
+}
+
+// ✅ 方块暂用原版可疑砂砾纹理
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": { "all": "minecraft:block/suspicious_gravel" }
+}
+```
+
+**纹理文件位置**：
+- `src/main/resources/assets/relictales/textures/item/jungle_hunter_feather.png`
+- `src/main/resources/assets/relictales/textures/block/suspicious_mossy_stone_bricks.png`
+
+---
+
+## 反编译认知修正流程
+
+> 详见 [CLAUDE.md](../CLAUDE.md) 第十四节 — 反编译认知修正流程（强制执行）
+
+**核心原则**：遇到任何无法通过知识库或文档解决的卡点，立即反编译验证，不要猜测。
+
+**反编译命令**：
+```bash
+./gradlew decompile  # 生成反编译源码到 build/decompiled/
+```
+
+**沉淀两步走**：
+1. 更新 `NeoForge-开发实践勘误.md`（记录 Entry）
+2. 判断是否更新 `CLAUDE.md` 规范表格
+
+---
+
+*沉淀时间：2026-04-21*
 *来源项目：RelicTales (RelicTales)*
