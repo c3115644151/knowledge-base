@@ -517,6 +517,171 @@ SUSPICIOUS_MOSSY_STONE_BRICKS_ITEM = ITEMS.register(
 - `items/` — docs.neoforged.net/docs/resources/client/models/items
 ---
 
+## Entry 11 — Mixin config 路径解析（Windows path separator bug）
+
+**根本原因**：NeoForge ModDevGradle 的 `InDevFolderLocator` 使用 `JarContents.ofPaths()` 创建 `CompositeJarContents`。
+在 Windows 上，`Path.resolve(String)` 不转换正斜杠（`/`），导致 `META-INF/relictales.mixins.json` 被解析为无效路径。
+
+**症状**：
+```
+net.neoforged.fml.ModLoadingException: Loading errors encountered:
+  - A mixin config named relictales.mixins.json was declared in C:/.../build/classes/java/main, but doesn't exist
+```
+
+**错误认知**：
+- 认为 `neoforge.mods.toml` 中 `[[mixins]] config="relictales.mixins.json"` 引用 `META-INF/relictales.mixins.json`
+- 认为 Mixin JSON 必须放在 `META-INF/` 子目录
+
+**正确认知**：
+1. NeoForge 从 **classes 目录的根**读取 mixin JSON（`FolderJarContents` 机制）
+2. Mixin JSON 必须放在 source set 的**根目录**，而不是 `META-INF/` 子目录
+3. `neoforge.mods.toml` 中 `config="${mod_id}.mixins.json"` 直接引用文件名（如 `relictales.mixins.json`），从 classes 根目录解析
+
+**正确文件结构**：
+```
+src/main/resources/
+├── relictales.mixins.json        ← ✅ 根目录
+└── META-INF/
+    └── neoforge.mods.toml        ← Mixin config 不在这里
+```
+
+**build.gradle 配置**：
+```groovy
+tasks.register('copyMixinConfigToClasses', Copy) {
+    from 'src/main/resources'
+    into "${sourceSets.main.output.classesDirs.first()}"  // 复制到 classes 根目录
+    include '*.mixins.json'
+}
+compileJava.dependsOn copyMixinConfigToClasses
+
+afterEvaluate {
+    tasks.named('runClient') { it.dependsOn copyMixinConfigToClasses }
+    tasks.named('jar') { it.dependsOn copyMixinConfigToClasses }
+}
+
+// 处理 JAR 重复条目（META-INF 可能同时出现在 classes 和 resources）
+tasks.named('jar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+```
+
+**neoforge.mods.toml**：
+```toml
+[[mixins]]
+config="${mod_id}.mixins.json"  # 从 classes 根目录解析，不是 META-INF/
+```
+
+---
+
+## Entry 12 — Mixin `Unable to locate obfuscation mapping` 与 `remap = false`
+
+**根本原因**：NeoForge dev 环境（MCP 名称）与生产环境（SRG 名称）的映射脱节。
+Mixin 注解处理器期望 SRG→MCP 映射文件，但 ModDevGradle 环境下这些映射文件可能缺失或版本不匹配。
+
+**症状**：
+```
+Unable to locate obfuscation mapping for @Inject target postProcess
+Critical injection failure: @Inject annotation on relictales$replaceMossyBricks could not find any targets matching 'placeBlock'
+```
+
+**错误认知**：
+- 认为 `remap = true`（默认）是正确的，应该让 Mixin 自动处理映射
+- 认为方法名 `postProcess` 在 dev 环境和生产环境都是有效的
+
+**正确修复**：在 `@Mixin` 和 `@Inject` 上同时添加 `remap = false`：
+```java
+@Mixin(value = JungleTemplePiece.class, remap = false)
+public abstract class MixinJungleTemplePiece {
+
+    @Inject(method = "postProcess", at = @At("TAIL"), remap = false)
+    private void relictales$replaceMossyBricks(..., CallbackInfo ci) {
+        // 直接使用 MCP 名称（dev 环境已反混淆）
+    }
+}
+```
+
+**注意**：
+- `remap = false` 意味着 Mixin 不会重新映射方法名/字段名
+- 仅在 dev 环境（MCP 已反混淆）使用，生产环境（SRG）需要另外处理
+- 对于 ModDevGradle 开发环境，`remap = false` 是正确选择
+
+**Mixing 配置也要确保正确**：
+```json
+{
+  "required": true,
+  "package": "com.relictales.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["MixinJungleTemplePiece"],
+  "injectors": { "defaultRequire": 1 }
+}
+```
+
+---
+
+## Entry 13 — JungleTemplePiece 的 `placeBlock` 方法解析
+
+**根本原因**：`JungleTemplePiece` 本身不定义 `placeBlock` 方法，该方法继承自父类 `StructurePiece`。
+因此 `@Inject(method = "placeBlock", ...)` 无法匹配任何 target。
+
+**症状**：
+```
+Critical injection failure: could not find any targets matching 'placeBlock' in JungleTemplePiece
+```
+
+**正确认知**：
+- `JungleTemplePiece extends ScatteredFeaturePiece extends StructurePiece`
+- `placeBlock()` 在 `StructurePiece` 中定义，`JungleTemplePiece` 未 override
+- Mixin 只能注入**当前类直接定义或继承的方法**，不能注入父类方法（需要 mixin 父类）
+
+**正确注入方法**：使用 `@Inject(method = "postProcess", at = @At("TAIL"))` 拦截 `postProcess`（在结构生成完毕后扫描替换方块）：
+
+```java
+@Mixin(value = JungleTemplePiece.class, remap = false)
+public abstract class MixinJungleTemplePiece {
+
+    @Inject(method = "postProcess", at = @At("TAIL"), remap = false)
+    private void relictales$replaceMossyBricks(
+            WorldGenLevel level,
+            StructureManager structureManager,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BoundingBox boundingBox,
+            ChunkPos chunkPos,
+            BlockPos referencePos,
+            CallbackInfo ci
+    ) {
+        // 后置扫描：postProcess 完成后，遍历 BoundingBox 内的 MOSSY_STONE_BRICKS
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (int x = boundingBox.minX(); x <= boundingBox.maxX(); x++) {
+            for (int y = boundingBox.minY(); y <= boundingBox.maxY(); y++) {
+                for (int z = boundingBox.minZ(); z <= boundingBox.maxZ(); z++) {
+                    mutablePos.set(x, y, z);
+                    if (level.getBlockState(mutablePos).is(Blocks.MOSSY_STONE_BRICKS)) {
+                        level.setBlock(mutablePos,
+                            RelicBlocks.SUSPICIOUS_MOSSY_STONE_BRICKS.get().defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+**`postProcess` 方法签名（MCP 反编译源码）**：
+```java
+public void postProcess(
+    WorldGenLevel level,
+    StructureManager structureManager,
+    ChunkGenerator generator,
+    RandomSource random,
+    BoundingBox chunkBB,
+    ChunkPos chunkPos,
+    BlockPos referencePos  // ← 注意最后一个参数是 BlockPos，不是 BoundingBox
+)
+```
+
+---
+
 ## 反编译认知修正流程
 
 > 详见 [CLAUDE.md](../CLAUDE.md) 第十四节 — 反编译认知修正流程（强制执行）
