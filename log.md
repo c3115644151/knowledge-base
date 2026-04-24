@@ -241,3 +241,21 @@
 ### 同步
 - 更新 index.md 索引
 - 同步到 GitHub
+
+---
+
+## [2026-04-24 12:58] sync | 知识库整理与同步
+
+### 索引更新
+- 更新目录结构图，移除不存在的 docs/ 目录
+- 修正 neoForge 文档数量（52→78个）
+- 新增 fabric/ 目录索引（94个文档）
+- 新增 vibe-coding/ 目录索引
+- 新增 paperclip-docs/ 目录索引
+- 新增 agent-growth/ 目录索引
+- 新增 raw/ 目录索引
+
+### 同步
+- 添加未追踪文件：agent-growth/、raw/
+- 更新 index.md 索引
+- 同步到 GitHub

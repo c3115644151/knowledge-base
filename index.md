@@ -5,13 +5,17 @@
 ```
 知识库/
 ├── reference/              # AI 专用参考文档（批量生成）
-│   ├── neoForge/          # NeoForge API 文档（52个）
+│   ├── neoForge/          # NeoForge API 文档（78个）
+│   ├── fabric/            # Fabric API 文档（94个）
 │   ├── hermes/            # Hermes Agent 文档（47个）
-│   └── minecraft-wiki/    # Minecraft Wiki 知识（23个）
+│   ├── minecraft-wiki/    # Minecraft Wiki 知识（23个）
+│   ├── vibe-coding/       # Vibe Coding 知识库
+│   └── paperclip-docs/    # Paperclip 官方文档
 ├── topics/                 # 个性化知识（交流沉淀）
 │   └── books/             # 读书笔记（5本）
+├── agent-growth/           # Agent 成长记录
+│   └── 惯例.md            # Signal Arena 交易惯例
 ├── raw/                    # 原料知识（待加工）
-├── docs/                   # 开发文档与计划
 ├── index.md               # 本文件
 └── log.md                 # 操作日志
 ```
@@ -198,6 +202,36 @@
 - `hermes-工具集参考` - 工具集配置与管理
 - `hermes-环境变量` - 所有环境变量说明
 
+### fabric/ - Fabric API 文档
+
+版本：Fabric 1.21.x / Loom
+
+> **注**：当前主要使用 NeoForge，Fabric 作为参考保留。
+
+#### 入门与配置
+- `入门` - 环境配置、项目结构、IDE集成
+- `入门-IntelliJ-IDEA` - IDEA 完整配置指南
+- `入门-VSCode` - VSCode 配置指南
+
+#### 核心系统
+- `事件` - 事件系统
+- `命令` - 命令系统
+- `网络` - 客户端/服务端通信
+- `Mixin-字节码` - Mixin 字节码注入
+
+#### 方块与物品
+- `方块` - 方块注册、状态、实体、模型
+- `物品` - 物品注册、模型、交互
+- `实体` - 实体创建、属性、效果
+
+#### 渲染系统
+- `渲染-基础概念` - 渲染架构
+- `渲染-粒子` - 粒子系统
+- `渲染-GUI` - GUI 图形与自定义屏幕
+
+#### 数据生成
+- `数据生成` - 战利品表、物品模型、方块模型、标签、配方、进度、附魔、翻译
+
 ### minecraft-wiki/ - Minecraft Wiki 知识
 
 Minecraft 官方 Wiki 知识库，分类整理。
@@ -280,7 +314,39 @@ Minecraft 官方 Wiki 知识库，分类整理。
 
 ---
 
-## 关键词映射
+## agent-growth/ - Agent 成长记录
+
+Agent 自身成长过程中的惯例、记录与反思。
+
+### Signal Arena 交易惯例
+- `惯例.md` - 盯盘时间、交易决策规则、账户状态记录
+
+---
+
+## raw/ - 原料知识
+
+未经深度加工的原始素材，待后续提炼整理。
+
+### 股票入门
+- `stock-basics.md` - 股票基础概念与交易规则
+
+---
+
+## reference/vibe-coding/ - Vibe Coding 知识库
+
+AI 编程方法论与最佳实践，从人类可读教程转化为 IF-THEN 规则。
+
+> 详见 `reference/vibe-coding/README.md`
+
+---
+
+## reference/paperclip-docs/ - Paperclip 官方文档
+
+Paperclip AI Agent 平台官方文档本地化版本。
+
+> 详见 `reference/paperclip-docs/README.md`
+
+---
 
 | 关键词 | 文档路径 |
 |--------|---------|
