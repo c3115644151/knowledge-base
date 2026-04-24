@@ -36,6 +36,26 @@ Agent 自动发现的配置文件，影响特定项目/目录的行为：
 @https://example.com/doc
 ```
 
+#### TUI Fuzzy Match (2026.4.23+)
+
+TUI 界面支持 `@file:` 和 `@folder:` fuzzy match 功能：
+
+| 引用 | 说明 |
+|------|------|
+| `@file:<name>` | Fuzzy 搜索仓库中的文件 |
+| `@folder:<name>` | Fuzzy 搜索仓库中的目录 |
+| `@diff` | Git diff |
+| `@staged` | Staged changes |
+| `@git:` | Git log |
+
+**路径作用域**: 路径相对于当前工作目录 (cwd)，自动排除父目录和同级目录。
+
+```
+# 在 apps/web/ 目录下
+@file:src/foo.tsx  → 引用 apps/web/src/foo.tsx
+@folder:components   → 列出 components 目录
+```
+
 ### 4. 检查点 (Checkpoints)
 
 自动快照工作目录，支持回滚：

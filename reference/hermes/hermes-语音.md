@@ -161,3 +161,47 @@ VOICE_TOOLS_OPENAI_KEY=... # OpenAI Whisper
 ELEVENLABS_API_KEY=***     # ElevenLabs
 # VOICE_TOOLS_OPENAI_KEY above also enables OpenAI TTS
 ```
+
+## TUI 语音模式 (2026.4.23+)
+
+TUI 界面新增完整的语音交互支持，与 CLI 语音模式完全兼容。
+
+### Gateway JSON-RPC API
+
+```javascript
+// voice.toggle
+gateway.call("voice.toggle", { action: "status|on|off|tts" })
+
+// voice.record
+gateway.call("voice.record", { action: "start|stop", session_id: "..." })
+```
+
+### voice.toggle 子命令
+
+| 子命令 | 说明 |
+|--------|------|
+| `status` | 返回模式状态、TTS 开关、STT/TTS provider 可用性 |
+| `on` | 启用语音模式 (运行时标志，不持久化) |
+| `off` | 禁用语音模式，自动停止录音循环 |
+| `tts` | 切换 TTS 回复 (需要先启用语音模式) |
+
+### voice.record 行为
+
+- **VAD 连续录音**: 检测到语音后自动录音，静音后自动停止
+- **三次连续静音**: 自动停止录音循环
+- **自动重启**: 每次转录完成后自动开始下一轮录音
+- **事件**: `voice.transcript` (转录文本)、`voice.status` (状态变化)、`no_speech_limit` (静默限制)
+
+### TTS 回复
+
+启用后，Agent 的最终回复会自动通过 TTS 朗读 (工具调用和推理过程不朗读)。
+
+### 语音相关日志
+
+Gateway crash 日志: `~/.hermes/logs/tui_gateway_crash.log`
+
+### 调试模式
+
+```bash
+HERMES_VOICE_DEBUG=1 hermes --tui
+```
