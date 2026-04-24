@@ -45,14 +45,30 @@ public static final DeferredItem<Item> MY_ITEM = ITEMS.register(
 | 方法 | 说明 |
 |------|------|
 | `setId()` | 设置资源键（**必须**） |
+| `overrideDescription()` | 设置物品翻译键，存储在 `DataComponents#ITEM_NAME` |
+| `useBlockDescriptionPrefix()` | 便捷方法，调用 `overrideDescription` 设置方块翻译键 |
+| `requiredFeatures()` | 设置所需特性标志（用于版本特性锁定） |
 | `stacksTo(int)` | 最大堆叠数（默认64） |
 | `durability(int)` | 耐久度（设置后堆叠数自动变为1） |
-| `fireResistant()` | 防火属性 |
+| `fireResistant()` | 防火属性（通过 `DataComponents#FIRE_RESISTANT`） |
 | `rarity(Rarity)` | 稀有度（COMMON/UNCOMMON/RARE/EPIC） |
+| `setNoCombineRepair()` | 禁用砂轮和合成台修复 |
+| `jukeboxPlayable()` | 设置唱片机播放的数据包 `JukeboxSong` 资源键 |
 | `food(FoodProperties)` | 食物属性 |
 | `craftRemainder(Item)` | 合成后残留物 |
-| `useCooldown(double)` | 使用冷却时间（秒） |
-| `usingConvertsTo(Item)` | 使用后转换物品 |
+| `useCooldown(double)` | 使用冷却时间（秒，通过 `DataComponents#USE_COOLDOWN`） |
+| `usingConvertsTo(Item)` | 使用后转换物品（存储在 `DataComponents#USE_REMAINDER`） |
+| `enchantable(int)` | 设置最大附魔值（通过 `DataComponents#ENCHANTABLE`） |
+| `repairable()` | 设置修复物品或标签（通过 `DataComponents#REPAIRABLE`） |
+| `equippable()` | 设置可装备槽位（通过 `DataComponents#EQUIPPABLE`） |
+| `equippableUnswappable()` | 同上，但禁用快捷交换 |
+
+### 工具和护甲额外属性
+
+- `enchantable` - 设置最大附魔值，允许物品被附魔
+- `repairable` - 设置可用于修复耐久度的物品或标签
+- `equippable` - 设置物品可装备到的槽位
+- `equippableUnswappable` - 同上，但禁用使用物品按钮的快速交换
 
 ### 食物属性
 
