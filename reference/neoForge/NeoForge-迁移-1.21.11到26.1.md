@@ -596,7 +596,30 @@ public static final VillagerProfession EXAMPLE = Registry.register(
 
 ## 7. Pack Changes
 
-用户层面的变化未在本文档中详细讨论，可在 [Misode's version changelog](https://misode.github.io/versions/?id=26.1&tab=changelog) 查看完整列表。
+### 7.1 数据包目录单数化
+
+26.1 将大部分数据包目录从复数形式改为单数形式。**这是 DLC（Data Loading Change）层面的破坏性变更**，不改变 Java API，但改变资源路径。
+
+| 目录 | 1.21.11（旧） | 26.1（新） |
+|------|--------------|-----------|
+| 战利品表 | `loot_tables/` | **`loot_table/`** |
+| 进度 | `advancements/` | **`advancement/`** |
+| 配方 | `recipes/` | **`recipe/`** |
+
+**影响**：所有 `data/<namespace>/loot_tables/` 下的 JSON 文件必须移动到 `data/<namespace>/loot_table/`。在旧路径下的文件不会被加载，导致战利品表不生效且无日志错误。
+
+**正确的资源路径示例**：
+```
+# ✅ 26.1 正确路径
+src/main/resources/data/relictales/loot_table/blocks/suspicious_mossy_cobblestone.json
+
+# ❌ 1.21.11 旧路径（26.1 不会加载）
+src/main/resources/data/relictales/loot_tables/blocks/suspicious_mossy_cobblestone.json
+```
+
+### 7.2 完整变更列表
+
+可在 [Misode's version changelog](https://misode.github.io/versions/?id=26.1&tab=changelog) 查看完整列表。
 
 ---
 

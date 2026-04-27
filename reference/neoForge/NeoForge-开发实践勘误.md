@@ -682,6 +682,355 @@ public void postProcess(
 
 ---
 
+---
+## Entry 14 — MC 26.1 战利品表目录路径变更：`loot_tables/` → `loot_table/`（高优先级）
+
+**根本原因**：Minecraft 26.1 将数据包中的战利品表目录从复数 `loot_tables/` 改为单数 `loot_table/`。这是一个 DLC（Data Loading Change）层面的破坏性变更，与 Java API 无关。
+
+**症状**：考古可疑方块刷取完成后不产生任何掉落物。日志无错误，`setLootTable()` 成功设置 ResourceKey，但 `dropContent()` 找不到战利品表，返回空物品。
+
+**错误认知**：
+- 认为目录名仍然是 `data/<namespace>/loot_tables/`（1.21.11 的路径）
+- 查找 MC 26.1 变更文档时忽略了 DLC（Data Loading Change）层面的目录变更
+
+**正确认知**：
+
+| 版本 | 战利品表目录 | 其他数据包目录变化 |
+|------|-------------|-------------------|
+| 1.21.11 | `data/<ns>/loot_tables/`（复数） | `advancements/`, `recipes/` 等 |
+| 26.1 | **`data/<ns>/loot_table/`**（单数） | `advancement/`, `recipe/` 等也改为单数 |
+
+**验证方法**：
+1. 反编译 `LootTable` 相关加载代码确认路径
+2. 查看原版资源包路径：`assets/minecraft/loot_table/`（空目录存在）
+3. 检查 `BuiltInRegistries.LOOT_TABLE` 注册表是否包含自定义资源键
+
+**正确文件位置**：
+```
+# ✅ 26.1 正确路径
+src/main/resources/data/relictales/loot_table/blocks/suspicious_mossy_cobblestone.json
+
+# ❌ 1.21.11 旧路径（26.1 不加载）
+src/main/resources/data/relictales/loot_tables/blocks/suspicious_mossy_cobblestone.json
+```
+
+**迁移注意**：不仅是 `loot_table/`，其它数据包目录也在 26.1 中改为单数形式。检查 `NeoForge-迁移-1.21.11到26.1.md` 第 7 节 Pack Changes。
+
+---
+
+## Entry 15 — 考古战利品表格式（Archaeology Loot Table）独立于方块战利品表（高优先级）
+
+**根本原因**：考古使用的 `BrushableBlockEntity` 在 `unpackLootTable()` 中通过 `LootContextParamSets.ARCHAEOLOGY` 参数集加载战利品表。方块类型的战利品表（`type: minecraft:block`）使用 `LootContextParamSets.BLOCK` 参数集，两者完全独立。
+
+**症状**：设置了 lootTable ResourceKey 但仍无法掉落物品。战利品表 JSON 使用 `"type": "minecraft:block"` 格式，但考古系统期望的是 `"type": "minecraft:archaeology"` 格式。
+
+**错误认知**：
+- 认为考古可疑方块使用普通的方块掉落表（`type: minecraft:block`）
+- 把考古战利品表格式与普通方块/实体战利品表混为一谈
+- 认为 pool 中的 conditions（如 `survives_explosion`）对考古类型有效
+
+**正确认知**：
+
+### 考古战利品表的特殊要求
+
+| 属性 | 方块战利品表 | 考古战利品表 |
+|------|-------------|-------------|
+| `type` | `minecraft:block` | **`minecraft:archaeology`** |
+| 上下文参数集 | `LootContextParamSets.BLOCK` | `LootContextParamSets.ARCHAEOLOGY` |
+| `rolls` 类型 | int 或 `NumberProvider` | **float**（如 `1.0`、`{ "min": 1.0, "max": 3.0 }`）|
+| pool conditions | 支持 | **不支持**（`LootContextParamSets.ARCHAEOLOGY` 无上下文参数）|
+| `random_sequence` | 可选 | **建议显式设置** |
+| `bonus_rolls` | 支持 | 通常为 `0.0` |
+
+### 正确格式
+
+```json
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "relictales:jungle_hunter_feather", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:bone", "weight": 2 },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 1 }
+      ]
+    }
+  ],
+  "random_sequence": "relictales:blocks/suspicious_mossy_cobblestone"
+}
+```
+
+### 关键区别（vs 方块战利品表）
+1. `rolls` 使用 **float** 而非 int/int provider（`1.0` 而非 `1`）
+2. **不能**有 pool level conditions（如 `survives_explosion`），因为 ARCHAEOLOGY 参数集没有 `DamageSource` 等上下文
+3. 使用 `entries[].weight` 权重系统（而非 `entries[].functions`）
+4. `type` 必须为 `minecraft:archaeology`
+
+### 反编译证据
+
+- `BrushableBlockEntity.unpackLootTable()` L194-203：调用 `this.level.getServer().reloadableRegistries().getLootTable(this.lootTable)`，然后 `lootTable.getRandomItems(paramsBuilder.create(LootContextParamSets.ARCHAEOLOGY))`
+- `LootContextParamSets.ARCHAEOLOGY`：定义在 `LootContextParamSets` 中，参数集为 `EMPTY`（无参数）
+
+---
+
+## Entry 16 — BrushableBlockEntity 内部生命周期与刷取流程（核心溯源）
+
+**根本原因**：在调试刷取不掉物的问题时，必须理解 `BrushableBlockEntity` 的内部状态机流转。通过 javap 反编译字节码核验了完整生命周期。
+
+**相关类**：`net.minecraft.world.level.block.entity.BrushableBlockEntity`
+
+### 核心状态字段
+
+| 字段 | 类型 | 作用 |
+|------|------|------|
+| `lootTable` | `ResourceKey<LootTable>` | 战利品表引用（可为 null） |
+| `lootTableSeed` | `long` | 随机种子 |
+| `brushCount` | `int` | 已刷次数，达到 `REQUIRED_BRUSHES_TO_BREAK` 即完成 |
+| `item` | `ItemStack` | 当前刷取进度显示的物品（客户端渲染） |
+| `hitDirection` | `Direction` | 刷取方向（影响粒子效果） |
+
+### 刷取方法签名（26.1）
+
+```java
+public void brush(long tick, ServerLevel level, LivingEntity entity, Direction hitDir, ItemStack brushStack) {
+    // 1. unpackLootTable() 首次调用 — 从 lootTable 生成 this.item
+    // 2. brushCount++
+    // 3. 检查 brushCount >= REQUIRED_BRUSHES_TO_BREAK (=10)
+    //     → brushingCompleted(level, entity, brushStack)
+    //     → 内部调用 dropContent(level, entity, brushStack)
+    // 4. checkReset() — 长期不刷则重置
+}
+```
+
+### 完整调用链
+
+```
+brush(long, ServerLevel, LivingEntity, Direction, ItemStack)
+  ├─ unpackLootTable(ServerLevel, LivingEntity, ItemStack)
+  │    └─ level.getServer().reloadableRegistries().getLootTable(this.lootTable)
+  │         └─ 如果 lootTable == null → 跳过，使用已有的 this.item
+  │    └─ lootTable.getRandomItems(paramsBuilder.create(ARCHAEOLOGY))
+  │    └─ 将结果写入 this.item
+  │
+  ├─ brushCount++  ← 在 unpackLootTable 之后递增
+  │
+  ├─ if (brushCount >= REQUIRED_BRUSHES_TO_BREAK)  // REQUIRED_BRUSHES_TO_BREAK = 10
+  │    └─ brushingCompleted(ServerLevel, LivingEntity, ItemStack)
+  │         └─ dropContent(ServerLevel, LivingEntity, ItemStack)
+  │              ├─ unpackLootTable(level, entity, brushStack)  // 再次调用，检查 lootTable 是否 null
+  │              │    └─ 如果 lootTable != null: 读取战利品表，更新 this.item
+  │              │    └─ 如果 lootTable == null: skip，保持已有 this.item
+  │              ├─ if (this.item.isEmpty()) → skip
+  │              ├─ ItemEntity itemEntity = new ItemEntity(...)
+  │              ├─ level.addFreshEntity(itemEntity)  ← 将实体加入待处理队列
+  │              ├─ ItemStack.split(int) → 减少 count
+  │              └─ this.item = ItemStack.EMPTY  ← 清空进度物品
+  │
+  └─ checkReset() — 如果 brushCount 长时间未增加，重置回初始状态
+```
+
+### 关键常量
+
+```java
+public static final int REQUIRED_BRUSHES_TO_BREAK = 10;  // 刷取完成需要的次数
+```
+
+### 刷取进度更新的时序
+
+每次调用 `brush()` 时发生的更新（按顺序）：
+1. 首次调用 `unpackLootTable()` — 读取战利品表，设置 `this.item`（客户端可见进度物品）
+2. `brushCount++`
+3. 达到 `REQUIRED_BRUSHES_TO_BREAK` → 掉落物品
+4. 每次 `brush()` 调用后，`LevelRenderer` 会收到更新并渲染 `this.item` 的显示
+
+### 调试验证关键
+
+- `brushCount` 从 0 开始，到 `>= REQUIRED_BRUSHES_TO_BREAK(10)` 触发完成
+- 测试中可以使用 `Accessor` 快速设置 `brushCount=100` 以绕过等待
+- `addFreshEntity()` 将物品放入**待处理队列**，同一 tick 的实体查询**不会找到**
+- `REQUIRED_BRUSHES_TO_BREAK` 是**硬编码 10**，不是可配置值
+
+---
+
+## Entry 17 — 游戏测试（GameTest Framework）中实体检测陷阱
+
+**根本原因**：游戏测试框架的 GameTestHelper 提供便捷方法如 `setBlock()`、`getBlockEntity()` 处理相对坐标，但其他 API（如 `level.getEntitiesOfClass()`）使用绝对世界坐标。错误混用会导致检测不到实体。
+
+**涉及文件**：`src/main/java/com/relictales/test/RelicBrushInteractionTest.java`
+
+### 陷阱 1：绝对坐标 vs 相对坐标
+
+**GameTestHelper 的方法**：
+| 方法 | 坐标类型 | 说明 |
+|------|---------|------|
+| `helper.setBlock(pos)` | 相对 | `(0, 2, 0)` = 相对于测试结构原点 |
+| `helper.getBlockEntity(pos)` | 相对 | 同上 |
+| `helper.getBlockState(pos)` | 相对 | 同上 |
+| `helper.spawn(entity, pos)` | 相对 | 同上 |
+| `level.getEntitiesOfClass(AABB)` | **绝对** | 使用世界绝对坐标 |
+
+**错误写法**：
+```java
+// ❌ pos 是相对坐标 (0, 2, 0)，但 getEntitiesOfClass 需要绝对坐标
+BlockPos pos = new BlockPos(0, 2, 0);
+var items = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(3.0));
+```
+
+**正确写法**：
+```java
+// ✅ 从 BlockEntity 获取绝对坐标
+BlockPos worldPos = be.getBlockPos();  // 绝对坐标（由 GameTestHelper 设置）
+var items = level.getEntitiesOfClass(ItemEntity.class, new AABB(worldPos).inflate(3.0));
+```
+
+**或使用 helper 的绝对坐标转换**：
+```java
+BlockPos absolutePos = helper.absolutePos(new BlockPos(0, 2, 0));
+```
+
+### 陷阱 2：`addFreshEntity()` 待处理队列延迟
+
+**根本原因**：`ServerLevel.addFreshEntity()` 不立即将实体添加到实体列表。实体被放入**待处理队列**（pending queue），在同一 tick 结束时才实际添加。因此，`brush()` 调用**同一 tick** 无法找到掉落物实体。
+
+**错误写法**：
+```java
+be.brush(tick, level, brusher, Direction.UP, brushStack);
+// ❌ 实体还在 pending queue，找不到
+var items = level.getEntitiesOfClass(ItemEntity.class, ...);
+if (items.isEmpty()) helper.fail("No loot!");
+```
+
+**正确写法**（延迟 1 tick）：
+```java
+be.brush(tick, level, brusher, Direction.UP, brushStack);
+
+// 写操作在同一 tick，读操作延迟到下一 tick
+helper.runAfterDelay(1, () -> {
+    var items = level.getEntitiesOfClass(ItemEntity.class, new AABB(worldPos).inflate(3.0));
+    if (items.isEmpty()) helper.fail("No loot!");
+    else helper.succeed();
+});
+```
+
+### 陷阱 3：Vanilla REQUIRED_BRUSHES_TO_BREAK = 10（非 100）
+
+**重要**：`BrushableBlockEntity.REQUIRED_BRUSHES_TO_BREAK` 在 Minecraft 26.1 中为 **10**。设置 `brushCount = 100` 可确保一次 `brush()` 调用即触发完成。不需要设置 `REQUIRED_BRUSHES_TO_BREAK` 本身（它是 `static final`）。
+
+### 正确测试模式
+
+```java
+// ✅ 完整刷取测试模式
+helper.setBlock(pos, ModBlocks.CUSTOM_SUSPICIOUS_BLOCK.get());
+helper.runAfterDelay(5, () -> {
+    BrushableBlockEntity be = helper.getBlockEntity(pos, BrushableBlockEntity.class);
+    BrushableBlockEntityAccessor acc = (BrushableBlockEntityAccessor) be;
+
+    // 设置战利品表和刷取状态
+    acc.setLootTable(TEST_LOOT_KEY);
+    acc.setBrushCount(100);         // > REQUIRED_BRUSHES_TO_BREAK (10)
+    acc.setHitDirection(Direction.UP);
+
+    ServerLevel level = (ServerLevel) helper.getLevel();
+    LivingEntity brusher = (LivingEntity) helper.spawn(EntityType.COW, pos.above());
+    be.brush(level.getGameTime(), level, brusher, Direction.UP, new ItemStack(Items.BRUSH));
+
+    // 1. 方块替换检查（立即）
+    if (!helper.getBlockState(pos).is(Blocks.BASE_BLOCK)) { helper.fail("Block not converted!"); return; }
+
+    // 2. 物品检测（延迟 1 tick）
+    BlockPos worldPos = be.getBlockPos();
+    helper.runAfterDelay(1, () -> {
+        var items = level.getEntitiesOfClass(ItemEntity.class, new AABB(worldPos).inflate(3.0));
+        if (items.isEmpty()) { helper.fail("No loot!"); return; }
+        helper.succeed();
+    });
+});
+```
+
+---
+
+## Entry 18 — `FunctionGameTestInstance` 程序化注册模式（M2 新增）
+
+**根本原因**：NeoForge 26.1 游戏测试框架需要显式的程序化注册。仅通过 `DeferredRegister<Consumer<GameTestHelper>>` 注册 lambda 不足，还需在 `RegisterGameTestsEvent` 中创建 `FunctionGameTestInstance`。
+
+### 正确注册模式（三步）
+
+**Step 1 — 定义测试函数**：
+```java
+public static final DeferredRegister<Consumer<GameTestHelper>> TEST_FUNCTIONS =
+    DeferredRegister.create(Registries.TEST_FUNCTION, RelicTales.MOD_ID);
+
+private static DeferredHolder<Consumer<GameTestHelper>, Consumer<GameTestHelper>> TEST1;
+
+static {
+    TEST1 = TEST_FUNCTIONS.register("test_name", () -> helper -> {
+        // 测试逻辑
+    });
+}
+```
+
+**Step 2 — 注册到 EventBus**：
+```java
+public static void register(IEventBus bus) {
+    TEST_FUNCTIONS.register(bus);
+    bus.addListener(RegisterGameTestsEvent.class, MyClass::onRegisterGameTests);
+}
+```
+
+**Step 3 — 创建 `FunctionGameTestInstance`**：
+```java
+private static void onRegisterGameTests(RegisterGameTestsEvent event) {
+    // 创建测试环境定义
+    Holder<TestEnvironmentDefinition<?>> defaultEnv = event.registerEnvironment(
+        Identifier.fromNamespaceAndPath(MOD_ID, "default"),
+        new TestEnvironmentDefinition.AllOf()
+    );
+
+    // 创建 TestData
+    TestData<Holder<TestEnvironmentDefinition<?>>> testData = new TestData<>(
+        defaultEnv,
+        Identifier.fromNamespaceAndPath("minecraft", "empty"),  // 结构
+        100,      // maxTicks
+        5,        // setupTicks
+        true      // required
+    );
+
+    // 创建 FunctionGameTestInstance（包装 DeferredHolder 的 key）
+    FunctionGameTestInstance instance = new FunctionGameTestInstance(
+        TEST1.getKey(),  // 引用 DeferredHolder 的 ResourceKey
+        testData
+    );
+
+    // 注册测试
+    event.registerTest(
+        Identifier.fromNamespaceAndPath(MOD_ID, "test_name"),
+        instance
+    );
+}
+```
+
+### 关键 API 说明
+
+| 类型 | 作用 |
+|------|------|
+| `TestEnvironmentDefinition.AllOf` | 空环境定义（适用于不需要特殊游戏规则的测试） |
+| `FunctionGameTestInstance` | 包装一个 `Consumer<GameTestHelper>` 作为游戏测试实例 |
+| `TestData` | 包含环境、结构、超时时间等测试元数据 |
+| `DeferredHolder.getKey()` | 返回 `ResourceKey`，用于在 RegisterGameTestsEvent 中引用 |
+| `RegisterGameTestsEvent.registerEnvironment()` | 注册自定义测试环境 |
+| `RegisterGameTestsEvent.registerTest()` | 注册单个测试实例 |
+
+### 注意事项
+
+1. `FunctionGameTestInstance` 构造函数的第一个参数是 `Holder.Reference<Consumer<GameTestHelper>>`，使用 `TEST1.getKey()` 转换为 `ResourceKey` 后由框架自动解析
+2. `TestData` 中的 `maxTicks` 设定测试超时，刷取测试需要足够时间（建议 120+ ticks）
+3. 测试结构使用 `minecraft:empty` 空结构（不需要 NBT 文件）
+4. `setupTicks` 用于在测试开始前等待方块/实体 Tick
+
+---
+
 ## 反编译认知修正流程
 
 > 详见 [CLAUDE.md](../CLAUDE.md) 第十四节 — 反编译认知修正流程（强制执行）

@@ -335,6 +335,48 @@ for (ItemStack drop : drops) {
 
 ---
 
+## 考古战利品表（Archaeology）
+
+> **重要**：考古战利品表与方块/实体战利品表**完全独立**。BrushableBlockEntity 在刷取完成时使用 `LootContextParamSets.ARCHAEOLOGY` 参数集加载战利品表。
+
+### 考古战利品表 vs 普通战利品表
+
+| 属性 | 方块战利品表 | 考古战利品表 |
+|------|-------------|-------------|
+| `type` | `minecraft:block` | **`minecraft:archaeology`** |
+| 上下文参数集 | `LootContextParamSets.BLOCK` | `LootContextParamSets.ARCHAEOLOGY` |
+| `rolls` 类型 | int 或 `NumberProvider` | **float**（如 `1.0`） |
+| pool conditions | 支持 | **不支持**（ARCHAEOLOGY 参数集为空） |
+| `random_sequence` | 可选 | **建议显式设置** |
+
+### 正确格式
+
+```json
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:bone", "weight": 2 }
+      ]
+    }
+  ],
+  "random_sequence": "relictales:blocks/suspicious_mossy_cobblestone"
+}
+```
+
+### 注意事项
+
+1. `rolls` 使用 **float** 值（`1.0`），不是 int（`1`）
+2. **不能**包含 pool level conditions（如 `survives_explosion`）
+3. 文件路径：`data/<namespace>/loot_table/blocks/<name>.json`
+4. 由 `BrushableBlockEntity.unpackLootTable()` 在内部加载，不需要手动调用
+
+---
+
 ## 注意事项
 
 ### 性能考虑

@@ -359,6 +359,65 @@ public class MyBlockEntity extends BlockEntity implements Container {
 
 ---
 
+## BrushableBlockEntity 内部生命周期
+
+> **适用版本**：Minecraft 26.1.1 / NeoForge 26.1.x
+> **源类**：`net.minecraft.world.level.block.entity.BrushableBlockEntity`
+
+### 核心说明
+
+`BrushableBlockEntity` 是 Minecraft 考古系统的核心方块实体。它是 `BlockEntity` 的子类，不实现 `EntityBlock` 接口，也不需要自定义 Ticker。刷取逻辑由 `BrushableBlock.onUse()` 调用 `BrushableBlockEntity.brush()` 触发。
+
+### 关键字段
+
+| 字段 | 类型 | 作用 |
+|------|------|------|
+| `lootTable` | `ResourceKey<LootTable>` | 战利品表引用（可为 null） |
+| `lootTableSeed` | `long` | 随机种子 |
+| `brushCount` | `int` | 已刷次数 |
+| `REQUIRED_BRUSHES_TO_BREAK` | `static final int = 10` | 完成刷取所需次数 |
+| `item` | `ItemStack` | 当前刷取进度显示的物品（客户端渲染） |
+| `hitDirection` | `Direction` | 刷取方向 |
+
+### 刷取调用链
+
+```
+brush(long, ServerLevel, LivingEntity, Direction, ItemStack)
+  ├─ unpackLootTable(ServerLevel, LivingEntity, ItemStack)
+  │    └─ level.getServer().reloadableRegistries().getLootTable(this.lootTable)
+  │    └─ lootTable.getRandomItems(paramsBuilder.create(ARCHAEOLOGY))
+  │    └─ 将结果写入 this.item
+  │
+  ├─ brushCount++
+  │
+  ├─ if (brushCount >= REQUIRED_BRUSHES_TO_BREAK(10))
+  │    └─ brushingCompleted(ServerLevel, LivingEntity, ItemStack)
+  │         └─ dropContent(ServerLevel, LivingEntity, ItemStack)
+  │              ├─ unpackLootTable()  // 再次调用，核验 lootTable
+  │              ├─ new ItemEntity(...) + level.addFreshEntity(...)
+  │              └─ this.item = ItemStack.EMPTY
+  │
+  └─ checkReset()
+```
+
+### 自定义 BlockEntity 继承模式
+
+由于 `BrushableBlock.newBlockEntity()` 硬编码创建 vanilla `BrushableBlockEntity`（见 Entry 1b），自定义可疑方块必须：
+
+1. 创建自定义 BlockEntity 子类
+2. 创建自定义 Block 子类重写 `newBlockEntity()`
+3. 使用延迟初始化的自定义 `BlockEntityType`
+
+详见 [NeoForge-开发实践勘误.md](./NeoForge-开发实践勘误.md) Entry 1b 和 Entry 1c。
+
+### 注意事项
+
+- `addFreshEntity()` 将物品实体放入**待处理队列**，同一 tick 不会出现在实体列表中
+- `REQUIRED_BRUSHES_TO_BREAK` 为硬编码 10（非可配置值）
+- 自定义 BlockEntity 需要在 `BrushableBlockEntity` 的 `validBlocks` 中包含自定义方块（通过 `BlockEntityTypeAddBlocksEvent`）
+
+---
+
 ## 常见问题
 
 ### 获取 BlockEntity
