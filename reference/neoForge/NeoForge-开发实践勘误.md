@@ -1031,7 +1031,113 @@ private static void onRegisterGameTests(RegisterGameTestsEvent event) {
 
 ---
 
-## 反编译认知修正流程
+## Entry 19 — `BrushableBlock.tick()` 内置重力坠落逻辑（M2）
+
+**根本原因**：`BrushableBlock` 的 `tick()` 方法除了调用 `brushable.checkReset(level)` 衰减刷取计数外，还会在下方为空时主动生成 `FallingBlockEntity`。这不是 `FallingBlock` 类的行为，而是 `BrushableBlock` 自身实现的。
+
+**症状**：自定义的可疑方块（继承 `BrushableBlock`）在放入遗迹结构后 2 tick，自动坠落为掉落物。
+
+**错误认知**：认为 `BrushableBlock` 没有重力行为，重力只存在于 `FallingBlock` 继承体系中。
+
+**正确认知**：`BrushableBlock.tick()` (26.1) 的完整逻辑：
+```java
+public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    BlockEntity be = level.getBlockEntity(pos);
+    if (be instanceof BrushableBlockEntity brushable) {
+        brushable.checkReset(level);
+    }
+    // ⚠️ brushable 沙砾/沙子的重力逻辑在此！
+    if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinY()) {
+        FallingBlockEntity falling = FallingBlockEntity.fall(level, pos, state);
+        falling.disableDrop();
+    }
+}
+```
+
+这个设计是因为原版的 `suspicious_sand` 和 `suspicious_gravel` 需要继承基础沙/砂砾的重力行为，但 `BrushableBlock` 不能 extends `FallingBlock`，所以把重力逻辑实现在了 `tick()` 里。
+
+**修复方案**：自定义子类必须重写 `tick()` 以跳过坠落逻辑：
+```java
+@Override
+public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    BlockEntity be = level.getBlockEntity(pos);
+    if (be instanceof RelicBrushableBlockEntity brushable) {
+        brushable.checkReset(level);
+    }
+    // 跳过 FallingBlockEntity.fall() — 我们的方块不坠落
+}
+```
+
+**触发时序**：`BrushableBlock` 有以下 4 种方式触发 `tick()`：
+| 触发方式 | 方法 | 延迟 |
+|---|---|---|
+| 方块放入世界 | `onPlace()` → `scheduleTick(pos, this, 2)` | 2 ticks |
+| 邻居方块变化 | `updateShape()` → `scheduleTick()` | 2 ticks |
+| 每次刷取后（未完成） | `BrushableBlockEntity.brush()` → `scheduleTick()` | 2 ticks |
+| `checkReset()` 超时重置 | `checkReset()` → `scheduleTick()` | 2 ticks |
+
+**反编译证据**：`net.minecraft.world.level.block.BrushableBlock.tick()` (26.1.1 client jar)
+
+---
+
+## Entry 20 — `brushingCompleted()` 音效与粒子行为（M2）
+
+**根本原因**：刷取完成时只有一种音效（`brushCompletedSound`），没有方块破坏音效。
+
+**症状**：误以为刷取完成时有双重音效。
+
+**正确认知**：`brushingCompleted()` 的完整流程：
+1. `dropContent()` — 掉落战利品（无声）
+2. `level.levelEvent(3008, pos, Block.getId(state))` — 播放刷取完成音效 + 生成方块破坏粒子（视觉上看起来像方块碎裂，但没有声音）
+3. `level.setBlock(pos, turnsInto.defaultBlockState(), 3)` — 替换方块（flag 3 = BLOCK_UPDATE + SYNC_CLIENTS，不发声音）
+
+客户端对 event 3008 的处理：
+1. 从方块 ID 获取方块状态
+2. 如果是 `BrushableBlock`，调用 `getBrushCompletedSound()` 播放音效
+3. 调用 `addDestroyBlockEffect()` 生成破碎粒子（仅视觉）
+
+**结论**：自定义方块的刷取音效通过 `brushCompletedSound` 参数控制，唯一的音效来源。
+
+**反编译证据**：`net.minecraft.world.level.block.entity.BrushableBlockEntity.brushingCompleted()` (26.1.1) + `net.minecraft.client.multiplayer.ClientLevel.levelEvent()` 3008 handler
+
+---
+
+## Entry 21 — `BrushableBlock.animateTick()` 落下粉尘粒子（M2）
+
+**根本原因**：`BrushableBlock` 重写了 `animateTick()`，当方块下方为空时，每 tick 有 1/16 概率生成 `FALLING_DUST` 粒子（使用方块自身纹理）。
+
+**症状**：自定义的可疑方块悬空放置时，底部出现白色粉尘粒子（使用方块纹理渲染），视觉效果与沙子的悬浮粒子完全相同。
+
+**正确认知**：`BrushableBlock.animateTick()` (26.1.1) 的完整逻辑：
+```java
+@Override
+public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+    if (random.nextInt(16) == 0) {
+        BlockPos below = pos.below();
+        if (FallingBlock.isFree(level.getBlockState(below))) {
+            double x = pos.getX() + random.nextDouble();
+            double y = pos.getY() - 0.05;
+            double z = pos.getZ() + random.nextDouble();
+            level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
+                x, y, z, 0.0, 0.0, 0.0);
+        }
+    }
+}
+```
+
+粒子使用 `new BlockParticleOption(ParticleTypes.FALLING_DUST, state)`，其中 `state` 是方块自身的 BlockState。所以粒子颜色和纹理取决于自定义方块的材质。
+
+**修复方案**：重写 `animateTick()` 为空方法：
+```java
+@Override
+public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+    // 不调用 super — 阻止落下粉尘粒子
+}
+```
+
+**反编译证据**：`net.minecraft.world.level.block.BrushableBlock.animateTick()` (26.1.1)
+
+**关联**：配合 Entry 19（`tick()` 重力），两者需要同时重写才能完全消除重力相关行为。
 
 > 详见 [CLAUDE.md](../CLAUDE.md) 第十四节 — 反编译认知修正流程（强制执行）
 
@@ -1049,4 +1155,161 @@ private static void onRegisterGameTests(RegisterGameTestsEvent event) {
 ---
 
 *沉淀时间：2026-04-21*
+*来源项目：RelicTales (RelicTales)*
+
+---
+
+## M2 第二阶段卡点记录（2026-04-27）
+
+### Entry 22 — ResourceKey 无法调用 .location() 方法（Java 编译错误）
+
+**根本原因**：`ResourceKey<T>` 在 Minecraft 26.1 / Java 25 环境下没有 `location()` 方法。该方法可能存在于旧版本（1.20.x/1.21.x）但已在新版本中被移除或未暴露。编译时报错 `cannot find symbol`。
+
+**症状**：
+```
+Error: cannot find symbol
+  symbol: method location()
+  location: variable lootKey of type ResourceKey<LootTable>
+```
+
+**错误认知**：
+- 认为 `ResourceKey` 有 `location()` 方法返回 `Identifier`
+- 认为可以通过 `lootKey.location().equals(...)` 比较战利品表 key
+
+**正确认知**：
+`ResourceKey<T>` 在 26.1 中不提供 `location()` 方法。正确的比较方式是直接使用 `.equals()`：
+
+```java
+// ✅ 正确：直接比较 ResourceKey 对象
+ResourceKey<LootTable> expected = ResourceKey.create(
+    Registries.LOOT_TABLE,
+    Identifier.fromNamespaceAndPath("relictales", "blocks/suspicious_cracked_stone_bricks")
+);
+if (expected.equals(acc.relictales$getLootTable())) {
+    // 匹配
+}
+
+// ❌ 错误：.location() 不存在
+if (lootKey.location().equals(Identifier.of("relictales", "blocks/xxx"))) {
+```
+
+**替代方案**：如果需要获取 Identifier，使用 `lootKey.location()` —— 实际上在 26.1 中此方法可能是 package-private 或确实不存在。在任何情况下应直接比较 ResourceKey 而非提取 Identifier。
+
+---
+
+### Entry 23 — @Mixin(targets) 访问内部类（`$` 分隔符）
+
+**根本原因**：Minecraft 中的一些结构类（如 `StrongholdPieces.RoomCrossing`、`StrongholdPieces.ChestCorridor` 等）是内部类（inner class），无法直接使用 `@Mixin(ClassName.class)` 引用，因为内部类在 JVM 层面编译为 `OuterClass$InnerClass` 形式。
+
+**症状**：
+```
+Mixin apply failed — could not find target class
+```
+
+**错误认知**：
+- 认为可以直接 `@Mixin(StrongholdPieces.RoomCrossing.class)` 引用内部类
+- 认为 Mixin 能自动处理内部类的 JVM 名称格式
+
+**正确认知**：
+
+访问内部类必须使用 `@Mixin(targets = "完整类名$内部类名")`，不能直接用 `.class` 引用：
+
+```java
+// ✅ 正确：使用 targets 属性 + $ 分隔符
+@Mixin(targets = "net...structures.StrongholdPieces$RoomCrossing", remap = false)
+public interface RoomCrossingAccessor {
+    @Accessor("type")
+    int relictales$getType();
+}
+
+// ❌ 错误：不能直接引用内部类
+@Mixin(StrongholdPieces.RoomCrossing.class, remap = false)
+```
+
+**Mixin JSON 中不需要特殊处理**，因为这是 Java 注解层面的问题（编译时解析）。
+
+**适用场景**：任何需要 Mixin 访问原版 Minecraft 内部类（`OuterClass$InnerClass`）的场景。
+
+---
+
+### Entry 24 — 原版可疑方块纹理系统：预烘焙 PNG，无运行时叠加层
+
+**根本原因**：Minecraft 原版可疑方块（suspicious_sand / suspicious_gravel）的裂纹效果**不是在运行时叠加生成的**。每个 dusted 等级（0-3）都有独立预烘焙的 16×16 PNG 纹理。
+
+**错误认知**：
+- 认为原版存在某种运行时"裂纹叠加层"系统，可以通过 API 向任意方块添加裂纹纹理
+- 以为可以在渲染层面实时叠加裂纹材质
+
+**正确认知**：
+
+| 概念 | 实际情况 |
+|------|---------|
+| 纹理存储 | 4 个独立 PNG（`suspicious_sand_0~3.png`），非叠加层 |
+| 切换机制 | `dusted=N` blockstate → 不同模型引用不同纹理 |
+| 方块模型 | 每个等级一个独立模型 JSON |
+| 动画效果 | 刷取时递增 `dusted` → 框架自动切换模型/纹理 |
+
+**提取裂纹遮罩的方法**：逐像素对比 suspicious 纹理与基础纹理：
+```python
+base_img = Image.open("sand.png").convert("RGBA")
+susp_img = Image.open("suspicious_sand_0.png").convert("RGBA")
+crack_positions = set()
+for y in range(16):
+    for x in range(16):
+        if base_px[x, y] != susp_px[x, y]:
+            crack_positions.add((x, y))
+```
+
+**生成的裂纹数据**（151 个唯一位置，从 sand+gravel 联合提取）：
+| 等级 | 累积裂纹数 |
+|------|-----------|
+| 0 | 72 |
+| 1 | 93 |
+| 2 | 118 |
+| 3 | 151 |
+
+**验证方式**：生成自定义纹理 + `dusted=N` blockstate + 分等级 block model，Minecraft 原生支持多级纹理切换，无需任何渲染代码。
+
+**关联工具**：`tools/generate_suspicious_textures.py`
+
+---
+
+### Entry 25 — 要塞结构注入：MixinStructurePiece 拦截 placeBlock() 实现概率替换
+
+**根本原因**：要塞（Stronghold）是 Jigsaw 结构，本可使用 StructureProcessor。但由于 MixinStructurePiece 方案更灵活（支持按房间类型/位置设置不同概率），最终采用 Mixin 方案。
+
+**设计要点**：
+
+**拦截点**：`StructurePiece.placeBlock()` HEAD（要塞的所有子片都继承此方法）
+```java
+@Mixin(value = StructurePiece.class, remap = false)
+public abstract class MixinStructurePiece {
+    @Inject(method = "placeBlock", at = @At("HEAD"), cancellable = true, remap = false)
+    private void relictales$onPlaceBlock(
+            WorldGenLevel level, BlockState state, int x, int y, int z,
+            BoundingBox chunkBB, CallbackInfo ci) {
+```
+
+**概率系统**（按房间类型 × 位置 × 方块类型）：
+| 房间 | 位置 | 方块 | 概率 |
+|------|------|------|------|
+| Library | 全部 | 裂纹/苔石砖 | 10% |
+| RoomCrossing | 中心柱 (5,1,5) | 石砖/裂纹砖 | 100% |
+| RoomCrossing | 中心 3×3 地板 | 裂纹/苔石砖 | 50% |
+| RoomCrossing | 其他 | 裂纹/苔石砖 | 10% |
+| FiveCrossing | 全部 | 裂纹/苔石砖 | 10% |
+| ChestCorridor | 中心地板 | 裂纹/苔石砖 | 100% |
+| ChestCorridor | 其他 | 裂纹/苔石砖 | 6% |
+| PortalRoom | 全部 | 裂纹/苔石砖 | 6% |
+| 其他房间 | 全部 | 裂纹/苔石砖 | 1% |
+
+**RoomCrossing 类型区分**：通过 `@Accessor("type")` 读取 `RoomCrossing.type` 字段（0=柱厅, 1=喷泉, 2=储藏室）。
+
+**战利品表注入延迟**：使用 `level.getLevel()`（而非 `instanceof ServerLevel`）解决 WorldGenLevel 无法直接设置 loot table 的问题，通过 server tick 延迟执行。
+
+**联合提取**：从原版可疑沙砾（151 裂纹位置）和可疑沙子（148 裂纹位置）联合提取裂纹位置并集，确保裂纹遮罩兼容两种原版纹理风格。
+
+---
+
+*沉淀时间：2026-04-28*
 *来源项目：RelicTales (RelicTales)*
