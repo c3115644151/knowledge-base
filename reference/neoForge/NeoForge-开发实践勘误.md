@@ -1311,5 +1311,88 @@ public abstract class MixinStructurePiece {
 
 ---
 
+## Entry 26 — 下界要塞 Mixin 注入（空气暴露检测 + 按楼层概率衰减）
+
+**背景**：为下界要塞添加可疑方块注入，沿用 MixinStructurePiece 的 `StructurePiece.placeBlock()` HEAD 拦截模式。
+
+**关键挑战**：下界要塞是用 `NETHER_BRICKS` 构建的巨型结构（≈25K+ 方块），比要塞大得多。如果所有空气暴露的 NETHER_BRICKS 都以相同概率替换，会产生过量嫌疑方块。
+
+**解决方案**：
+
+### 1. 单一 Mixin 多分支共存
+
+要塞和下界要塞共享同一个 `MixinStructurePiece`，通过 `getDeclaringClass()` 分支：
+
+```java
+Class<?> declaring = self.getClass().getDeclaringClass();
+if (declaring == StrongholdPieces.class) {
+    handleStronghold(level, state, x, y, z, chunkBB, ci, self);
+} else if (declaring == NetherFortressPieces.class) {
+    handleNetherFortress(level, state, x, y, z, chunkBB, ci, self);
+}
+```
+
+不需要创建两个 Mixin 同时注入 `StructurePiece.placeBlock()`（那样会冲突）。
+
+### 2. 空气暴露检测（避免替换埋墙方块）
+
+```java
+private static boolean isAirExposed(WorldGenLevel level, BlockPos pos) {
+    for (Direction dir : Direction.values()) {
+        if (level.getBlockState(pos.relative(dir)).isAir()) return true;
+    }
+    return false;
+}
+```
+
+在 `placeBlock` 拦截时检查 6 方向邻居。利用 `generateBox` 的循环顺序：同一 generateBox 调用内的块在循环过程中会有部分已放置的邻居。墙体内的块最终会被其他 NETHER_BRICKS 包围，不会被误判为暴露。
+
+### 3. 按楼层 Y 值概率衰减
+
+针对 CastlStalkRoom 等大房间的 floor/wall 区分：
+
+```java
+if (piece instanceof NetherFortressPieces.CastleStalkRoom) {
+    // Floor y=3-4 (2 layers) → full 10%
+    // Wall  y=5+  (8 layers) → reduced 2%
+    return y <= 4 ? 0.10f : 0.02f;
+}
+```
+
+**为什么需要**：CastleStalkRoom 是 13×14×13 的巨型房间，仅 floor 层 y=3-4 两层是玩家行走面。墙壁从 y=5 到 y=12 共 8 层，且全部空气暴露。如果 floor 和 wall 同概率，wall 块数量是 floor 的 4×，导致墙面积累大量嫌疑方块，视觉上喧宾夺主。
+
+**适用房间**：
+| 房间 | 楼层 Y | 墙面 Y | 楼层概率 | 墙面概率 |
+|------|--------|--------|---------|---------|
+| CastleStalkRoom | y≤4 | y≥5 | 10% | 2% |
+| MonsterThrone | y≤1 | y≥2 | 30% | 10% |
+
+### 4. 特殊位置 100% 替换
+
+熔岩井（CastleEntrance）底部的浮空下界砖 `local(6,0,6)` 被强制替换：
+
+```java
+if (isNetherLavaWellBottom(self, x, y, z)) {
+    // 100% replacement, bypasses chance and air-exposed check
+}
+```
+
+### 5. 下界要塞概率表
+
+| 房间 | 概率 | 备注 |
+|------|------|------|
+| MonsterThrone | 30%/10% | 小房间，floor/wall 分层 |
+| CastleStalkRoom | 10%/2% | 大房间，floor/wall 分层 |
+| StairsRoom | 5% | — |
+| CastleCorridorStairs | 5% | — |
+| CastleCorridorTBalcony | 4% | — |
+| CastleEntrance / RoomCrossing / BridgeCrossing / Crossing | 3% | 熔岩井底 100% |
+| 小走廊/转弯/BridgeStraight | 1% | — |
+| 全覆盖兜底 | 0.2% | — |
+
+**原理**：下界要塞是露天巨型开放结构，可视区块比例远高于要塞，因此单体概率低 10-50×，但总暴露面积更大，实际生成数量仍合理。
+
+---
+
 *沉淀时间：2026-04-28*
 *来源项目：RelicTales (RelicTales)*
