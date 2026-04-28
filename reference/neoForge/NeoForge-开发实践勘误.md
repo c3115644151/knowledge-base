@@ -1394,5 +1394,182 @@ if (isNetherLavaWellBottom(self, x, y, z)) {
 
 ---
 
-*沉淀时间：2026-04-28*
+## M3 末地城开发卡点记录（2026-04-29）
+
+### Entry 25 — `CompoundTag.getString()` 在 1.21.4 返回 `Optional<String>`（高优先级）
+
+**根本原因**：Mojang 在 Minecraft 1.21.4 中将 `CompoundTag.getString(String)` 的返回类型从 `String` 改为 `Optional<String>`。旧版本（1.20.x/1.21.x）返回 `String`，新版本返回 `Optional<String>`。
+
+**症状**：`"Elytra".equals(nbt.getString("metadata"))` 永远返回 false，因为 `String.equals(Optional<String>)` 恒为 false。这导致通过 NBT 元数据查找结构方块标记的逻辑完全失效。
+
+**错误认知**：认为 `CompoundTag.getString()` 在所有 MC 版本都返回 `String`。
+
+**正确认知**：
+
+| 版本 | `getString(key)` | 空 key 行为 |
+|------|-----------------|-------------|
+| 1.20.x / 1.21.x | `String`（返回 `""`） | 返回空字符串 |
+| 1.21.4 / 26.1 | **`Optional<String>`** | 返回 `Optional.empty()` |
+
+**正确用法**：
+```java
+// ✅ 正确：使用 orElse 解包 Optional
+String metadata = nbt.getString("metadata").orElse("");
+if ("Elytra".equals(metadata)) { ... }
+
+// ❌ 错误：String.equals(Optional) 永远 false
+if ("Elytra".equals(nbt.getString("metadata"))) { ... }
+```
+
+**注意**：此变更影响所有 `CompoundTag.getString()` 调用，包括 `getString("id")`、`getString("metadata")`、`getString("command")` 等。所有从 NBT 读取字符串的场景都需要适配。
+
+---
+
+### Entry 26 — EndCityPiece 使用 TemplateStructurePiece，StructureProcessor 不生效（架构级决策）
+
+**根本原因**：EndCityPiece 继承 `TemplateStructurePiece`（而非直接继承 `StructurePiece`）。`TemplateStructurePiece` 使用 `StructureTemplate.placeInWorld()` 批量放置方块，而非调用子类的 `placeBlock()` 方法。因此：
+
+1. **StructureProcessor 不生效**：`placeInWorld()` 会自行创建 `StructurePlaceSettings` 并覆盖传入的处理器列表，导致通过 `processor_list` JSON 注册的处理器被忽略
+2. **`placeBlock` 拦截不可用**：`EndCityPiece` 不重写 `placeBlock()`，Mixin 无法通过 `@Inject(method = "placeBlock")` 拦截
+
+**症状**：按 Jigsaw 结构文档配置的 `processor_list` JSON 对末地城完全无效，不触发任何方块替换。
+
+**正确方案**：
+```java
+// ✅ 正确：使用 postProcess TAIL + 后置扫描
+@Mixin(value = TemplateStructurePiece.class, remap = false)
+@Inject(method = "postProcess", at = @At("TAIL"), remap = false)
+private void relictales$onEndCityPostProcess(...) {
+    // 1. 识别 EndCityPiece（通过类名反射）
+    // 2. 获取 templateName
+    // 3. 扫描 bounding box 内的 PURPUR_BLOCK，概率替换
+}
+```
+
+**架构对比**：
+
+| 遗迹类型 | 基类 | 注入方式 | 实现文件 |
+|---------|------|---------|---------|
+| 要塞（Stronghold） | `StructurePiece` | `placeBlock` HEAD + cancel | `MixinStructurePiece.java` |
+| 下界要塞（Nether Fortress） | `StructurePiece` | `placeBlock` HEAD + cancel | `MixinStructurePiece.java` |
+| 丛林神殿（Jungle Temple） | `ScatteredFeaturePiece` | `postProcess` TAIL | `MixinJungleTemplePiece.java` |
+| **末地城（End City）** | **`TemplateStructurePiece`** | **`postProcess` TAIL + filterBlocks** | **`MixinEndCityProcessor.java`** |
+
+---
+
+### Entry 27 — `TemplateStructurePiece` 受保护字段需要通过反射访问
+
+**根本原因**：`TemplateStructurePiece` 将 `template`、`placeSettings`、`templatePosition` 声明为 `protected` 字段。`EndCityPiece`（内部类）可以访问这些字段，但 Mixin 类（与 `TemplateStructurePiece` 不同包）不能直接访问。
+
+**症状**：需要 `template.filterBlocks()` 获取结构方块标记位置，但 `template` 字段不可访问。
+
+**修复**：使用反射（与 `getTemplateName` 相同的模式）：
+```java
+private static StructureTemplate getTemplateField(TemplateStructurePiece piece) {
+    try {
+        var field = TemplateStructurePiece.class.getDeclaredField("template");
+        field.setAccessible(true);
+        return (StructureTemplate) field.get(piece);
+    } catch (Exception e) {
+        return null;
+    }
+}
+```
+
+**可访问的字段**：
+| 字段名 | 类型 | 用途 |
+|--------|------|------|
+| `template` | `StructureTemplate` | 结构模板数据（用于 filterBlocks） |
+| `placeSettings` | `StructurePlaceSettings` | 放置设置（含旋转） |
+| `templatePosition` | `BlockPos` | 模板原点世界坐标 |
+| `templateName` | `String` | 模板名称（如 "ship"、"base_floor"） |
+
+---
+
+### Entry 28 — `template.filterBlocks()` 返回的 NBT 数据可用于标记识别
+
+**根本原因**：`StructureTemplate.filterBlocks()` 返回 `StructureTemplate.StructureBlockInfo` 列表，其中 `nbt()` 方法直接返回结构文件中该方块的 NBT 数据（来自 `blocks[].nbt`）。这与 `TemplateStructurePiece.postProcess()` 中 `handleDataMarker` 读取的数据源相同。
+
+**关键发现**：`handleDataMarker` 在 `TemplateStructurePiece.postProcess()` 中的调用方式是：
+```java
+for (StructureTemplate.StructureBlockInfo info : this.template.filterBlocks(pos, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
+    this.handleDataMarker(info.nbt().getString("metadata").orElse(""), info.pos(), ...);
+}
+```
+
+这说明 `filterBlocks()` 返回的 `StructureBlockInfo.nbt()` 包含完整的方块实体 NBT，包括 `metadata` 字段（结构方块的标记名）和 `mode` 字段（结构模式）。
+
+**在 Mixin 中的用法**：
+```java
+var markers = template.filterBlocks(templatePos, settings, Blocks.STRUCTURE_BLOCK);
+for (var marker : markers) {
+    var nbt = marker.nbt();
+    if (nbt != null && "Elytra".equals(nbt.getString("metadata").orElse(""))) {
+        // 找到了鞘翅标记！
+    }
+}
+```
+
+**注意**：`Entry 25` 的 `Optional<String>` 变更也影响此处。
+
+---
+
+### Entry 29 — 末地船 Elytra 标记的准确模板本地坐标
+
+**根本原因**：通过调试测试发现 Elytra 标记不在最初假设的 (5,5,7) 位置，而是在 (6,5,7)。
+
+**诊断测试输出**（通过 `ship_elytra_marker_diagnostics` 测试验证）：
+```
+Ship template has 6 structure_block markers:
+  Sentry at (6, 4, 8)
+  Chest at (5, 5, 7)
+  Elytra at (6, 5, 7)    ← 正确位置
+  Chest at (7, 5, 7)
+  Sentry at (8, 6, 27)
+  Sentry at (4, 11, 27)
+```
+
+**ItemFrame 朝向计算**（旋转 = NONE）：
+- frameFacing = `rotation.rotate(SOUTH)` = SOUTH
+- behind（展示框背后的方块）= `markerPos.relative(frameFacing.getOpposite())` = `markerPos.relative(NORTH)` = (6, 5, 6)
+
+**各旋转下的 behind 位置**：
+| 旋转 | frameFacing | behind（本地坐标） |
+|------|-------------|-------------------|
+| NONE | south | **(6, 5, 6)** |
+| CLOCKWISE_90 | west | (7, 5, 7) |
+| CLOCKWISE_180 | north | (6, 5, 8) |
+| COUNTERCLOCKWISE_90 | east | (5, 5, 7) |
+
+---
+
+### Entry 30 — 末地城 100% 替换模式：基于 postProcess TAIL + filterBlocks 实现
+
+**根本原因**：要塞/下界要塞使用 `placeBlock` HEAD 拦截 + `isNetherLavaWellBottom(pos)` 本地坐标检查实现 100% 替换。但末地城使用 `TemplateStructurePiece`，没有 `placeBlock` 拦截点。
+
+**末地城 100% 替换模式**：
+```java
+// 流程：
+// 1. postProcess TAIL 中识别 ship 模板
+// 2. template.filterBlocks() 找出所有 STRUCTURE_BLOCK 标记
+// 3. 匹配 metadata="Elytra" 的标记
+// 4. 从 placeSettings.rotation 计算展示框朝向
+// 5. 计算展示框背后的方块坐标
+// 6. 直接加入替换列表（不经过 shouldReplace 和 isInteriorSurface 检查）
+```
+
+**关键区别 vs 下界要塞模式**：
+
+| 特性 | 下界要塞（MixinStructurePiece） | 末地城（MixinEndCityProcessor） |
+|------|-------------------------------|------------------------------|
+| 基类 | `StructurePiece` | `TemplateStructurePiece` |
+| 注入点 | `placeBlock` HEAD | `postProcess` TAIL |
+| 100% 判定 | 本地坐标 `x==6 && y==0 && z==6` | NBT 元数据 `metadata="Elytra"` |
+| 拦截方式 | `ci.cancel()` 阻止原方块放置 | 后置扫描 + 添加替换列表 |
+| 坐标转换 | `invokeGetWorldPos(x,y,z)` 访问器 | `template.filterBlocks()` 自动转换 |
+| 方块状态 | 在放置前拦截 | 扫描已放置的世界方块 |
+
+---
+
+*沉淀时间：2026-04-29*
 *来源项目：RelicTales (RelicTales)*
