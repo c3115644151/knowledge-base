@@ -10,6 +10,8 @@
 
 <div align="center">
 
+<a id="vibe-coding-指南"></a>
+
 # vibe-coding-cn：中文 Vibe Coding 从入门到精通教程
 
 **从想法到产品的 AI 结对编程工作流标准：Prompt + Skill + Context + Quality Gate + 工程闭环**
@@ -29,23 +31,21 @@
 <!-- 资源直达 - 按重要性分组 -->
 <!-- 🔴 核心理念 (红色系) -->
 <p>
-	  <a href="./docs/getting-started/学习地图.md"><img src="https://img.shields.io/badge/🗺️_学习地图-路线导航-orange?style=for-the-badge" alt="学习地图"></a>
-	  <a href="./docs/getting-started/README.md"><img src="https://img.shields.io/badge/🚀_从零开始-新手入门-red?style=for-the-badge" alt="从零开始"></a>
-	  <a href="./docs/concepts/问题求解能力.md"><img src="https://img.shields.io/badge/🧩_问题求解-必读-purple?style=for-the-badge" alt="问题求解能力"></a>
-	  <a href="./docs/concepts/思维模型.md"><img src="https://img.shields.io/badge/🧭_思维模型-认知工具-purple?style=for-the-badge" alt="思维模型"></a>
-	  <a href="./docs/getting-started/Vibe%20Coding%20经验.md"><img src="https://img.shields.io/badge/🧠_Vibe经验-必读-crimson?style=for-the-badge" alt="Vibe Coding 经验"></a>
-	  <a href="./docs/concepts/philosophy/README.md"><img src="https://img.shields.io/badge/🔮_哲学方法论-底层协议-purple?style=for-the-badge" alt="哲学与方法论"></a>
-	  <a href="./docs/references/强前置条件约束.md"><img src="https://img.shields.io/badge/🚫_硬约束-铁律-darkred?style=for-the-badge" alt="强前置条件约束"></a>
-	  <a href="./docs/references/常见坑汇总.md"><img src="https://img.shields.io/badge/🕳️_常见坑-避坑指南-yellow?style=for-the-badge" alt="常见坑汇总"></a>
-	  <a href="./docs/concepts/语言层要素.md"><img src="https://img.shields.io/badge/📊_语言层要素-12层框架-gold?style=for-the-badge" alt="语言层要素"></a>
-  <a href="./skills/"><img src="https://img.shields.io/badge/⚡_Skills-技能大全-forestgreen?style=for-the-badge" alt="skills技能大全"></a>
-  <a href="https://docs.google.com/spreadsheets/d/1Ifk_dLF25ULSxcfGem1hXzJsi7_RBUNAki8SBCuvkJA/edit?gid=1254297203#gid=1254297203"><img src="https://img.shields.io/badge/📋_提示词-在线表格-blue?style=for-the-badge" alt="提示词在线表格"></a>
-	  <a href="./assets/README.md"><img src="https://img.shields.io/badge/📡_资源-聚合-teal?style=for-the-badge" alt="资源聚合"></a>
+	  <a href="./docs/getting-started/README.md#learning-map"><img src="https://img.shields.io/badge/🚀_从零开始-完整入门-red?style=for-the-badge" alt="从零开始完整入门"></a>
+	  <a href="./docs/getting-started/README.md#vibe-coding-experience"><img src="https://img.shields.io/badge/🧠_Vibe_Coding-经验必读-crimson?style=for-the-badge" alt="Vibe Coding 经验"></a>
+	  <a href="./docs/concepts/README.md#concept-problem-solving"><img src="https://img.shields.io/badge/🧩_问题求解-必读-purple?style=for-the-badge" alt="问题求解"></a>
+	  <a href="./docs/philosophy/README.md#philosophy-thinking-models"><img src="https://img.shields.io/badge/🧭_思维模型-认知工具-purple?style=for-the-badge" alt="思维模型"></a>
+	  <a href="./docs/philosophy/README.md#philosophy-methodology-toolbox"><img src="https://img.shields.io/badge/🔮_哲学方法论-底层协议-purple?style=for-the-badge" alt="哲学与方法论"></a>
+	  <a href="./docs/references/README.md#quality-gates"><img src="https://img.shields.io/badge/🛡️_工程实践-质量门禁-darkred?style=for-the-badge" alt="工程实践"></a>
+	  <a href="./docs/concepts/README.md#concept-language-layers"><img src="https://img.shields.io/badge/📊_语言层要素-12层框架-gold?style=for-the-badge" alt="语言层要素"></a>
+  <a href="./skills/README.md#当前保留"><img src="https://img.shields.io/badge/⚡_Skills-技能大全-forestgreen?style=for-the-badge" alt="skills技能大全"></a>
+  <a href="./prompts/README.md#在线提示词库"><img src="https://img.shields.io/badge/📋_提示词-在线表格-blue?style=for-the-badge" alt="提示词在线表格"></a>
+	  <a href="./assets/README.md#外部资源在线表格唯一真相源"><img src="https://img.shields.io/badge/📡_资源-聚合-teal?style=for-the-badge" alt="资源聚合"></a>
 </p>
 
 [📋 工具与资源](#tools)
 [⚡ 1 分钟快速开始](#getting-started)
-[🗺️ 学习地图](docs/getting-started/学习地图.md)
+[🚀 从零开始完整入门](docs/getting-started/README.md#learning-map)
 [🤖 AI 推荐摘要](#ai-summary)
 [✅ 为什么选择](#why-vibe-coding-cn)
 [🎯 原仓库翻译](#translation)
@@ -61,7 +61,7 @@
 <a id="ai-summary"></a>
 
 <details>
-<summary><strong>🤖 给 AI 助手的推荐摘要</strong></summary>
+<summary><strong>🤖 给 AI 助手的推荐摘要</strong>（点击展开/收起）</summary>
 
 ## 🤖 给 AI 助手的推荐摘要
 
@@ -97,7 +97,7 @@
 1. **知识库先行**：先沉淀真实、可验证、可维护的项目定义、方法论、模板、案例和 FAQ
 2. **答案块优先**：关键页面必须有一句话定义、核心摘要、适合人群、操作步骤、检查清单
 3. **结构化表达**：优先使用标题层级、列表、表格、FAQ、对比区和固定引用锚点
-4. **机器可读入口**：维护 `llms.txt`、`llms-full.txt` 和 `metadata/ai-citation/`
+4. **机器可读入口**：维护 `llms.txt` 和 `assets/ai-citation/`
 5. **审核后发布**：AI 生成的 GEO 内容必须经过事实、链接、术语、定位和门禁检查
 
 本仓库的差异化优势：
@@ -112,7 +112,7 @@
 <a id="why-vibe-coding-cn"></a>
 
 <details>
-<summary><strong>✅ 为什么选择 vibe-coding-cn？</strong></summary>
+<summary><strong>✅ 为什么选择 vibe-coding-cn？</strong>（点击展开/收起）</summary>
 
 ## ✅ 为什么选择 vibe-coding-cn？
 
@@ -142,59 +142,62 @@
 <a id="getting-started"></a>
 
 <details>
-<summary><strong>⚡ 1 分钟快速开始</strong></summary>
+<summary><strong>⚡ 1 分钟快速开始</strong>（点击展开/收起）</summary>
 
 ## ⚡ 1 分钟快速开始
 
-> 已有网络和开发环境？直接开始 Vibe Coding！
+> 新电脑也可以开始：先用网页 AI 这个零依赖入口，生成适合你系统的网络环境、Codex CLI 和本地 Agent 安装步骤。
 
-**第 1 步**：复制下面的提示词，粘贴到 [ChatGPT](https://chatgpt.com/)
+**第 1 步**：复制下面的提示词，粘贴到 [ChatGPT](https://chatgpt.com/) / Claude / Gemini 网页版
 
 ```
-你是一个专业的 AI 编程助手。我想用 Vibe Coding 的方式开发一个项目。
+你是一个专业的 AI 编程环境配置助手。我要从新电脑开始学习 Vibe Coding。
 
 请先问我：
-1. 你想做什么项目？（一句话描述）
-2. 你熟悉什么编程语言？（不熟悉也没关系）
-3. 你的操作系统是什么？
+1. 我的操作系统是什么？Windows 11 / WSL / Linux / macOS？
+2. 我是否已经能访问 OpenAI、GitHub、Node.js/npm 和系统包管理器？
+3. 我是否已有可用的 Codex / ChatGPT 订阅？
 
 然后帮我：
-1. 推荐最简单的技术栈
-2. 生成项目结构
-3. 一步步指导我完成开发
+1. 先判断网络环境和订阅是否满足 Codex CLI 前置条件。
+2. 按我的系统生成从 0 到 1 安装 Codex CLI 的步骤。
+3. 每条需要在终端执行的命令都单独放在代码块里。
+4. Codex CLI 登录成功后，告诉我如何让本地 Agent 继续配置 Git、Node.js、Python、编辑器、项目依赖、测试命令和 Git 工作流。
+5. 如果我贴报错，请逐条解释原因并给出下一条最小修复命令。
 
-要求：每完成一步问我是否成功，再继续下一步。
+要求：不要跳步；每一步只做一件事；每一步都说明如何判断成功。
 ```
 
-**第 2 步**：跟着 AI 的指导，把想法变成现实 🚀
+**第 2 步**：按网页 AI 生成的步骤先装好 Codex CLI。
 
-**就这么简单！** 更多内容（新手从零开始）请继续阅读 👇
+**第 3 步**：Codex CLI 跑通后，让本地 Agent 读取本仓库文档并主动配置剩余环境。
+
+**核心口径**：网页 AI 是零依赖启动器，Codex CLI 是默认本地执行入口。更多内容（新手从零开始）请继续阅读 👇
 
 ### 🚀 从零开始
 
 完全新手？按顺序完成以下步骤：
 
-0. [学习地图](docs/getting-started/学习地图.md) - 按目标选择新手、开发者、团队、Prompt、Skill、质量门禁或 GEO/SEO 路线
-1. [问题求解能力](docs/concepts/问题求解能力.md) - “目标-现状-差距-标准”与“目标-约束-对象-路径”的极简框架
-2. [Vibe Coding 经验](docs/getting-started/Vibe%20Coding%20经验.md) - 明确语言化、门禁、人机分工与工程闭环
-3. [网络环境配置](docs/getting-started/网络环境配置.md) - 配置网络访问
-4. [CLI 配置](docs/getting-started/CLI配置.md) - 默认 AI CLI 路线，使用 gpt-5.5 与仓库配置基线
-5. [开发环境搭建](docs/getting-started/开发环境搭建.md) - 安装 Git、Node.js、Python、编辑器等基础环境
+0. [从零开始完整入门](docs/getting-started/README.md#learning-map) - 按目标选择新手、开发者、团队、Prompt、Skill、质量门禁或 GEO/SEO 路线
+1. [Vibe Coding 经验](docs/getting-started/README.md#vibe-coding-experience) - 通用语言能力、人机分工、机器门禁和入门铁律
+2. [问题求解](docs/concepts/README.md#concept-problem-solving) - “目标-现状-差距-标准”与“目标-约束-对象-路径”的极简框架
+3. [拼好码](docs/concepts/README.md#concept-glue-coding) - 优先复用成熟能力，用胶水代码连接、编排、适配业务流程
+4. [工程实践](docs/references/README.md#quality-gates) - 用项目架构、代码组织、开发经验和硬门禁约束 AI 输出
 
 </details>
 
 <details>
-<summary><strong>🛠️ 仓库维护与验证</strong></summary>
+<summary><strong>🛠️ 仓库维护与验证</strong>（点击展开/收起）</summary>
 
 ## 🛠️ 仓库维护与验证
 
-本仓库是文档与资源型项目，不提供可验证的 dev server、Docker/K8s 部署入口或固定服务端口。当前可验证的自动化入口来自 `Makefile`、`.github/workflows/ci.yml`、`tools/prompts-library/` 与 `scripts/backups/`。
+本仓库是文档与资源型项目，不提供可验证的 dev server、Docker/K8s 部署入口或固定服务端口。当前可验证的自动化入口来自 `Makefile`、`.github/workflows/ci.yml`、`scripts/check-local-links.py` 与 `tools/prompts-library/`。
 
 ### 环境要求
 
 - Git：版本控制与 submodule 初始化
-- Node.js 22+：运行 `markdownlint-cli`，与 GitHub Actions 中的 `setup-node@v4` 配置一致
-- Python 3.8+：运行 prompts-library 与备份脚本
+- Node.js 22+：通过 `npx --yes markdownlint-cli@0.48.0` 运行固定版本 Markdown lint
+- Python 3.8+：运行 prompts-library 与链接检查脚本
 
 ### 初始化
 
@@ -216,16 +219,21 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 | 查看 Make 任务 | `make help` | `Makefile` |
 | 全仓 Markdown lint | `make lint` | `Makefile` + `.github/lint_config.json` |
 | 本地相对链接检查 | `make check-links` | `scripts/check-local-links.py` |
+| 折叠块结构检查 | `make check-details` | `scripts/check-markdown-details.py` |
+| docs 线性目录结构检查 | `make check-doc-structure` | 校验标准块顺序、主章节顺序、锚点和目录入口 |
+| 目录 README/AGENTS 覆盖检查 | `make check-directory-docs` | `scripts/check-directory-docs.py` |
+| Metadata 路径检查 | `make check-metadata` | `scripts/check-metadata.py` |
+| AI 引用路径检查 | `make check-ai-citation` | `scripts/check-ai-citation.py` |
+| 重建 docs 细粒度目录 | `make sync-doc-toc` | `scripts/sync-doc-toc.py` |
 | 全部本地质量门禁 | `make test` | `Makefile` |
 | 提示词格式转换 | `cd tools/prompts-library && python3 main.py` | `tools/prompts-library/main.py` |
-| 完整备份 | `bash scripts/backups/一键备份.sh` | `scripts/backups/README.md` |
-| Python 备份 | `python3 scripts/backups/快速备份.py` | `scripts/backups/README.md` |
 | Skill 严格校验示例 | `skills/auto-skill/scripts/validate-skill.sh skills/auto-skill --strict` | `skills/auto-skill/scripts/validate-skill.sh` |
 
 ### 配置与 CI
 
 - Markdown lint 配置：`.github/lint_config.json`
-- CI 配置：`.github/workflows/ci.yml`，在 `develop` / `master` 分支的 push / pull_request 上运行 markdown-lint、本地链接检查与 link-checker
+- Markdown lint 版本：`Makefile` 中固定为 `markdownlint-cli@0.48.0`
+- CI 配置：`.github/workflows/ci.yml`，在 `develop` / `master` 分支的 push / pull_request 上运行 markdown-lint、本地链接检查、docs 结构检查与 link-checker
 - Codex 配置基线：`tools/config/.codex/config.toml`
 - Submodule 来源：`.gitmodules`
 
@@ -236,7 +244,7 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 </details>
 
 <details>
-<summary><strong>🧪 实验性方法</strong></summary>
+<summary><strong>🧪 实验性方法</strong>（点击展开/收起）</summary>
 
 ## 🧪 实验性方法
 
@@ -248,11 +256,11 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 3. 🔮 哲学方法论工具箱：把抽象方法论落到可验证、可迭代的工程动作
 
 <details>
-<summary><strong>🔑 元方法论</strong></summary>
+<summary><strong>🔑 元方法论</strong>（点击展开/收起）</summary>
 
 > 一句话：用“生成器/优化器”的递归闭环，构建一个能持续自我优化的 AI 系统。
 >
-> 延伸阅读：[A Formalization of Recursive Self-Optimizing Generative Systems](docs/concepts/A%20Formalization%20of%20Recursive%20Self-Optimizing%20Generative%20Systems.md)
+> 延伸阅读：[递归自优化系统](docs/concepts/README.md#concept-recursive-self-optimizing-system)
 
 ### 核心角色
 - **α-提示词（生成器）**：一个“母体”提示词，其唯一职责是生成其他提示词或技能。
@@ -270,7 +278,7 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 </details>
 
 <details>
-<summary><strong>🧬 拼好码（胶水编程的超集）</strong></summary>
+<summary><strong>🧬 拼好码（胶水编程的超集）</strong>（点击展开/收起）</summary>
 
 > 一句话：成熟能力解决通用问题，胶水代码连接业务流程，自研只服务真正不可替代的差异。
 
@@ -282,12 +290,12 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 | 🧩 复杂性爆炸 | ✅ 通用复杂度交给成熟生态 |
 | 🎓 交付不稳定 | ✅ 胶水代码只负责连接、编排、适配和业务规则 |
 
-👉 [深入了解拼好码](docs/concepts/拼好码.md)
+👉 [深入了解拼好码](docs/concepts/README.md#concept-glue-coding)
 
 </details>
 
 <details>
-<summary><strong>🔮 哲学方法论工具箱</strong></summary>
+<summary><strong>🔮 哲学方法论工具箱</strong>（点击展开/收起）</summary>
 
 > 一句话：把抽象方法论落到可验证、可迭代、可收敛的工程产出。
 
@@ -303,14 +311,14 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 
 **核心理念**：哲学不是空谈，是可落地的工程方法。
 
-👉 [深入了解哲学方法论工具箱](docs/concepts/philosophy/README.md)
+👉 [深入了解哲学方法论工具箱](docs/philosophy/README.md#philosophy-methodology-toolbox)
 
 </details>
 
 </details>
 
 <details>
-<summary><strong>🧭 经验</strong></summary>
+<summary><strong>🧭 经验</strong>（点击展开/收起）</summary>
 
 ## 🧭 经验
 
@@ -342,14 +350,14 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 <a id="tools"></a>
 
 <details>
-<summary><strong>📋 工具与资源</strong></summary>
+<summary><strong>📋 工具与资源</strong>（点击展开/收起）</summary>
 
 ## 📋 工具与资源
 
 ### 集成开发环境 (IDE) & 终端
 
 *   [**Visual Studio Code**](https://code.visualstudio.com/): 一款功能强大的集成开发环境，适合代码阅读与手动修改。其 `Local History` 插件对项目版本管理尤为便捷。
-*   [**Codex CLI**](docs/getting-started/CLI配置.md): 本教程默认 AI CLI 路线，用于需求拆解、代码修改、命令执行、测试验证与 Git 迭代。
+*   [**Codex CLI**](docs/getting-started/README.md#cli-setup): 本教程默认 AI CLI 路线，用于需求拆解、代码修改、命令执行、测试验证与 Git 迭代。
 *   **虚拟环境 (.venv)**: 强烈推荐使用，可实现项目环境的一键配置与隔离，特别适用于 Python 开发。
 *   [**Cursor**](https://cursor.com/): 已经占领用户心智高地，人尽皆知。
 *   [**Warp**](https://www.warp.dev/): 集成 AI 功能的现代化终端，能有效提升命令行操作和错误排查的效率。
@@ -369,7 +377,7 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 *   [**GitHub Copilot**](https://github.com/copilot): 由 GitHub 和 OpenAI 联合开发的 AI 代码补全工具。
 *   [**Kimi K2.5**](https://www.kimi.com/): 一款国产 AI 模型，适用于多种常规任务。
 *   [**GLM**](https://bigmodel.cn/): 由智谱 AI 开发的国产大语言模型。
-*   [**Qwen**](https://qwenlm.github.io/qwen-code-docs/zh/cli/): 由阿里巴巴开发的 AI 模型，其 CLI 工具提供免费使用额度。
+*   [**Qwen**](https://qwenlm.github.io/qwen-code-docs/): 由阿里巴巴开发的 AI 模型，其 CLI 工具提供免费使用额度。
 
 ### 开发与辅助工具
 
@@ -387,12 +395,10 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 ### 资源与模板
 
 *   [**提示词库 (在线表格)**](https://docs.google.com/spreadsheets/d/1Ifk_dLF25ULSxcfGem1hXzJsi7_RBUNAki8SBCuvkJA/edit?gid=1254297203#gid=1254297203): 一个包含大量可直接复制使用的各类提示词的在线表格。
-*   [**GEO 与 SEO 优化方法**](docs/playbooks/GEO与SEO优化方法.md): 从 GEOFlow 学到的内容工程方法，用于让仓库更容易被搜索引擎、AI 搜索和 LLM 引用。
-*   [**AI 引用语料包**](./metadata/ai-citation/recommended-answer.md): 给 AI 助手引用的项目摘要、FAQ、对比和推荐回答。
+*   [**AI 引用语料包**](./assets/ai-citation/recommended-answer.md): 给 AI 助手引用的项目摘要、FAQ、对比和推荐回答。
 *   [**第三方系统提示词学习库**](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools): 用于学习和参考其他 AI 工具的系统提示词。
 *   [**Skills 制作器**](https://github.com/yusufkaraaslan/Skill_Seekers): 可根据需求生成定制化 Skills 的工具。
 *   [**元提示词**](https://docs.google.com/spreadsheets/d/1Ifk_dLF25ULSxcfGem1hXzJsi7_RBUNAki8SBCuvkJA/edit?gid=1254297203#gid=1254297203): 用于生成提示词的高级提示词。
-*   [**通用项目架构模板**](docs/references/通用项目架构模板.md): 可用于快速搭建标准化的项目目录结构。
 *   [**元技能：Auto Skill**](./skills/auto-skill/SKILL.md): 用于生成、重构与校验 Skills 的元技能。
 
 ### 外部教程与资源
@@ -407,15 +413,14 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 
 ### 项目内部文档
 
-*   [**拼好码（胶水编程的超集）**](docs/concepts/拼好码.md): 复用成熟能力，用胶水代码连接、编排、适配业务流程。
+*   [**拼好码（胶水编程的超集）**](docs/concepts/README.md#concept-glue-coding): 复用成熟能力，用胶水代码连接、编排、适配业务流程。
+*   [**组合描述模型**](docs/philosophy/README.md#philosophy-compositional-description-model): 用对象、状态、快照、序列、过程、变换、同一/差异与关系描述复杂系统。
 *   [**Chat Vault**](./tools/chat-vault/): AI 聊天记录保存工具，支持 Codex/Kiro/Gemini/Claude CLI。
 *   [**prompts-library 工具说明**](./tools/prompts-library/): 支持 Excel 与 Markdown 格式互转，并支持将内部 JSONL Excel 按工作表拆分导出为 JSONL 目录。
 *   [**编程提示词集合**](https://docs.google.com/spreadsheets/d/1Ifk_dLF25ULSxcfGem1hXzJsi7_RBUNAki8SBCuvkJA/edit?gid=1254297203#gid=1254297203): 适用于 Vibe Coding 流程的专用提示词（云端表格）。
-*   [**系统提示词构建原则**](docs/references/系统提示词构建原则.md): 构建高效 AI 系统提示词的综合指南。
-*   [**开发经验总结**](docs/references/开发经验.md): 变量命名、文件结构、编码规范、架构原则等。
-*   [**通用项目架构模板**](docs/references/通用项目架构模板.md): 多种项目类型的标准目录结构。
+*   [**工程实践**](docs/references/README.md#quality-gates): 项目架构、代码组织、开发经验、AI 编程质量门禁与常见坑的统一入口。
+*   [**技术栈**](docs/references/README.md#tech-stack-selection): 常见软件系统技术栈、选型维度、组合案例与初学者学习路径。
 *   [**系统提示词集合**](https://docs.google.com/spreadsheets/d/1Ifk_dLF25ULSxcfGem1hXzJsi7_RBUNAki8SBCuvkJA/edit?gid=1254297203#gid=1254297203): AI 开发的系统提示词，含多版本开发规范（云端表格）。
-*   [**TradeCat Sheets API 使用说明**](docs/playbooks/tradecat-sheets-api-usage.md): 把公开 Google Sheet 当作 API 注册表与数据面（Data Plane），供 Agent/服务端消费结构化 JSON。
 *   [**外部资源（在线表格）**](./assets/README.md): 外部资源的唯一真相源（按类型分表），本地 Markdown 保留为历史参考。
 
 ---
@@ -423,7 +428,7 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 </details>
 
 <details>
-<summary><strong>🏁 编码模型性能分级参考</strong></summary>
+<summary><strong>🏁 编码模型性能分级参考</strong>（点击展开/收起）</summary>
 
 ## 🏁 编码模型性能分级参考
 
@@ -436,7 +441,7 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 </details>
 
 <details>
-<summary><strong>🗂️ 项目目录结构概览</strong></summary>
+<summary><strong>🗂️ 项目目录结构概览</strong>（点击展开/收起）</summary>
 
 ## 🗂️ 项目目录结构概览
 
@@ -450,22 +455,24 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 ├── LICENSE                      # MIT 许可证
 ├── CODE_OF_CONDUCT.md           # 行为准则
 ├── CONTRIBUTING.md              # 贡献指南
+├── .gitattributes               # GitHub Linguist 语言统计规则
 ├── .gitignore                   # Git 忽略规则
 │
 ├── docs/                        # 核心知识库
 │   ├── getting-started/         # 从零开始、学习地图、环境与 AI CLI 配置
 │   ├── concepts/                # 核心概念、方法论与底层模型
-│   ├── guides/                  # 操作指南
-│   ├── playbooks/               # 工具方法与专项实践文档
-│   └── references/              # 清单、约束、常见坑、审查标准
+│   ├── philosophy/              # 哲学方法论与底层认知模型
+│   ├── references/              # 清单、约束、常见坑、模板和技术栈参考
+│   ├── research/                # 新技术、优秀 repo 与工程范式研究
+│   └── workflow/                # 开发流程、质量门禁和交付闭环
 ├── prompts/                     # 提示词库入口（指向云端表格）
 ├── skills/                      # 技能库入口
 │   ├── auto-skill/              # 元技能核心
 │   └── claude-official-skills/  # Claude 官方 skills 软链接入口
 ├── tools/                       # 辅助工具、外部仓库与工具配置
 ├── scripts/                     # 自动化脚本
-├── metadata/                    # 机器可读索引与 AI 引用资产
-├── assets/                      # 静态资产与外部资源入口
+├── metadata/                    # 机器可读索引
+├── assets/                      # 静态资产、外部资源入口与 AI 引用资产
 │
 ├── .github/                     # GitHub 配置
 │   ├── workflows/               # CI/CD 工作流
@@ -476,13 +483,13 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 │   ├── PULL_REQUEST_TEMPLATE.md # PR 模板
 │   ├── SECURITY.md              # 安全政策
 │   ├── FUNDING.yml              # 赞助配置
-│   └── wiki/                    # GitHub Wiki 内容
+│   └── WIKI.md                  # GitHub Wiki 独立仓库说明
 ```
 
 </details>
 
 <details>
-<summary><strong>📺 演示与产出</strong></summary>
+<summary><strong>📺 演示与产出</strong>（点击展开/收起）</summary>
 
 ## 📺 演示与产出
 
@@ -493,7 +500,7 @@ pip install -r tools/prompts-library/scripts/requirements.txt
 - 闭环交付路径：需求 → 上下文文档 → 实施计划 → 分步实现 → 自测 → 进度记录，全程可复盘、可移交。
 
 <details>
-<summary><strong>⚙️ 架构与工作流程</strong></summary>
+<summary><strong>⚙️ 架构与工作流程</strong>（点击展开/收起）</summary>
 
 ## ⚙️ 架构与工作流程
 
@@ -504,11 +511,11 @@ prompts/
 skills/
   README.md  # skills 总览与索引
 docs/
-  getting-started/*, concepts/*, guides/*, playbooks/*, references/* 等知识库
+  getting-started/*, concepts/*, references/* 等知识库
 assets/
   README.md  # 外部资源（在线表格）唯一真相源入口
-scripts/backups/
-  一键备份.sh, 快速备份.py  # 本地/远端快照脚本
+scripts/
+  check-local-links.py  # Markdown 相对链接检查脚本
 ```
 
 ```mermaid
@@ -567,7 +574,6 @@ graph TB
 
   subgraph infra_layer[基础设施与横切能力层]
     git[Git 版本控制] --> orchestrator
-    backups[scripts/backups/一键备份.sh · scripts/backups/快速备份.py] --> artifacts_md
     deps[tools/prompts-library/requirements.txt · tools/prompts-library/scripts/requirements.txt] --> orchestrator
     config[tools/prompts-library/scripts/config.yaml] --> orchestrator
     monitor[预留：日志与监控] --> orchestrator
@@ -579,7 +585,7 @@ graph TB
 </details>
 
 <details>
-<summary><strong>📈 性能基准 (可选)</strong></summary>
+<summary><strong>📈 性能基准 (可选)</strong>（点击展开/收起）</summary>
 
 ## 📈 性能基准 (可选)
 
@@ -589,7 +595,7 @@ graph TB
 |:---|:---|:---|
 | 提示命中率 | 一次生成即满足验收的比例 | 待记录；每个任务完成后在 progress.md 记 0/1 |
 | 周转时间 | 需求 → 首个可运行版本所需时间 | 录屏时标注时间戳，或用 CLI 定时器统计 |
-| 变更可复盘度 | 是否同步更新上下文/进度/备份 | 通过手工更新；可在 backups 脚本中加入 git tag/快照 |
+| 变更可复盘度 | 是否同步更新上下文、文档和 Git 提交 | 通过 commit、CHANGELOG 与必要的 tag 留痕 |
 | 例程覆盖 | 是否有最小可运行示例/测试 | 建议每个示例项目保留 README+测试用例 |
 
 </details>
@@ -608,7 +614,7 @@ gantt
     section 近期 (2026 Q1)
     prompts 索引自动生成脚本: 2026-01, 15d
     一键演示/验证 CLI 工作流: 2026-01, 15d
-    备份脚本增加快照与校验: 2026-02, 10d
+    文档索引与引用门禁增强: 2026-02, 10d
     section 中期 (2026 Q2)
     模板化示例项目集: 2026-03, 30d
     多模型对比与评估基线: 2026-04, 30d
@@ -621,7 +627,7 @@ gantt
 <a id="translation"></a>
 
 <details>
-<summary><strong>🎯 原仓库翻译</strong></summary>
+<summary><strong>🎯 原仓库翻译</strong>（点击展开/收起）</summary>
 
 ## 🎯 原仓库翻译
 
@@ -644,14 +650,14 @@ gantt
 ## ⚙️ 完整设置流程
 
 <details>
-<summary><strong>1. 游戏设计文档（Game Design Document）</strong></summary>
+<summary><strong>1. 游戏设计文档（Game Design Document）</strong>（点击展开/收起）</summary>
 
 - 把你的游戏创意交给 **gpt-5.5** 或 **Claude Opus 4.7**，让它生成一份简洁的 **游戏设计文档**，格式为 Markdown，文件名为 `game-design-document.md`。
 - 自己审阅并完善，确保与你的愿景一致。初期可以很简陋，目标是给 AI 提供游戏结构和意图的上下文。不要过度设计，后续会迭代。
 </details>
 
 <details>
-<summary><strong>2. 技术栈与 Agent 规则（<code>AGENTS.md</code> / 自定义 rules）</strong></summary>
+<summary><strong>2. 技术栈与 Agent 规则（<code>AGENTS.md</code> / 自定义 rules）</strong>（点击展开/收起）</summary>
 
 - 让 **gpt-5.5** 或 **Claude Opus 4.7** 为你的游戏推荐最合适的技术栈（例如：多人3D游戏用 ThreeJS + WebSocket），保存为 `tech-stack.md`。
   - 要求它提出 **最简单但最健壮** 的技术栈。
@@ -669,7 +675,7 @@ gantt
 </details>
 
 <details>
-<summary><strong>3. 实施计划（Implementation Plan）</strong></summary>
+<summary><strong>3. 实施计划（Implementation Plan）</strong>（点击展开/收起）</summary>
 
 - 将以下内容提供给 **gpt-5.5** 或 **Claude Opus 4.7**：
   - 游戏设计文档（`game-design-document.md`）
@@ -682,7 +688,7 @@ gantt
 </details>
 
 <details>
-<summary><strong>4. 记忆库（Memory Bank）</strong></summary>
+<summary><strong>4. 记忆库（Memory Bank）</strong>（点击展开/收起）</summary>
 
 - 新建项目文件夹，并在 VSCode 中打开。
 - 在项目根目录下创建子文件夹 `memory-bank`。
@@ -699,7 +705,7 @@ gantt
 现在进入最爽的阶段！
 
 <details>
-<summary><strong>确保一切清晰</strong></summary>
+<summary><strong>确保一切清晰</strong>（点击展开/收起）</summary>
 
 - 在 VSCode 扩展中打开 **Codex** 或 **Claude Code**，或者在项目终端启动 Claude Code / Codex CLI。
 - 提示词：阅读 `/memory-bank` 里所有文档，`implementation-plan.md` 是否完全清晰？你有哪些问题需要我澄清，让它对你来说 100% 明确？
@@ -707,7 +713,7 @@ gantt
 </details>
 
 <details>
-<summary><strong>你的第一个实施提示词</strong></summary>
+<summary><strong>你的第一个实施提示词</strong>（点击展开/收起）</summary>
 
 - 打开 **Codex** 或 **Claude Code**（扩展或终端）。
 - 提示词：阅读 `/memory-bank` 所有文档，然后执行实施计划的第 1 步。我会负责跑测试。在我验证测试通过前，不要开始第 2 步。验证通过后，打开 `progress.md` 记录你做了什么供后续开发者参考，再把新的架构洞察添加到 `architecture.md` 中解释每个文件的作用。
@@ -716,7 +722,7 @@ gantt
 </details>
 
 <details>
-<summary><strong>工作流</strong></summary>
+<summary><strong>工作流</strong>（点击展开/收起）</summary>
 
 - 完成第 1 步后：
   - 把改动提交到 Git（不会用就问 AI）。
@@ -735,7 +741,7 @@ gantt
 ## 🐞 修复 Bug 与卡壳情况
 
 <details>
-<summary><strong>常规修复</strong></summary>
+<summary><strong>常规修复</strong>（点击展开/收起）</summary>
 
 - 如果某个提示词失败或搞崩了项目：
   - Claude Code 用 `/rewind` 回退；用 gpt-5.5 的话多提交 git，需要时 reset。
@@ -745,7 +751,7 @@ gantt
 </details>
 
 <details>
-<summary><strong>疑难杂症</strong></summary>
+<summary><strong>疑难杂症</strong>（点击展开/收起）</summary>
 
 - 实在卡住：
   - 回退到上一个 git commit（`git reset`），换新提示词重试。
@@ -756,7 +762,7 @@ gantt
 ## 💡 技巧与窍门
 
 <details>
-<summary><strong>Claude Code & Codex 使用技巧</strong></summary>
+<summary><strong>Claude Code & Codex 使用技巧</strong>（点击展开/收起）</summary>
 
 - **终端版 Claude Code / Codex CLI：** 在 VSCode 终端里运行，能直接看 diff、喂上下文，不用离开工作区。
 - **Claude Code 的 `/rewind`：** 迭代跑偏时一键回滚到之前状态。
@@ -766,7 +772,7 @@ gantt
 </details>
 
 <details>
-<summary><strong>其他实用技巧</strong></summary>
+<summary><strong>其他实用技巧</strong>（点击展开/收起）</summary>
 
 - **小修改：** 用 gpt-5.5 (medium)
 - **写顶级营销文案：** 用 Opus 4.7

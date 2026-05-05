@@ -9,7 +9,7 @@
 ### 允许的操作
 - 读取、修改顶层文档：`README.md`、`AGENTS.md`、`CONTRIBUTING.md` 等
 - 读取、修改 `docs/`、`prompts/`、`skills/`、`tools/config/`、`tools/external/` 下的文档与代码
-- 执行 `make lint`、`make check-links`、`make check-details`、`make check-doc-structure`、`make check-directory-docs`、`make check-metadata`、`make check-ai-citation`、`make sync-doc-toc`、`make sync-reference-readme`、prompts-library 转换工具
+- 执行 `make lint`、`make check-links`、`make check-details`、`make check-doc-structure`、`make check-directory-docs`、`make check-metadata`、`make check-ai-citation`、`make sync-doc-toc`、prompts-library 转换工具
 - 新增/修改提示词、技能、文档
 - 提交符合规范的 commit
 
@@ -66,13 +66,11 @@ git push origin develop
 | `make lint` | 校验全仓库 Markdown | Node.js 22+；通过 `npx --yes markdownlint-cli@0.48.0` 执行 |
 | `make check-links` | 校验仓库内 Markdown 相对链接 | Python 3 |
 | `make check-details` | 校验 Markdown 折叠块 `<details>/<summary>` 结构 | Python 3 |
-| `make check-doc-structure` | 校验 docs 线性 README 主章节顺序、重复锚点与目录入口 | Python 3 |
+| `make check-doc-structure` | 校验 docs 线性 README 标准块顺序、主章节顺序、重复锚点与目录入口 | Python 3 |
 | `make check-directory-docs` | 校验仓库自有目录 README/AGENTS 覆盖 | Python 3 |
 | `make check-metadata` | 校验 metadata 路径与锚点 | Python 3 |
 | `make check-ai-citation` | 校验 llms 与 AI 引用语料路径和锚点 | Python 3 |
 | `make sync-doc-toc` | 根据 taxonomy 和文档锚点重建 docs 细粒度目录 | Python 3 |
-| `make sync-reference-readme` | 从 `docs/references/sources/` 重建 references 线性总文档 | Python 3 |
-| `make check-reference-readme` | 校验 references 线性总文档是否由源片段生成且无漂移 | Python 3 |
 | `make test` | 执行本地质量门禁 | Node.js 22+、Python 3 |
 | `git submodule update --init --recursive` | 初始化外部 Git 仓库指针 | Git |
 | `cd tools/prompts-library && python3 main.py` | 提示词格式转换 | `pip install -r tools/prompts-library/requirements.txt` |
@@ -155,8 +153,9 @@ git push origin develop
 │   ├── getting-started/         # 从零开始、学习地图、环境与 AI CLI 配置
 │   ├── concepts/                # 核心概念、方法论与工程思想
 │   ├── philosophy/              # 哲学方法论、思维模型与底层认知模型
-│   ├── references/              # 清单、约束、常见坑、模板（README 由 sources/ 生成）
-│   └── research/                # 新技术、优秀 repo 与工程范式研究
+│   ├── references/              # 清单、约束、常见坑、模板和技术栈参考
+│   ├── research/                # 新技术、优秀 repo 与工程范式研究
+│   └── workflow/                # 开发流程、质量门禁和交付闭环
 │
 ├── prompts/                     # 提示词库入口（指向云端表格）
 │   ├── README.md                # 在线表格链接
@@ -226,18 +225,25 @@ git push origin develop
 - `.github/workflows/ci.yml` - GitHub Actions：develop/master 分支 markdown-lint + link-checker
 - `scripts/check-local-links.py` - 仓库内 Markdown 相对链接与锚点检查脚本，供 `make check-links` 与 CI 使用
 - `scripts/check-markdown-details.py` - 仓库内 Markdown 折叠块结构检查脚本，供 `make check-details` 与 CI 使用
-- `scripts/check-doc-structure.py` - docs 线性 README 主章节顺序、重复锚点与目录入口检查脚本，供 `make check-doc-structure` 与 CI 使用
+- `scripts/check-doc-structure.py` - docs 线性 README 标准块顺序、主章节顺序、重复锚点与目录入口检查脚本，供 `make check-doc-structure` 与 CI 使用
 - `scripts/check-directory-docs.py` - 仓库自有目录 README/AGENTS 覆盖检查脚本，供 `make check-directory-docs` 与 CI 使用
 - `scripts/check-metadata.py` - metadata 路径与锚点检查脚本，供 `make check-metadata` 与 CI 使用
 - `scripts/check-ai-citation.py` - llms 与 AI 引用语料路径和锚点检查脚本，供 `make check-ai-citation` 与 CI 使用
 - `scripts/sync-doc-toc.py` - docs 线性 README 细粒度目录重建脚本，供 `make sync-doc-toc` 使用
-- `scripts/build-reference-readme.py` - references 线性总文档生成与漂移检查脚本，供 `make sync-reference-readme` 与 `make check-reference-readme` 使用
 - `tools/prompts-library/main.py` - 提示词转换工具入口
 - `docs/getting-started/README.md` - 从零开始完整入门，包含学习地图、Vibe Coding 经验、网络配置、CLI 配置与开发环境搭建
 - `docs/concepts/README.md#concept-problem-solving` - 问题定义与求解路径底层模型
 - `docs/references/README.md#reference-engineering-practice` - 项目架构、代码组织、开发经验、底层程序逻辑、AI 编程质量门禁与常见坑的统一入口
 - `docs/references/README.md#reference-technology-stack` - 常见软件系统技术栈、选型维度、组合案例与初学者学习路径
 - `skills/auto-skill/` - Skills 生成、重构与校验的元技能
+
+### docs README 结构契约
+
+- `docs/**/README.md` 面向人类读者；维护者规则、目录边界和同步要求写入对应 `AGENTS.md`。
+- 标准块顺序固定为：顶部标题块 -> `## 字多不看` -> `## 快速导航` -> 完整细粒度目录 -> `## 使用方式` -> `## 正文`。
+- H1 后必须直接进入 `## 字多不看`，禁止在两者之间插入引用块、说明段或其他夹层内容。
+- README 中禁止出现 `和其他目录的边界` 与 `维护规则` 标题。
+- 修改 docs README 后，运行 `make sync-doc-toc` 和 `make test`；`make check-doc-structure` 是硬门禁。
 
 ---
 
@@ -280,12 +286,11 @@ feat|fix|docs|chore|refactor|test: scope - summary
 1. `markdown-lint` - Markdown 格式检查
 2. `check local markdown links and anchors` - 仓库内相对链接与锚点检查
 3. `check markdown details and summaries` - Markdown 折叠块结构检查
-4. `check references README generated state` - references 总文档生成状态检查
-5. `check docs README structure` - docs 线性 README 主章节顺序、重复锚点与目录入口检查
-6. `check required directory README and AGENTS files` - 仓库自有目录 README/AGENTS 覆盖检查
-7. `check metadata paths and anchors` - metadata 路径与锚点检查
-8. `check llms and AI citation paths and anchors` - llms 与 AI 引用语料路径和锚点检查
-9. `link-checker` - 链接有效性检查
+4. `check docs README structure` - docs 线性 README 标准块顺序、主章节顺序、重复锚点与目录入口检查
+5. `check required directory README and AGENTS files` - 仓库自有目录 README/AGENTS 覆盖检查
+6. `check metadata paths and anchors` - metadata 路径与锚点检查
+7. `check llms and AI citation paths and anchors` - llms 与 AI 引用语料路径和锚点检查
+8. `link-checker` - 链接有效性检查
 
 ### 提交前清单
 - [ ] 运行 `make lint` 通过
@@ -342,7 +347,7 @@ make test
 2. **Conversion Tool**: 使用 Python + pandas + openpyxl
 3. **Documentation Standard**: 用户文档使用中文；代码/文件名使用英文
 4. **Skills**: 每个技能有独立的 `SKILL.md`
-5. **Quality Gates**: `make test` 执行 Markdown lint、本地相对链接/锚点检查、折叠块结构检查、references 生成状态检查、metadata 路径检查与 AI 引用路径检查
+5. **Quality Gates**: `make test` 执行 Markdown lint、本地相对链接/锚点检查、折叠块结构检查、docs 结构检查、metadata 路径检查与 AI 引用路径检查
 
 ## Development Workflow
 
