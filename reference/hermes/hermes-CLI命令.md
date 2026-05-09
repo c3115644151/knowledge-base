@@ -181,3 +181,19 @@ hermes completion zsh     # Zsh 补全脚本
 ```bash
 hermes uninstall          # 卸载 Hermes
 ```
+
+## 快捷键 (Keybindings)
+
+| 快捷键 | 操作 |
+|:---|:---|
+| `Enter` | 发送消息 |
+| `Alt+Enter` / `Ctrl+J` / `Shift+Enter` | 换行（多行输入）。`Shift+Enter` 需要终端能区分 Enter 与 Shift+Enter。**Windows Terminal 用户**：Alt+Enter 被终端拦截（全屏切换），请使用 `Ctrl+Enter` 或 `Ctrl+J`。 |
+| `Ctrl+G` | 在 `$EDITOR` 中编辑输入缓冲区，保存退出后发送 |
+| `Ctrl+X Ctrl+E` | Emacs 风格绑定（等同于 `Ctrl+G`） |
+| `Ctrl+C` | 中断 Agent（2秒内连按两次强制退出） |
+| `Ctrl+D` | 退出 |
+| `Ctrl+Z` | 挂起 Hermes 到后台（仅 Unix） |
+| `Tab` | 接受自动补全或斜杠命令 |
+| `Ctrl+B` | 开启/停止语音录制（需启用 voice mode） |
+
+> **冷启动性能优化（v0.13.x）**：CLI 冷启动从 ~21s 优化至 ~2.5s，技能目录 mtime 缓存 + Feishu 懒加载 + 移除 Nous HTTP 探测三项优化叠加。

@@ -67,3 +67,50 @@ cron:
 2. **合理的频率** - 避免过于频繁的调用
 3. **错误处理** - Agent 会记录错误并继续
 4. **资源限制** - 使用 `max_concurrent` 控制并发
+
+## 高级路由
+
+### `deliver=all` — 全平台推送
+
+v0.13.x 新增。定时任务支持 `deliver=all` 特殊值，将任务结果推送到所有已连接的消息平台：
+
+```
+cronjob(action="create", name="daily-news",
+        schedule="every day 7am",
+        deliver="all",
+        prompt="...")
+```
+
+可组合使用：`"origin,all"`、`"all,telegram:-100:17"`
+
+### `context_from` — 任务链
+
+定时任务可以消费其他任务的最新输出：
+
+```
+cronjob(action="create", name="daily-digest",
+        schedule="every day 7am",
+        context_from=["ai-news-fetch", "github-prs-fetch"],
+        prompt="Write the daily digest using the outputs above.")
+```
+
+引用的是最近一次成功执行的输出，不是同批次运行中的输出。
+
+### `wakeAgent` — 跳过 Agent 调用
+
+配合 pre-check 脚本使用。通过 stdout 输出 `{"wakeAgent": false}` 可以跳过 Agent 调用，适合高频轮询场景：
+
+```python
+import json, sys
+latest = fetch_latest_count()
+prev = read_state("count")
+if latest == prev:
+    print(json.dumps({"wakeAgent": False}))
+    sys.exit(0)
+write_state("count", latest)
+print(json.dumps({"wakeAgent": True, "context": {"new": latest - prev}}))
+```
+
+## 安全
+
+定时任务在创建和更新时会扫描提示词注入和凭证泄露模式。包含不可见 Unicode 陷阱、SSH 后门尝试或明显凭证泄露载荷的提示词会被拦截。
