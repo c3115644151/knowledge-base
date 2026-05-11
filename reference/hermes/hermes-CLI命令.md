@@ -158,6 +158,33 @@ hermes mcp reload          # 重新加载
 hermes acp                # 启动 ACP 服务器
 ```
 
+## 跨平台会话转移
+
+### /handoff
+```bash
+/handoff <platform>      # 将当前会话转移到另一个平台
+```
+- 将CLI会话实时转移到Telegram、Discord等其他平台
+- 转移后原CLI会话退出，目标平台立即开始处理
+- 支持thread创建（自动为新会话创建独立thread）
+
+## 目标管理
+
+### /goal 和 /subgoal
+```bash
+/goal <objective>         # 创建带检查清单的目标
+/subgoal                  # 交互式子目标管理
+/subgoal add <item>       # 添加检查项
+/subgoal complete <n>    # 标记完成
+/subgoal impossible <n>   # 标记为不可行
+/subgoal undo <n>         # 撤销操作
+/subgoal remove <n>      # 删除检查项
+/subgoal clear           # 清除所有
+```
+- Phase A: 首次调用时将目标分解为详细检查清单
+- Phase B: 评估每个检查项的完成证据
+- 仅当所有检查项处于终态（completed/impossible）时目标才完成
+
 ## 更新与诊断
 
 ### hermes update
