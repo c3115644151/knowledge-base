@@ -45,6 +45,24 @@ hermes --yolo
 /yolo  # 切换开关
 ```
 
+## sudo 密码猜测防护
+
+新增 sudo 密码猜测阻止机制：
+- 检测 `sudo -S` 命令，当未设置 `SUDO_PASSWORD` 环境变量时阻止
+- 支持 `stdin`、`askpass`、`shell` 等 privilege flags
+- 防止意外密码泄露
+
+```bash
+# 确保未设置时阻止
+export SUDO_PASSWORD=  # 清空或勿设置
+```
+
+## 漏洞报告
+
+请通过 GitHub Security Advisory 报告安全漏洞：
+- 仓库: https://github.com/paperclipai/paperclip/security/advisories/new
+- **不要** 在公开 issue 中报告安全问题
+
 ## 用户授权
 
 ### 白名单

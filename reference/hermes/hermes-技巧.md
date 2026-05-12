@@ -78,6 +78,58 @@ hermes --verbose -q "Debug this error"
 ```
 详细输出便于诊断。
 
+## API 测试与调试
+
+### 核心原则
+**隔离故障层，再修复。** 200 OK 可能隐藏错误数据，500 可能只是认证字符错误。按顺序排查：
+
+```
+1. 连通性   → 能否到达主机?
+1.5 超时    → 连接慢 vs 读取慢?
+2. TLS/SSL → 证书有效且可信?
+3. 认证    → 凭证正确且未过期?
+4. 请求格式 → payload 结构符合服务端期望?
+5. 响应解析 → 我们的代码能接受返回的数据?
+6. 语义    → 数据含义符合我们的假设?
+```
+
+### REST 测试
+```python
+# 详细请求/响应
+terminal('curl -v https://api.example.com/users/1')
+
+# POST JSON
+terminal("""curl -X POST https://api.example.com/users \\
+  -H 'Content-Type: application/json' \\
+  -H "Authorization: Bearer $TOKEN" \\
+  -d '{"name":"test","email":"test@example.com"}'""")
+
+# 仅 headers
+terminal('curl -sI https://api.example.com/health')
+
+# 格式化 JSON
+terminal('curl -s https://api.example.com/users | python3 -m json.tool')
+```
+
+### GraphQL 测试
+```python
+terminal("""curl -X POST https://api.example.com/graphql \\
+  -H 'Content-Type: application/json' \\
+  -H "Authorization: Bearer $TOKEN" \\
+  -d '{"query":"{ user(id: 1) { name email } }"}'""")
+```
+
+**GraphQL 注意:** 服务器即使查询失败也常返回 HTTP 200。始终检查 `errors` 字段。
+
+### 常见故障
+
+| 症状 | 可能原因 |
+|------|----------|
+| 401/403 | Token 过期、OAuth 问题、API Key 无效 |
+| Postman 可用但代码失败 | 代码构造请求方式不同 |
+| 间歇性失败 | 限流、并发问题 |
+| 偶发性超时 | 服务端冷启动、网络抖动 |
+
 ## 记忆管理
 
 ### 明确记忆
