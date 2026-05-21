@@ -49,8 +49,8 @@ hermes tools
 ### Web 操作
 | 工具 | 说明 | 参数 |
 |------|------|------|
-| `web_search` | 搜索网页 | `query`, `recency_days` |
-| `web_extract` | 提取内容 | `url`, `query` |
+| `web_search` | 搜索网页（支持 Brave/DDGS/xAI/SearXNG/Tavily/Exa/Parallel） | `query`, `recency_days` |
+| `web_extract` | 提取内容（支持 Firecrawl/Tavily/Exa/Parallel） | `url`, `query` |
 | `browser_navigate` | 浏览器导航 | `url`, `action` |
 | `browser_screenshot` | 截屏 | `url` |
 
